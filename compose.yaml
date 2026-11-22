@@ -1,0 +1,15 @@
+name: ati-downstream-lab
+services:
+  mongo:
+    image: docker.io/library/mongo@sha256:b0c835c26e5997413e985000f1013c275377cd9607761c1784d486f6dd620b7f
+    ports: ["127.0.0.1:27118:27017"]
+    volumes: ["mongo:/data/db"]
+  redis:
+    image: docker.io/library/redis@sha256:1f88291b4c57bdf249f02eb085a8669889b2d2954e91d4de5118a5da6b78dd53
+    ports: ["127.0.0.1:6381:6379"]
+  temporal:
+    image: docker.io/temporalio/temporal@sha256:b228dadf9cdb6c7c02a1394b89dd76f827aac9760e458fce42f0899a10141225
+    command: ["server", "start-dev", "--ip", "0.0.0.0", "--ui-port", "8233"]
+    ports: ["127.0.0.1:7333:7233", "127.0.0.1:8234:8233"]
+volumes:
+  mongo:
