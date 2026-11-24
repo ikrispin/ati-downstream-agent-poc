@@ -3,7 +3,7 @@
 import httpx
 import pytest
 
-from ati_downstream.security_data import get_redhat_cve
+from ati_lscore.security_data import get_redhat_cve
 
 
 def test_lookup_keeps_vendor_product_states_and_evidence():

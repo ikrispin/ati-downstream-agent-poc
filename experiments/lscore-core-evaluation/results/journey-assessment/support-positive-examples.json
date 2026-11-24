@@ -1,0 +1,175 @@
+{
+  "checked_at": "2026-11-24T14:22:27.439111+00:00",
+  "purpose": "Verify user-provided positive Support examples without Errata or remediation.",
+  "case_identifiers": "Provided case numbers retained privately; public receipt uses aliases.",
+  "baseline_cve_searches": [
+    {
+      "cve_id": "CVE-2026-115560",
+      "status": "succeeded",
+      "total_matches": 0,
+      "returned": 0,
+      "coverage": {
+        "case_search": "complete"
+      },
+      "literal_cve_matches": 0
+    },
+    {
+      "cve_id": "CVE-2026-114938",
+      "status": "succeeded",
+      "total_matches": 0,
+      "returned": 0,
+      "coverage": {
+        "case_search": "complete"
+      },
+      "literal_cve_matches": 0
+    },
+    {
+      "cve_id": "CVE-2026-123633",
+      "status": "succeeded",
+      "total_matches": 0,
+      "returned": 0,
+      "coverage": {
+        "case_search": "complete"
+      },
+      "literal_cve_matches": 0
+    },
+    {
+      "cve_id": "CVE-2026-123007",
+      "status": "succeeded",
+      "total_matches": 0,
+      "returned": 0,
+      "coverage": {
+        "case_search": "complete"
+      },
+      "literal_cve_matches": 0
+    }
+  ],
+  "explicit_case_lookup": {
+    "provided_case_count": 4,
+    "all_returned_upstream_http_404": true,
+    "graphql_error_code": "CONNECTOR_FETCH",
+    "leading_zero_removed_check_also_404": true,
+    "previously_verified_case_control": {
+      "label": "previous-positive-control",
+      "is_error": false,
+      "graphql_errors": [],
+      "nonempty_case_record": true
+    }
+  },
+  "case_scoped_diagnostics": {
+    "case_count": 1,
+    "case_numbers_filter": true,
+    "include_closed": true,
+    "baseline": 0,
+    "with_cve_keyword": 0,
+    "with_customer_cases_enabled": 0,
+    "with_customer_and_private_enabled": 0,
+    "scope_widening_used_only_with_explicitly_supplied_case_number": true
+  },
+  "closed_inclusive_general_search": {
+    "cve_id": "CVE-2026-115560",
+    "initial_attempt": "mcp_tool_error",
+    "retry": {
+      "upstream_is_error": false,
+      "total_count": 2930,
+      "returned_records": 4,
+      "literal_requested_cve_matches": 0,
+      "provided_case_numbers_found": 0,
+      "coverage": "partial",
+      "cve_relevance": "unverified"
+    },
+    "same_keyword_without_include_closed": {
+      "total_count": 0
+    },
+    "different_provided_cve_closed_inclusive": "mcp_tool_error",
+    "limits": "Maximum five results requested; no result paging or unrelated case-detail calls."
+  },
+  "interpretation": {
+    "verified": [
+      "MCP responds and the prior positive control case is retrievable.",
+      "All four explicitly supplied cases returned structured upstream HTTP 404.",
+      "CVE-based search did not find the supplied cases.",
+      "Parser handles leading-zero IDs, six-digit CVE suffixes, URLs and observed wrappers in offline tests."
+    ],
+    "unverified": [
+      "Whether the discrepancy is caused by per-case access, account/organization mapping, backend environment or backend data availability.",
+      "Whether keyword filtering is ignored; reduced returned fields may omit matching content, and totalCount semantics are not established."
+    ],
+    "browser_comparison": "Provided production Customer Portal URL redirects the available separate browser to sign-in; the user browser session was not accessible."
+  },
+  "ati_changes": [
+    "Include closed cases when the live catalog advertises the flag.",
+    "Record effective query/visibility filters and explicitly limit zero-match claims.",
+    "Mark query-only hits as unverified CVE relevance and keep assessment partial.",
+    "Distinguish safe source_not_found, authentication, rate-limit and service errors from structured metadata."
+  ],
+  "external_writes": false,
+  "errata_calls": 0,
+  "remediation_calls": 0,
+  "private_evidence_directory": ".local/reports/support-positive-examples",
+  "new_full_assessment": {
+    "cve_id": "CVE-2026-115560",
+    "status": "partial",
+    "error": null,
+    "model_calls": 1,
+    "collectors": 6,
+    "sources": {
+      "redhat": {
+        "status": "succeeded",
+        "error_code": null
+      },
+      "osidb": {
+        "status": "succeeded",
+        "error_code": null
+      },
+      "lightspeed": {
+        "status": "succeeded",
+        "error_code": null
+      },
+      "fleet": {
+        "status": "succeeded",
+        "error_code": null
+      },
+      "support": {
+        "status": "failed",
+        "error_code": "mcp_tool_error"
+      },
+      "threat_intel": {
+        "status": "succeeded",
+        "error_code": null
+      }
+    },
+    "affected_count": 0,
+    "support": {
+      "status": null,
+      "total_matches": null,
+      "coverage": null,
+      "search_scope": null
+    },
+    "priority": "no_affected_systems",
+    "missing": [
+      "support_search_incomplete",
+      "support_unavailable"
+    ]
+  },
+  "verification": {
+    "tests_passed": 421,
+    "coverage_percent": 89.05,
+    "ruff": "passed",
+    "updated_local_ati_service_ready": true
+  },
+  "expanded_search_field_diagnostic": {
+    "cve_id": "CVE-2026-115560",
+    "reduced_information": false,
+    "result": "mcp_tool_error",
+    "positive_relevance_unverified": true
+  },
+  "followup_resolution": {
+    "same_login_confirmed": true,
+    "correct_support_ui_api_retrieves_all_four_cases": true,
+    "expected_cve_content_confirmed": true,
+    "legacy_mcp_still_source_not_found": true,
+    "evidence": "support-backend-comparison.json",
+    "remaining_gap": "Current deployed MCP backend/endpoint and CVE-search capability."
+  }
+}

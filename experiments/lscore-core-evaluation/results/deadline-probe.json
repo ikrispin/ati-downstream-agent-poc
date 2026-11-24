@@ -1,0 +1,371 @@
+{
+  "observed_at_utc": "2026-11-24T13:02:51.319032+00:00",
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "scope": "Actual unmodified LSCore service with local deterministic model and MCP fixtures; no ATI code, real model, or external tools.",
+  "configured_service": {
+    "workers": 1,
+    "base_url": "http://127.0.0.1:9140",
+    "mcp_server_timeout_seconds": 1,
+    "ogx_mode": "library"
+  },
+  "config_path": ".local/deadline-probe/config.yaml",
+  "config_sha256": "cfa1237a43e5d6fd30e607c7bc48e5f956f7181ed4122c61d15d87f82593ca09",
+  "supported_whole_run_deadline": {
+    "discovery": "No whole-agent-run deadline configuration or enforcement was found in the pinned Configuration model or query/stream/A2A run call sites. No nonexistent server setting was applied. The probe instead tests what a real caller deadline and the supported streaming interrupt do.",
+    "source_references": [
+      {
+        "path": "src/models/config.py",
+        "line": 42,
+        "fact": "Configuration rejects unknown fields."
+      },
+      {
+        "path": "src/utils/agents/query.py",
+        "line": 303,
+        "fact": "agent.run is awaited without a total-deadline wrapper."
+      },
+      {
+        "path": "src/utils/agents/streaming.py",
+        "line": 459,
+        "fact": "agent.run_stream_events is awaited without a total-deadline wrapper."
+      }
+    ]
+  },
+  "concurrency_architecture": {
+    "classification": "documented built-in service behavior",
+    "fact": "service.workers is documented and defaults to 1; LSCore passes it to Uvicorn. No replacement scheduler or custom concurrency hook is needed for non-blocking independent requests.",
+    "source_references": [
+      {
+        "path": "src/models/config.py",
+        "line": 396
+      },
+      {
+        "path": "src/runners/uvicorn.py",
+        "line": 41
+      },
+      {
+        "path": "docs/user_doc/config.md",
+        "line": 1153
+      }
+    ],
+    "limits": "One-worker independent-request overlap does not establish parallel tool calls inside one model turn."
+  },
+  "warmup_http_status": 200,
+  "caller_deadline": {
+    "marker": "caller-deadline-808198ea617b",
+    "caller_wall_clock_deadline_seconds": 0.3,
+    "slow_tool_seconds": 2,
+    "request": {
+      "query": "[fixture:normal] [request:caller-deadline-808198ea617b] [delay-a:2] Read A and B and calculate their total.",
+      "generate_topic_summary": false
+    },
+    "started_monotonic": 42813.381718957,
+    "caller_outcome": "TimeoutError",
+    "caller_timed_out_monotonic": 42813.683164658,
+    "caller_elapsed_seconds": 0.301446,
+    "tool_events": [
+      {
+        "event": "tool_start",
+        "time": 1795525379.6586235,
+        "monotonic": 42813.486105357,
+        "call_id": "55fa01056eb1421881eaa1e2062325c9",
+        "tool": "read_sample",
+        "sample_id": "A",
+        "delay_seconds": 2.0,
+        "request_marker": "caller-deadline-808198ea617b"
+      },
+      {
+        "event": "tool_end",
+        "time": 1795525381.6592367,
+        "monotonic": 42815.48671859,
+        "call_id": "55fa01056eb1421881eaa1e2062325c9",
+        "tool": "read_sample",
+        "sample_id": "A",
+        "delay_seconds": 2.0,
+        "request_marker": "caller-deadline-808198ea617b",
+        "status": "success",
+        "result": {
+          "sample_id": "A",
+          "value": 4,
+          "request_marker": "caller-deadline-808198ea617b"
+        }
+      },
+      {
+        "event": "tool_start",
+        "time": 1795525381.685479,
+        "monotonic": 42815.512961055,
+        "call_id": "e1d3933b077e46f0bd0699e40cd9001c",
+        "tool": "read_sample",
+        "sample_id": "B",
+        "delay_seconds": 0.0,
+        "request_marker": "caller-deadline-808198ea617b"
+      },
+      {
+        "event": "tool_end",
+        "time": 1795525381.685577,
+        "monotonic": 42815.513058903,
+        "call_id": "e1d3933b077e46f0bd0699e40cd9001c",
+        "tool": "read_sample",
+        "sample_id": "B",
+        "delay_seconds": 0.0,
+        "request_marker": "caller-deadline-808198ea617b",
+        "status": "success",
+        "result": {
+          "sample_id": "B",
+          "value": 7,
+          "request_marker": "caller-deadline-808198ea617b"
+        }
+      },
+      {
+        "event": "tool_start",
+        "time": 1795525381.7069535,
+        "monotonic": 42815.534435476,
+        "call_id": "947782ee8b1446b580c1e8f5e6531fa8",
+        "tool": "calculate_total",
+        "values": [
+          4.0,
+          7.0
+        ],
+        "request_marker": "caller-deadline-808198ea617b"
+      },
+      {
+        "event": "tool_end",
+        "time": 1795525381.7070017,
+        "monotonic": 42815.534483542,
+        "call_id": "947782ee8b1446b580c1e8f5e6531fa8",
+        "tool": "calculate_total",
+        "values": [
+          4.0,
+          7.0
+        ],
+        "request_marker": "caller-deadline-808198ea617b",
+        "status": "success",
+        "result": {
+          "total": 11.0,
+          "values": [
+            4.0,
+            7.0
+          ],
+          "request_marker": "caller-deadline-808198ea617b"
+        }
+      }
+    ],
+    "model_outputs": [
+      {
+        "event": "model_response",
+        "time": 1795525379.6534865,
+        "monotonic": 42813.480968874,
+        "response_id": "chatcmpl-fixture-4a331e03d33a429a8118d6520c4cbc34",
+        "stream": true,
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_986e4cf466b644f6",
+              "type": "function",
+              "function": {
+                "name": "read_sample",
+                "arguments": "{\"sample_id\":\"A\",\"delay_seconds\":2.0,\"request_marker\":\"caller-deadline-808198ea617b\"}"
+              }
+            }
+          ]
+        },
+        "finish_reason": "tool_calls"
+      },
+      {
+        "event": "model_response",
+        "time": 1795525381.6777093,
+        "monotonic": 42815.505191355,
+        "response_id": "chatcmpl-fixture-d6aa6fd7b411490ba285ccec07e48d1d",
+        "stream": true,
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_7b171743a10642eb",
+              "type": "function",
+              "function": {
+                "name": "read_sample",
+                "arguments": "{\"sample_id\":\"B\",\"delay_seconds\":0.0,\"request_marker\":\"caller-deadline-808198ea617b\"}"
+              }
+            }
+          ]
+        },
+        "finish_reason": "tool_calls"
+      },
+      {
+        "event": "model_response",
+        "time": 1795525381.700467,
+        "monotonic": 42815.527949309,
+        "response_id": "chatcmpl-fixture-d5aa1280db4946668ca1b861345bc36a",
+        "stream": true,
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_7baee6ccf412496b",
+              "type": "function",
+              "function": {
+                "name": "calculate_total",
+                "arguments": "{\"values\":[4,7],\"request_marker\":\"caller-deadline-808198ea617b\"}"
+              }
+            }
+          ]
+        },
+        "finish_reason": "tool_calls"
+      },
+      {
+        "event": "model_response",
+        "time": 1795525381.7197278,
+        "monotonic": 42815.547209885,
+        "response_id": "chatcmpl-fixture-9e3287f6d1154c739f45c9d79490ce39",
+        "stream": true,
+        "message": {
+          "role": "assistant",
+          "content": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=caller-deadline-808198ea617b. OUTPUT_MARKER=BASELINE"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "successful_tools_finished_after_caller_timeout": [
+      "read_sample",
+      "read_sample",
+      "calculate_total"
+    ],
+    "calculation_completed_after_caller_timeout": true,
+    "slow_tool_started_before_caller_timeout": true,
+    "interpretation": "The caller wall-clock deadline fired after 0.301446 seconds while the first tool was active. The MCP server completed A successfully after 2 seconds; LSCore then invoked B and calculate_total and obtained final COMPLETE text. A caller deadline/disconnection did not stop this server-side request."
+  },
+  "explicit_stream_interrupt": {
+    "marker": "explicit-interrupt-6aa030866d19",
+    "slow_tool_seconds": 2,
+    "request": {
+      "query": "[fixture:normal] [request:explicit-interrupt-6aa030866d19] [delay-a:2] Read A and B and calculate their total.",
+      "generate_topic_summary": false
+    },
+    "events": [
+      {
+        "observed_monotonic": 42815.563297643,
+        "event": "start",
+        "data": {
+          "conversation_id": "c8eae8240ed090941903d00c2a74eb82bda0726a2a119278",
+          "request_id": "2999a67c-2920-4f14-ac08-e2649dacf503"
+        }
+      },
+      {
+        "observed_monotonic": 42815.678739395,
+        "event": "tool_call",
+        "data": {
+          "id": "mcp_list_6275f0f3-ba84-435a-98f9-25ed22a88084",
+          "name": "mcp_list_tools",
+          "args": {
+            "server_label": "neutral-tools"
+          },
+          "type": "mcp_list_tools"
+        }
+      },
+      {
+        "observed_monotonic": 42815.678858219,
+        "event": "tool_result",
+        "data": {
+          "id": "mcp_list_6275f0f3-ba84-435a-98f9-25ed22a88084",
+          "status": "success",
+          "content": "{\"server_label\": \"neutral-tools\", \"tools\": [{\"name\": \"read_sample\", \"description\": \"Read synthetic A=4 or B=7; FAIL/B_FAIL inject an expected error.\\n\\n        delay_seconds is bounded to 30 seconds and awaits without blocking.\\n        request_marker is echoed and logged for request-isolation evidence.\\n        \", \"input_schema\": {\"properties\": {\"sample_id\": {\"title\": \"Sample Id\", \"type\": \"string\"}, \"delay_seconds\": {\"default\": 0, \"title\": \"Delay Seconds\", \"type\": \"number\"}, \"request_marker\": {\"default\": \"\", \"title\": \"Request Marker\", \"type\": \"string\"}}, \"required\": [\"sample_id\"], \"title\": \"read_sampleArguments\", \"type\": \"object\"}}, {\"name\": \"calculate_total\", \"description\": \"Add only the synthetic values supplied by prior successful reads.\", \"input_schema\": {\"properties\": {\"values\": {\"items\": {\"type\": \"number\"}, \"title\": \"Values\", \"type\": \"array\"}, \"request_marker\": {\"default\": \"\", \"title\": \"Request Marker\", \"type\": \"string\"}}, \"required\": [\"values\"], \"title\": \"calculate_totalArguments\", \"type\": \"object\"}}]}",
+          "type": "mcp_list_tools",
+          "round": 1
+        }
+      },
+      {
+        "observed_monotonic": 42815.836924606,
+        "event": "token",
+        "data": {
+          "id": 0,
+          "token": "\n\n*Response stopped by the user.*"
+        }
+      },
+      {
+        "observed_monotonic": 42815.83696847,
+        "event": "interrupted",
+        "data": {
+          "request_id": "2999a67c-2920-4f14-ac08-e2649dacf503"
+        }
+      }
+    ],
+    "stream_http_status": 200,
+    "request_id": "2999a67c-2920-4f14-ac08-e2649dacf503",
+    "interrupt_requested_monotonic": 42815.767258156,
+    "interrupt_http_status": 200,
+    "interrupt_response": {
+      "request_id": "2999a67c-2920-4f14-ac08-e2649dacf503",
+      "interrupted": true,
+      "message": "Streaming request interrupted"
+    },
+    "tool_events": [
+      {
+        "event": "tool_start",
+        "time": 1795525381.931393,
+        "monotonic": 42815.75887518,
+        "call_id": "4238bc42bb78440b82314897adef6b2f",
+        "tool": "read_sample",
+        "sample_id": "A",
+        "delay_seconds": 2.0,
+        "request_marker": "explicit-interrupt-6aa030866d19"
+      },
+      {
+        "event": "tool_end",
+        "time": 1795525383.9318464,
+        "monotonic": 42817.75932832,
+        "call_id": "4238bc42bb78440b82314897adef6b2f",
+        "tool": "read_sample",
+        "sample_id": "A",
+        "delay_seconds": 2.0,
+        "request_marker": "explicit-interrupt-6aa030866d19",
+        "status": "success",
+        "result": {
+          "sample_id": "A",
+          "value": 4,
+          "request_marker": "explicit-interrupt-6aa030866d19"
+        }
+      }
+    ],
+    "model_outputs": [
+      {
+        "event": "model_response",
+        "time": 1795525381.8566792,
+        "monotonic": 42815.684161311,
+        "response_id": "chatcmpl-fixture-3a40e84b25344c5787334164de0ee2be",
+        "stream": true,
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_faf98afab252409a",
+              "type": "function",
+              "function": {
+                "name": "read_sample",
+                "arguments": "{\"sample_id\":\"A\",\"delay_seconds\":2.0,\"request_marker\":\"explicit-interrupt-6aa030866d19\"}"
+              }
+            }
+          ]
+        },
+        "finish_reason": "tool_calls"
+      }
+    ],
+    "tools_finished_after_interrupt": [
+      "read_sample"
+    ],
+    "interrupted_event_observed": true,
+    "interpretation": "The supported streaming interrupt returned HTTP 200/interrupted=true and the SSE stream emitted an interrupted event. LSCore did not proceed to B or calculate_total. The already-running remote MCP A tool nevertheless completed successfully about 2 seconds after start. This establishes local stream interruption, not remote tool cancellation or rollback."
+  },
+  "all_owned_services_stopped": true,
+  "interpretation": "No supported whole-run LSCore deadline setting was found to configure. Actual bounded runtime probes establish that a caller deadline alone leaves server-side work running, while explicit stream interruption stops further local execution but not the already-running MCP tool. These observations do not prove behavior for every transport/provider or side-effecting tool.",
+  "reproduce_command": ".local/upstream/.venv/bin/python scripts/probe_deadline.py",
+  "ports_closed_after_cleanup": {
+    "9140": true,
+    "19141": true,
+    "19142": true
+  }
+}

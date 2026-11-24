@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "inspected_on": "2026-11-24",
+  "scope": "Read-only GitLab source, commit and CI metadata inspection. No MCP/customer/API query, token authentication, deployment or external write.",
+  "source": {
+    "project_id": 197444,
+    "project_url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server",
+    "ref": "main",
+    "pinned_sha": "763e39a7d08b9d51b49d765cbba71f4d45c5c800",
+    "head_committed_at": "2026-11-24T19:38:15+05:30"
+  },
+  "findings": [
+    {
+      "id": "backend_migrated",
+      "verified": true,
+      "statement": "2026-09-10 migration removes legacy Hydra case GraphQL operations and adds Support UI API queries under redhat_support_uiapi.query.RedHatSupportCase. Apollo MCP was replaced by Python FastMCP and Lightrail 1 by Lightrail 2 in the same commit.",
+      "evidence": [
+        "migration_commit",
+        "migration_readme",
+        "old_filter",
+        "old_detail",
+        "search_graphql"
+      ]
+    },
+    {
+      "id": "tool_names_changed",
+      "verified": true,
+      "statement": "Current registered tool names are get_case_details_by_case_number, list_case_comments, get_case_escalation_status_by_case_number, get_case_remote_session_status_by_case_number and search_cases. The 2026-10-28 naming commit changed to snake_case; GraphQL operation names remain PascalCase.",
+      "evidence": [
+        "current_tools",
+        "rename_commit"
+      ]
+    },
+    {
+      "id": "no_cve_keyword_search_parameter",
+      "verified": true,
+      "statement": "search_cases exposes creator name, account number, exact product, severity, status, support type and remote-session filters plus first/after/upper_bound pagination. No CVE, keyword, subject, description, full-text or arbitrary where parameter is exposed. Its where builder maps only those advertised filters. This establishes a gap in the MCP tool, not proof the underlying Support UI API cannot support a future search capability.",
+      "evidence": [
+        "search_signature",
+        "where_builder",
+        "search_description"
+      ]
+    },
+    {
+      "id": "search_boundaries",
+      "verified": true,
+      "statement": "At least one search filter is required. Page size defaults to 50, maximum 100; optional upper_bound and cursors are forwarded. Creator 'me' resolves JWT SSO/display-name claims; it is a creator filter, not an organization selector or a CVE filter.",
+      "evidence": [
+        "search_signature",
+        "where_builder",
+        "input_validation",
+        "search_description"
+      ]
+    },
+    {
+      "id": "new_lookup_contract",
+      "verified": true,
+      "statement": "Case lookup uses numeric support case number through MCP alias caseNumber. It selects one Support UI connection page and treats an empty connection as an error, including the possibility the account lacks access.",
+      "evidence": [
+        "case_lookup_signature",
+        "case_lookup_handling",
+        "case_number_normalization"
+      ]
+    },
+    {
+      "id": "auth_configuration",
+      "verified": true,
+      "statement": "Prod runtime targets graphql.redhat.com and external Red Hat SSO; stage targets vpn.graphql.stage.redhat.com and stage SSO. Both require api.graphql audience/scope and corresponding MCP auth discovery server. README states the MCP client SSO token is forwarded to outbound GraphQL; shared-library implementation was not inspected in this task.",
+      "evidence": [
+        "prod_runtime",
+        "stage_runtime",
+        "auth_architecture"
+      ]
+    },
+    {
+      "id": "search_output_includes_private_fields",
+      "verified": true,
+      "statement": "The GraphQL search selection includes Subject, Description, account reference, creator/owner identity and contact phone/email. A downstream bounded summary must not accidentally retain the whole raw search node as public evidence.",
+      "evidence": [
+        "search_graphql"
+      ]
+    },
+    {
+      "id": "deployment_config",
+      "verified": true,
+      "statement": "Current CI imports Lightrail 2.7.0 multi-region pipeline and declares main as pipeline release branch. Tag-based deployment was removed on 2026-09-10; GitLab release/tag listing returned no entries at inspection.",
+      "evidence": [
+        "ci_configuration",
+        "tag_removal_commit"
+      ]
+    },
+    {
+      "id": "endpoint_documentation_conflict",
+      "verified": true,
+      "statement": "Catalog remotes still list sca-mcp-prod.apps.int...prod.us-west-2 and sca-mcp-stage.apps.int...preprod.us-east-1, whereas runtime vars specify ${BASE_APP_NAME}-${ENV}.apps.ext-waf...us-west-2 and CI BASE_APP_NAME=sca-001. Therefore the catalog and deployment route configuration do not identify the same hostnames. No endpoint freshness or connectivity was verified here.",
+      "evidence": [
+        "catalog_remotes",
+        "prod_runtime",
+        "stage_runtime",
+        "ci_configuration"
+      ]
+    },
+    {
+      "id": "stage_job_evidence",
+      "verified": true,
+      "statement": "Latest main pipeline for the pinned SHA has successful Stage-Deploy and Publish-Stage jobs, while Prod-Deploy is manual and Publish-Prod remains created. This is CI metadata evidence for stage deployment, not a runtime tools-list verification or proof any catalog hostname runs that revision.",
+      "evidence": [
+        "head_pipeline"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "sha": "e63280af3b7399172259f44e319e1dbf7a3c00e6",
+      "committed_at": "2026-09-10T11:04:17+05:30",
+      "title": "PNP3D0-858, SCA-318: Migrate Support Case MCP Server from Apollo to FastMCP and Lightrail from v1 to v2",
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/e63280af3b7399172259f44e319e1dbf7a3c00e6"
+    },
+    {
+      "sha": "cd9fa5b96d6d66510e453842acb89f8645f7368d",
+      "committed_at": "2026-09-10T14:00:13+05:30",
+      "title": "SCA-369: Remove tag based deployemnt",
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/cd9fa5b96d6d66510e453842acb89f8645f7368d"
+    },
+    {
+      "sha": "32b1aeb69ff6d2d5c9b8868e107d14acc731b024",
+      "committed_at": "2026-09-28T18:19:44+05:30",
+      "title": "SCA-385: remove case summary tool",
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/32b1aeb69ff6d2d5c9b8868e107d14acc731b024"
+    },
+    {
+      "sha": "c4982d7d9c9e4546f010bf4edf377691d4654715",
+      "committed_at": "2026-10-28T11:51:54+05:30",
+      "title": "UIEAGENTS-428: rename tool names using best practices",
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/c4982d7d9c9e4546f010bf4edf377691d4654715"
+    }
+  ],
+  "references": {
+    "migration_commit": {
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/e63280af3b7399172259f44e319e1dbf7a3c00e6"
+    },
+    "migration_readme": {
+      "path": "README.md",
+      "ref": "e63280af3b7399172259f44e319e1dbf7a3c00e6",
+      "start_line": 5,
+      "end_line": 14,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/e63280af3b7399172259f44e319e1dbf7a3c00e6/README.md#L5-14"
+    },
+    "old_filter": {
+      "path": "operations/GetCasesByFilter.graphql",
+      "ref": "0fb523b99143bf9d176e47c82f41d22a63e0fd41",
+      "start_line": 1,
+      "end_line": 45,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/0fb523b99143bf9d176e47c82f41d22a63e0fd41/operations/GetCasesByFilter.graphql#L1-45"
+    },
+    "old_detail": {
+      "path": "operations/GetCaseDetailsByCaseId.graphql",
+      "ref": "0fb523b99143bf9d176e47c82f41d22a63e0fd41",
+      "start_line": 1,
+      "end_line": 37,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/0fb523b99143bf9d176e47c82f41d22a63e0fd41/operations/GetCaseDetailsByCaseId.graphql#L1-37"
+    },
+    "current_tools": {
+      "path": "README.md",
+      "start_line": 5,
+      "end_line": 30,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/README.md#L5-30"
+    },
+    "search_signature": {
+      "path": "app/tools/search_cases.py",
+      "start_line": 44,
+      "end_line": 117,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/tools/search_cases.py#L44-117"
+    },
+    "where_builder": {
+      "path": "app/schemas/tool_inputs.py",
+      "start_line": 152,
+      "end_line": 182,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/schemas/tool_inputs.py#L152-182"
+    },
+    "input_validation": {
+      "path": "app/schemas/tool_inputs.py",
+      "start_line": 185,
+      "end_line": 319,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/schemas/tool_inputs.py#L185-319"
+    },
+    "search_description": {
+      "path": "app/tools/descriptions/search_cases.md",
+      "start_line": 1,
+      "end_line": 27,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/tools/descriptions/search_cases.md#L1-27"
+    },
+    "search_graphql": {
+      "path": "app/tools/operations/SearchCases.graphql",
+      "start_line": 1,
+      "end_line": 113,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/tools/operations/SearchCases.graphql#L1-113"
+    },
+    "case_lookup_signature": {
+      "path": "app/tools/get_case_details_by_case_number.py",
+      "start_line": 32,
+      "end_line": 45,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/tools/get_case_details_by_case_number.py#L32-45"
+    },
+    "case_lookup_handling": {
+      "path": "app/tools/shared/case_lookup.py",
+      "start_line": 12,
+      "end_line": 63,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/tools/shared/case_lookup.py#L12-63"
+    },
+    "case_number_normalization": {
+      "path": "app/schemas/tool_inputs.py",
+      "start_line": 19,
+      "end_line": 20,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/app/schemas/tool_inputs.py#L19-20"
+    },
+    "prod_runtime": {
+      "path": ".light/prod/prod/vars.yml",
+      "start_line": 1,
+      "end_line": 10,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/.light/prod/prod/vars.yml#L1-10"
+    },
+    "stage_runtime": {
+      "path": ".light/preprod/stage/vars.yml",
+      "start_line": 1,
+      "end_line": 10,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/.light/preprod/stage/vars.yml#L1-10"
+    },
+    "auth_architecture": {
+      "path": "README.md",
+      "start_line": 119,
+      "end_line": 137,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/README.md#L119-137"
+    },
+    "ci_configuration": {
+      "path": ".gitlab-ci.yml",
+      "start_line": 2,
+      "end_line": 41,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/.gitlab-ci.yml#L2-41"
+    },
+    "catalog_remotes": {
+      "path": "catalog-info.yaml",
+      "start_line": 79,
+      "end_line": 92,
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/blob/763e39a7d08b9d51b49d765cbba71f4d45c5c800/catalog-info.yaml#L79-92"
+    },
+    "rename_commit": {
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/c4982d7d9c9e4546f010bf4edf377691d4654715"
+    },
+    "tag_removal_commit": {
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/commit/cd9fa5b96d6d66510e453842acb89f8645f7368d"
+    },
+    "head_pipeline": {
+      "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/pipelines/19689254",
+      "pipeline_id": 19689254,
+      "sha": "763e39a7d08b9d51b49d765cbba71f4d45c5c800",
+      "status": "manual",
+      "jobs": [
+        {
+          "id": 67763753,
+          "name": "Publish-Prod",
+          "status": "created",
+          "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/jobs/67763753"
+        },
+        {
+          "id": 67763752,
+          "name": "Prod-Deploy",
+          "status": "manual",
+          "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/jobs/67763752"
+        },
+        {
+          "id": 67763751,
+          "name": "Publish-Stage",
+          "status": "success",
+          "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/jobs/67763751"
+        },
+        {
+          "id": 67763750,
+          "name": "Stage-Deploy",
+          "status": "success",
+          "url": "https://gitlab.cee.redhat.com/gss-engineering/support-case-mcp-server/-/jobs/67763750"
+        }
+      ]
+    }
+  },
+  "release_tags": {
+    "releases": 0,
+    "tags": 0
+  },
+  "unverified": [
+    "Which production image/revision is deployed and which external hostname routes to the current FastMCP server.",
+    "Whether successful stage deploy jobs correspond to the catalog-listed stage hostname or the configured Lightrail route.",
+    "Whether current user's Support UI API role/entitlement permits desired cases; same SSO login alone does not establish case access.",
+    "Whether the underlying Support UI API provides a suitable full-text/CVE predicate not currently exposed by search_cases.",
+    "Whether the commons library's exact installed version and token handling match the deployment; this task inspected this repository and its declared version range, not the deployed environment."
+  ],
+  "recommended_follow_up": [
+    "Ask server owner to confirm supported current production/stage MCP URL and deployed commit/image.",
+    "Compare runtime tools/list with pinned catalog at the confirmed endpoint before changing ATI adapter bindings.",
+    "Treat exact CVE Support case search as unsupported by this tool contract; obtain a documented CVE/keyword capability instead of substituting creator/product/account filters and claiming complete CVE coverage.",
+    "If a separately authorized local current-server experiment is run, record it as a different backend/revision and retain safe field-level normalization."
+  ]
+}

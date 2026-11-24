@@ -5,7 +5,7 @@ from subprocess import CompletedProcess
 
 import pytest
 
-from ati_downstream.osidb import get_public_osidb_cve
+from ati_lscore.osidb import get_public_osidb_cve
 
 
 def response(monkeypatch, record, status=200):
@@ -18,7 +18,7 @@ def response(monkeypatch, record, status=200):
         assert command[-1].startswith("https://osidb.prodsec.redhat.com/")
         return CompletedProcess(command, 0, json.dumps(payload) + f"\n{status}", "")
 
-    monkeypatch.setattr("ati_downstream.osidb.subprocess.run", run)
+    monkeypatch.setattr("ati_lscore.osidb.subprocess.run", run)
 
 
 def test_public_record_is_reduced_to_the_selected_evidence(monkeypatch):
@@ -62,7 +62,7 @@ def test_auth_error_is_reported_without_response_content(monkeypatch):
 
 def test_invalid_identifier_does_not_run_curl(monkeypatch):
     monkeypatch.setattr(
-        "ati_downstream.osidb.subprocess.run",
+        "ati_lscore.osidb.subprocess.run",
         lambda *a, **kw: pytest.fail("curl ran"),
     )
     with pytest.raises(ValueError, match="CVE"):

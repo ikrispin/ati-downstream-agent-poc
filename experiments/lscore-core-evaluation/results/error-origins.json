@@ -1,0 +1,132 @@
+{
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "dependency_versions": {
+    "ogx": "1.2.5",
+    "mcp": "1.30.0",
+    "openai": "3.57.0",
+    "pydantic-ai": "2.38.0"
+  },
+  "scope": "Pinned source plus retained HTTP/wire evidence and an additional in-memory protocol/formatter experiment. No upstream changes, live service requests, or credentials used for this follow-up.",
+  "new_probe": {
+    "script": "variants/probe_error_adapters.py",
+    "result": "results/error-adapter-probe.json",
+    "command": "cd experiments/lscore-core-evaluation/.local/upstream && PYTHONPATH=src .venv/bin/python ../../variants/probe_error_adapters.py",
+    "assertions_passed": true
+  },
+  "findings": [
+    {
+      "id": "error-text-loss",
+      "symptom": "Returned tool_results contain failure with content 'Error (code 1): None'.",
+      "origin": "Confirmed OGX conversion/formatting defect in the returned MCP execution record; the original explanatory error still reaches the model.",
+      "trace": [
+        "MCP FastMCP converts tool ValueError into ToolError with explanatory text: mcp/server/fastmcp/tools/base.py:93-117. Low-level server serializes that text into CallToolResult(content=[TextContent(...)],isError=True): mcp/server/lowlevel/server.py:473-479,589-590.",
+        "OGX _parse_mcp_result copies content and sets error_code=1 but never fills error_message: ogx/providers/utils/tools/mcp.py:446-468.",
+        "OGX ToolExecutor._build_result_messages sees error_code>0 and sets output_item.error from error_message (None), leaving output null: ogx/providers/inline/responses/builtin/responses/tool_executor.py:481-490. This is where returned evidence loses the explanatory text.",
+        "The same function separately sends original result.content back to the model: tool_executor.py:537-563. The model and API caller therefore receive different fidelity of error evidence.",
+        "Pydantic AI _map_mcp_call copies output/error: pydantic_ai/models/openai.py:5699-5723. LSCore summarize_mcp_call_result preserves that error as status=failure/content: src/utils/agents/tool_processor.py:475-505. LSCore does not originate the None text."
+      ],
+      "evidence": [
+        "results/error-adapter-probe.json#/observations/tool_failure",
+        ".local/evidence/e7-failure.json",
+        ".local/evidence/e7-real-failure.json"
+      ],
+      "fix": "Upstream OGX fix: retain MCP error content in the returned structured error/output and use it when error_message is absent; regression tests must compare model-visible content and returned execution evidence. No documented LSCore prompt/profile/skill setting repairs already-lost data.",
+      "no_patch_option": "Domain MCP tools can persist normalized source observations and return safe source failures as data. Native execution then reports tool transport success; the domain envelope must still identify failed or incomplete evidence. This preserves domain evidence without fixing OGX error formatting.",
+      "confidence": "Runtime-confirmed using the actual installed MCP protocol and OGX formatter functions; consistent with retained full-service HTTP evidence."
+    },
+    {
+      "id": "invalid-tool-arguments",
+      "symptom": "Model calls read_sample({unexpected:true}) without required sample_id; query returns HTTP 200 and a failed tool result with the same None text.",
+      "origin": "Argument rejection works. Missing error detail is the same OGX formatter defect; automatic repair/retry policy is application behavior, not proved by this test.",
+      "trace": [
+        "FastMCP intentionally disables low-level JSON-schema validation and uses its Pydantic argument model instead: mcp/server/fastmcp/server.py:320-324; mcp/server/fastmcp/utilities/func_metadata.py:94-115.",
+        "Argument model validation raises before the tool body is entered. FastMCP wraps the validation message in ToolError, then serializes isError=true: tools/base.py:101-117; lowlevel/server.py:589-590.",
+        "OGX emits the same output.error='Error (code 1): None' while passing full validation text to the model; see error-text-loss.",
+        "The model fixture chooses a partial reply. This is not evidence that LSCore enforces a fixed retry count for invalid arguments or a required partial-outcome policy."
+      ],
+      "evidence": [
+        "results/error-adapter-probe.json#/observations/invalid_arguments",
+        ".local/evidence/e7-invalid.json"
+      ],
+      "fix": "Keep schema validation; fix OGX error propagation. Application policy should distinguish invalid arguments (repair inputs, bounded retries) from transient dependency failures (backoff) and permanent failures (stop/partial). Treating the user's outer HTTP request as invalid is not necessarily appropriate when it was the model that generated invalid tool inputs.",
+      "confidence": "In-memory MCP protocol test confirms zero tool-function entries for invalid arguments and preserves the full missing-field message before OGX formatting."
+    },
+    {
+      "id": "model-http-500-and-retries",
+      "symptom": "Injected model HTTP 500 causes three model HTTP requests, then the LSCore query returns a generic HTTP 500.",
+      "origin": "Observed retry count comes from the model provider's OpenAI SDK defaults. OGX preserves the model error message, but this run also encounters an asynchronous cleanup error before LSCore maps the final exception. Generic public error mapping is a separate LSCore policy choice.",
+      "trace": [
+        "OGX OpenAI mixin constructs AsyncOpenAI without a max_retries override: ogx/providers/utils/inference/openai_mixin.py:153-165,273-277. Locked OpenAI SDK DEFAULT_MAX_RETRIES=2, and retry selection includes status>=500: openai/_constants.py:8; openai/_base_client.py:922-961.",
+        "After retries, OGX catches the provider SDK exception in its inference loop, extracts a normalized code while preserving its message, and emits response.failed: ogx/providers/inline/responses/builtin/responses/streaming.py:164-207,749-770.",
+        "For the non-streaming query path, OGX aggregates that stream and raises InternalServerError('Injected local model failure'): ogx/providers/inline/responses/builtin/responses/openai_responses.py:1002-1021. LSCore library transport directly awaits the route implementation: src/pydantic_ai_lightspeed/ogx/_transport.py:262-270.",
+        "Retained log then shows RuntimeError from cancel-scope cleanup through Pydantic AI/Pydantic Graph/AnyIO; this is the exception LSCore records. src/utils/agents/query.py:303-310 catches RuntimeError; src/utils/agents/error_handler.py:52-64 maps it to a generic error.",
+        "Independently, even a correctly propagated ModelHTTPError(500,body containing the original message) maps to the same generic public HTTP 500: src/utils/agents/error_handler.py:107-119; src/models/api/responses/error/internal.py:96-109. The isolated probe confirms that mapping."
+      ],
+      "timing_correlation": {
+        "marker": "probe-5518389264-e7-model-error",
+        "model_request_times_utc": [
+          "2026-11-24T10:25:05.346025Z",
+          "2026-11-24T10:25:05.773933Z",
+          "2026-11-24T10:25:06.743688Z"
+        ],
+        "ogx_provider_error_log_time_utc": "2026-11-24T10:25:06.745015Z",
+        "ogx_raised_model_error_log_time_utc": "2026-11-24T10:25:06.754030Z",
+        "lscore_cleanup_error_log_time_local": "2026-11-24 12:25:06.776 Asia/Jerusalem",
+        "lscore_http_500_log_time_local": "2026-11-24 12:25:06.777 Asia/Jerusalem",
+        "request_elapsed_seconds": 1.5224,
+        "interpretation": "Times align with this retained request. The stack pinpoints where cleanup fails; it does not establish which component introduced the invalid cancel-scope lifecycle."
+      },
+      "evidence": [
+        ".local/evidence/e7-model-error.json",
+        ".local/evidence/model-calls.jsonl (matching marker)",
+        ".local/lscore.log:1320-1372",
+        "results/error-adapter-probe.json#/mapped_model_http_500"
+      ],
+      "fix": "Preserve the primary provider exception during cleanup; investigate the cancel-scope lifecycle independently and add failure-path regression coverage before assigning an upstream component owner. Define safe public error codes, retryability, and correlation identifiers in LSCore or the inbound adapter. Preserve sensitive provider diagnostics in logs. A prompt or skill cannot repair lifecycle cleanup or exception mapping.",
+      "retry_semantics": "Three requests establish two transport retries for this model-only failure. They do not prove whole-agent/tool retries, safe replay after side effects, or a configurable aggregate retry budget. A request-level adapter must not blindly replay a failed investigation: tools may already have run in other failure positions. Use an execution ledger and idempotency policy.",
+      "confidence": "SDK retry origin and generic mapping are source-backed; request count and cleanup error are observed. Exact cleanup defect ownership remains unverified."
+    },
+    {
+      "id": "unreachable-mcp-readiness",
+      "symptom": "With MCP URL on a closed loopback port, startup succeeds, readiness returns HTTP 200, and the first query returns generic HTTP 500 before any model call.",
+      "origin": "Readiness scope gap plus an unclassified request-time dependency exception; not the None formatter bug.",
+      "trace": [
+        "LSCore startup initializes providers and OGX but does not discover configured MCP servers: src/app/main.py:97-137. Readiness checks OGX provider health and registered default model only: src/app/endpoints/health.py:59-118,157-212.",
+        "OGX performs MCP discovery during query setup: streaming.py:455-456 calls _process_tools BEFORE the inference loop's try at494. _process_mcp_tool invokes list_mcp_tools at1712-1717, logs and rethrows at1763-1766.",
+        "OGX MCP session manager tries Streamable HTTP and SSE; final ConnectError becomes ConnectionError: ogx/providers/utils/tools/mcp.py:158-204. Neither startup nor registry checks prove that actual downstream endpoint reachable.",
+        "LSCore query catches AgentRunError, ApiException, RuntimeError, but this ConnectionError is outside that tuple: src/utils/agents/query.py:308. Generic middleware logs and returns a generic HTTP 500: src/app/main.py:289-303. The log explicitly says 'Uncaught exception in endpoint'."
+      ],
+      "evidence": [
+        "variants/tool-limit-results.json#/unavailable_mcp",
+        ".local/evidence/e7-mcp-unavailable-http.json",
+        ".local/evidence/e7-mcp-unavailable-model-calls.json",
+        ".local/evidence/e7-mcp-unavailable-startup.log:181-429"
+      ],
+      "fix": "Application/deployment option without LSCore patches: add a bounded external dependency preflight/readiness check for required MCP services. Upstream correction: normalize discovery connection/timeout errors into a typed dependency-unavailable result and preserve server identity, safe reason, and retryability. Decide whether optional tools may degrade gracefully while required tools block execution. No tested LSCore configuration enables MCP dependency health checks in /readiness.",
+      "confidence": "Full-service HTTP experiment and exact exception trace confirm this path."
+    },
+    {
+      "id": "partial-outcome-contract",
+      "symptom": "Tool failure can coexist with HTTP 200, successful A evidence, failed B tool record, and a prose partial answer.",
+      "origin": "An application outcome-policy gap, separate from transport success and library error handling.",
+      "trace": [
+        "LSCore accepts a successful final model finish reason, then records model text and individual tool calls/results: src/utils/agents/query.py:185-213. It does not define ATI's required evidence or success criteria.",
+        "QueryResponse has answer text plus tool_calls/tool_results; it has no domain-level complete/partial/failure contract: src/models/api/responses/successful/query.py:20-111.",
+        "Native A2A marks the task completed when the aggregator remains working after a successful run: src/app/endpoints/a2a.py:621-627. This is source evidence of execution completion semantics, not a separately run A2A tool-failure experiment."
+      ],
+      "evidence": [
+        ".local/evidence/e7-failure.json",
+        ".local/evidence/e7-real-failure.json"
+      ],
+      "fix": "Keep business rules in an application-owned result reducer/adapter: required sources, validated successful results, missing evidence, safe error category, retryability, and complete/partial/failed status. Derive status from the execution record, not model prose or HTTP 200/A2A completed. The current OGX text-loss defect must be repaired or bypassed with a reliable tool-side ledger if detailed errors are required. Deterministic branching inside the running loop still needs a documented hook that was not found in the pinned LSCore surface.",
+      "confidence": "HTTP behavior observed with fixture and real model; API schema/source confirms no built-in ATI outcome policy."
+    }
+  ],
+  "classification_summary": {
+    "confirmed_library_defect": "OGX returned error evidence loses explanatory content although the model still sees it.",
+    "observed_dependency_failure_needing_owner_triage": "Cancel-scope cleanup error masks the primary model error; exact component owner unverified.",
+    "framework_integration_or_mapping_gap": "MCP dependency failures and model failures become undifferentiated generic public 500 errors; MCP reachability not part of native readiness.",
+    "application_responsibility": "Domain complete/partial/failed rules, evidence requirements, retry safety, and optional-versus-required dependency policy.",
+    "working_behavior": "MCP rejects invalid arguments before tool entry; model SDK retries model HTTP 500 twice; successful tool evidence survives a later handled tool failure."
+  }
+}

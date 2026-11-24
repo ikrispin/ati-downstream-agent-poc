@@ -3,30 +3,29 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ati-downstream-lab"
-version = "0.1.0"
-description = "Independent ATI agent with A2A and hosted MAS integration (experiment)"
+name = "ati-lscore-poc"
+version = "0.2.0"
+description = "ATI domain MCP tools and headless client for the native LSCore agent"
 requires-python = ">=3.12,<3.14"
 dependencies = [
-  "a2a-sdk[http-server]==1.3.1",
-  "httpx>=0.28,<1",
+  "httpx==0.28.1",
   "mcp==1.30.0",
   "python-dotenv>=1,<2",
-  "uvicorn>=0.35,<1",
   "pyyaml>=6,<7",
+  "jsonschema>=4.20,<5",
 ]
 
 [project.optional-dependencies]
 test = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "pytest-cov>=6,<8", "ruff>=0.11,<1"]
-ui = [
-    "cryptography>=46,<51",
-]
 
 [project.scripts]
-ati-downstream = "ati_downstream.cli:main"
+ati-lscore = "ati_lscore.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+ati_lscore = ["templates/*.yaml", "templates/*.txt"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

@@ -1,0 +1,156 @@
+{
+  "probe_kind": "in_memory_mcp_protocol_and_real_ogx_formatter_functions",
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "observations": {
+    "success": {
+      "raw_mcp_result": {
+        "meta": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"sample_id\": \"A\",\n  \"value\": 4\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ],
+        "structuredContent": null,
+        "isError": false
+      },
+      "parsed_ogx_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"sample_id\": \"A\",\n  \"value\": 4\n}"
+          }
+        ],
+        "error_message": null,
+        "error_code": 0,
+        "metadata": null
+      },
+      "returned_ogx_output_item": {
+        "id": "fc_probe",
+        "type": "mcp_call",
+        "arguments": "{\"sample_id\": \"A\"}",
+        "name": "read_sample",
+        "server_label": "neutral-tools",
+        "error": null,
+        "output": "{\n  \"sample_id\": \"A\",\n  \"value\": 4\n}"
+      },
+      "input_sent_back_to_model": {
+        "role": "tool",
+        "tool_call_id": "call_probe",
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"sample_id\": \"A\",\n  \"value\": 4\n}"
+          }
+        ]
+      },
+      "tool_function_entries": 1
+    },
+    "tool_failure": {
+      "raw_mcp_result": {
+        "meta": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool read_sample: Injected fixture failure: sample B unavailable",
+            "annotations": null,
+            "meta": null
+          }
+        ],
+        "structuredContent": null,
+        "isError": true
+      },
+      "parsed_ogx_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool read_sample: Injected fixture failure: sample B unavailable"
+          }
+        ],
+        "error_message": null,
+        "error_code": 1,
+        "metadata": null
+      },
+      "returned_ogx_output_item": {
+        "id": "fc_probe",
+        "type": "mcp_call",
+        "arguments": "{\"sample_id\": \"FAIL\"}",
+        "name": "read_sample",
+        "server_label": "neutral-tools",
+        "error": "Error (code 1): None",
+        "output": null
+      },
+      "input_sent_back_to_model": {
+        "role": "tool",
+        "tool_call_id": "call_probe",
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool read_sample: Injected fixture failure: sample B unavailable"
+          }
+        ]
+      },
+      "tool_function_entries": 1
+    },
+    "invalid_arguments": {
+      "raw_mcp_result": {
+        "meta": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool read_sample: 1 validation error for read_sampleArguments\nsample_id\n  Field required [type=missing, input_value={'unexpected': True}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing",
+            "annotations": null,
+            "meta": null
+          }
+        ],
+        "structuredContent": null,
+        "isError": true
+      },
+      "parsed_ogx_result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool read_sample: 1 validation error for read_sampleArguments\nsample_id\n  Field required [type=missing, input_value={'unexpected': True}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing"
+          }
+        ],
+        "error_message": null,
+        "error_code": 1,
+        "metadata": null
+      },
+      "returned_ogx_output_item": {
+        "id": "fc_probe",
+        "type": "mcp_call",
+        "arguments": "{\"unexpected\": true}",
+        "name": "read_sample",
+        "server_label": "neutral-tools",
+        "error": "Error (code 1): None",
+        "output": null
+      },
+      "input_sent_back_to_model": {
+        "role": "tool",
+        "tool_call_id": "call_probe",
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool read_sample: 1 validation error for read_sampleArguments\nsample_id\n  Field required [type=missing, input_value={'unexpected': True}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing"
+          }
+        ]
+      },
+      "tool_function_entries": 0
+    }
+  },
+  "mapped_model_http_500": {
+    "status_code": 500,
+    "detail": {
+      "response": "Internal server error",
+      "cause": "An unexpected error occurred while processing the request."
+    }
+  },
+  "all_assertions_passed": true,
+  "limitations": [
+    "This isolates protocol and formatter functions; earlier retained HTTP evidence establishes their service use.",
+    "It does not reproduce or assign ownership of the asynchronous cancel-scope cleanup error."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "experiment": "E2 documented behavior extensions through unmodified LSCore HTTP service",
+  "model": "deterministic synthetic OpenAI-compatible fixture; not a real-model semantic compliance check",
+  "configuration": {
+    "baseline": "config/lscore-fixture.yaml",
+    "isolated_instance": "127.0.0.1:8144",
+    "isolated_state": ".local/state-extensions",
+    "profile": "variants/profile.py",
+    "skills_path": "variants/skills",
+    "private_resolved_config": ".local/extensions.yaml",
+    "private_config_sha256": "7890aa0a99be7c48c09e12b323b6c4cb53fac2984377d6976ad9794fec71aee6",
+    "private_startup_log": ".local/evidence/e2-extensions-startup.log"
+  },
+  "checks": {
+    "inline": {
+      "passed": true,
+      "status": 200,
+      "elapsed_seconds": 0.3587899360063602,
+      "final_response": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=e2-inline. OUTPUT_MARKER=inline",
+      "tool_calls": [
+        "mcp_list_tools",
+        "read_sample",
+        "read_sample",
+        "calculate_total"
+      ],
+      "evidence": ".local/evidence/e2-inline-http.json"
+    },
+    "profile": {
+      "passed": true,
+      "status": 200,
+      "elapsed_seconds": 0.5693619040030171,
+      "final_response": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=e2-profile. OUTPUT_MARKER=profile",
+      "tool_calls": [
+        "mcp_list_tools",
+        "read_sample",
+        "read_sample",
+        "calculate_total"
+      ],
+      "evidence": ".local/evidence/e2-profile-http.json"
+    },
+    "skill": {
+      "passed": true,
+      "status": 200,
+      "elapsed_seconds": 0.8286777730027097,
+      "final_response": "COMPLETE: skill listing, loading, and resource read observed. request=e2-skill. OUTPUT_MARKER=skill SKILL_TOKEN=neutral-amber-47",
+      "function_call_sequence": [
+        "list_skills",
+        "load_skill",
+        "read_skill_resource"
+      ],
+      "successful_skill_results": 3,
+      "evidence": ".local/evidence/e2-skill-http.json",
+      "limitation": "This mode tests skill loading and resource contents only; it does not run numeric MCP lookup or prove model compliance with branch/output-format instructions."
+    },
+    "catalogs": {
+      "passed": true,
+      "skills": [
+        {
+          "name": "neutral-assessment",
+          "description": "Produce a neutral numeric assessment from synthetic samples A and B. Use for the LSCore extension experiment."
+        }
+      ],
+      "builtin_tool_names": [
+        "list_skills",
+        "load_skill",
+        "read_skill_resource"
+      ],
+      "run_skill_script_absent": true,
+      "evidence": [
+        ".local/evidence/e2-skills-catalog-http.json",
+        ".local/evidence/e2-tools-catalog-http.json"
+      ]
+    }
+  },
+  "limitations": [
+    "Fixture copies instruction markers to establish configuration/instruction plumbing only. It does not establish correctness of arbitrary model decisions.",
+    "Profiles and skills do not register deterministic Python branching; see findings.json and config-probe-results.json.",
+    "The skills guide names activate_skill and load_skill_resource but pinned runtime exposes load_skill and read_skill_resource."
+  ]
+}

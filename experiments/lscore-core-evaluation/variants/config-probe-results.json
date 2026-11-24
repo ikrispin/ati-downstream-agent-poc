@@ -1,0 +1,97 @@
+{
+  "probe_kind": "runtime_config_and_capability_loading_no_model",
+  "inline_prompt_loaded": true,
+  "profile_default_prompt": "You are a neutral numeric assessment assistant. OUTPUT_MARKER=profile Read samples A and B with the available tools and calculate their total. Return a concise answer beginning with 'profile:' and the observed total. If a required sample is unavailable, report partial; do not invent values.",
+  "profile_topic_summary": "Return exactly: Neutral assessment.",
+  "profile_exposed_fields": [
+    "path",
+    "prompts"
+  ],
+  "callback_candidate_prompts": {
+    "default": "OUTPUT_MARKER=flow-hook-candidate"
+  },
+  "callback_candidate_exposed": false,
+  "unknown_customization_fields_rejected": {
+    "after_tool_result": [
+      "extra_forbidden"
+    ],
+    "capabilities": [
+      "extra_forbidden"
+    ],
+    "agent_factory": [
+      "extra_forbidden"
+    ]
+  },
+  "skills": [
+    {
+      "name": "neutral-assessment",
+      "description": "Produce a neutral numeric assessment from synthetic samples A and B. Use for the LSCore extension experiment."
+    }
+  ],
+  "skill_tools": [
+    "list_skills",
+    "load_skill",
+    "read_skill_resource"
+  ],
+  "skill_script_tool_excluded": true,
+  "skill_tool_schemas": {
+    "list_skills": {
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "load_skill": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_name": {
+          "description": "Exact name from your available skills list.\nMust match exactly (e.g., \"data-analysis\" not \"data analysis\").",
+          "type": "string"
+        }
+      },
+      "required": [
+        "skill_name"
+      ],
+      "type": "object"
+    },
+    "read_skill_resource": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_name": {
+          "description": "Name of the skill containing the resource.",
+          "type": "string"
+        },
+        "resource_name": {
+          "description": "Exact name of the resource as listed in the skill.\nExamples: \"FORMS.md\", \"REFERENCE.md\", \"get_schema\"\nMust match exactly - do not infer or guess.",
+          "type": "string"
+        },
+        "args": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Arguments for callable resources (optional for static files).\nKeys must match the parameter names in the resource's schema."
+        }
+      },
+      "required": [
+        "skill_name",
+        "resource_name"
+      ],
+      "type": "object"
+    }
+  },
+  "direct_skill_tool_invocation": {
+    "catalog": {
+      "neutral-assessment": "Produce a neutral numeric assessment from synthetic samples A and B. Use for the LSCore extension experiment."
+    },
+    "load_skill_contains_instructions": true,
+    "load_skill_lists_resource": true,
+    "resource_content": "OUTPUT_MARKER=skill\nSKILL_TOKEN=neutral-amber-47\n\nStart the answer with \"skill:\". Include the observed total, an explicit\ncomplete or partial outcome, and the exact verification token neutral-amber-47.\n",
+    "limitation": "Capability tool functions invoked directly; no model or LSCore HTTP request."
+  }
+}

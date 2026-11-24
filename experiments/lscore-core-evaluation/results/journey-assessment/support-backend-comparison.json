@@ -1,0 +1,111 @@
+{
+  "checked_at": "2026-11-24T14:38:32.038017+00:00",
+  "same_login_confirmed_by_user": true,
+  "scope": "Read-only explicit supplied-case lookups; no case enumeration, Errata or remediation.",
+  "configured_mcp": {
+    "contract": "legacy PascalCase tools",
+    "backend_error_service": "rhg-hydra-rest",
+    "case_lookup": {
+      "old_mcp_public_adapter": "failed",
+      "type": "SourceFailure",
+      "safe_code": "source_not_found",
+      "retryable": false
+    },
+    "previously_supplied_cases": {
+      "count": 4,
+      "original_upstream_http_status": 404
+    }
+  },
+  "support_ui_api": {
+    "endpoint": "https://graphql.redhat.com",
+    "source_revision": "763e39a7d08b9d51b49d765cbba71f4d45c5c800",
+    "query_path": "redhat_support_uiapi.query.RedHatSupportCase",
+    "filter": "CaseNumber eq explicit supplied number",
+    "per_query_limit": 1,
+    "same_existing_oauth_authorization": true,
+    "cases": [
+      {
+        "alias": "provided_case_1",
+        "http_status": 200,
+        "graphql_error_count": 0,
+        "returned_cases": 1,
+        "case_number_matches": true,
+        "expected_cves_found": [
+          "CVE-2026-115560"
+        ],
+        "expected_cves_missing": []
+      },
+      {
+        "alias": "provided_case_2",
+        "http_status": 200,
+        "graphql_error_count": 0,
+        "returned_cases": 1,
+        "case_number_matches": true,
+        "expected_cves_found": [
+          "CVE-2026-114938"
+        ],
+        "expected_cves_missing": []
+      },
+      {
+        "alias": "provided_case_3",
+        "http_status": 200,
+        "graphql_error_count": 0,
+        "returned_cases": 1,
+        "case_number_matches": true,
+        "expected_cves_found": [
+          "CVE-2026-123633",
+          "CVE-2026-123007"
+        ],
+        "expected_cves_missing": []
+      },
+      {
+        "alias": "provided_case_4",
+        "http_status": 200,
+        "graphql_error_count": 0,
+        "returned_cases": 1,
+        "case_number_matches": true,
+        "expected_cves_found": [
+          "CVE-2026-115560",
+          "CVE-2026-129182",
+          "CVE-2026-126714",
+          "CVE-2026-129289",
+          "CVE-2026-129481",
+          "CVE-2026-129496",
+          "CVE-2026-129291"
+        ],
+        "expected_cves_missing": []
+      }
+    ],
+    "all_four_cases_and_cves_confirmed": true
+  },
+  "diagnostic_request_corrections": {
+    "first_direct_request": "Expired cached access token; normal existing MCP OAuth refresh succeeded without sign-in.",
+    "second_direct_request": "HTTP400 required apollographql-client-name/client-version; named ATI client headers fixed protocol request.",
+    "final_requests": "HTTP200 for all four supplied cases."
+  },
+  "deployment_and_search": {
+    "source_evidence": "support-source-migration.json",
+    "current_source_uses_support_ui_api": true,
+    "current_source_has_cve_or_keyword_search_argument": false,
+    "latest_pinned_pipeline_stage_jobs": "success",
+    "latest_pinned_pipeline_prod_deploy_job": "manual",
+    "supported_current_production_mcp_route": "unverified; catalog and runtime route templates conflict",
+    "derived_production_health_probe_http_status": 503,
+    "underlying_graphql_fulltext_capability": "unverified; introspection did not return filter metadata"
+  },
+  "conclusion": "Supplied cases exist and are readable with the existing authorization through Support UI API. The configured MCP uses a different legacy backend path and still reports not found. Resolving the supported MCP deployment/endpoint and adding supported CVE search are separate follow-ups.",
+  "not_completed": [
+    "No automatic CVE-based discovery of these cases through MCP.",
+    "No production MCP deployment or endpoint change.",
+    "No permanent direct-API fallback enabled in ATI."
+  ],
+  "verification": {
+    "package_tests_passed": 436,
+    "package_coverage_percent": 89.05,
+    "diagnostic_offline_tests_included": 15,
+    "ruff": "passed"
+  },
+  "raw_evidence_private_directory": ".local/reports/support-backend-check",
+  "current_poc_decision": "Keep the existing older Support MCP. Direct API comparisons are historical diagnostics, not an active framework or fallback.",
+  "current_integration": "../../../../README.md"
+}

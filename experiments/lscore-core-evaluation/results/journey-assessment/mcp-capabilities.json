@@ -1,0 +1,1688 @@
+{
+  "support": {
+    "status": "ok",
+    "retrieved_at": "2026-11-24T13:51:38.758770+00:00",
+    "elapsed_seconds": 3.094,
+    "tools": [
+      {
+        "name": "GetCaseDetailsByCaseId",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caseId"
+          ]
+        }
+      },
+      {
+        "name": "GetCaseSummary",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "caseNumber": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caseNumber"
+          ]
+        }
+      },
+      {
+        "name": "GetCasesByFilter",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "input": {
+              "$ref": "#/definitions/HydraCaseFilterInput"
+            }
+          },
+          "required": [
+            "input"
+          ],
+          "definitions": {
+            "HydraCaseFilterInput": {
+              "description": "Input for filtering cases",
+              "type": "object",
+              "properties": {
+                "maxResults": {
+                  "description": "Maximum number of results to return",
+                  "type": "integer"
+                },
+                "offset": {
+                  "description": "Offset for pagination",
+                  "type": "integer"
+                },
+                "createdBySSOName": {
+                  "description": "Filter by SSO name of the case creator",
+                  "type": "string"
+                },
+                "product": {
+                  "description": "Filter by product name",
+                  "type": "string"
+                },
+                "status": {
+                  "description": "Filter by case status",
+                  "type": "string"
+                },
+                "accountNumber": {
+                  "description": "Filter by account number",
+                  "type": "string"
+                },
+                "severity": {
+                  "description": "Filter by case severity",
+                  "type": "string"
+                },
+                "keyword": {
+                  "description": "Filter by keyword",
+                  "type": "string"
+                },
+                "sortField": {
+                  "description": "Sort field name",
+                  "type": "string"
+                },
+                "sortOrder": {
+                  "description": "Sort order (ASC or DESC)",
+                  "type": "string"
+                },
+                "startDate": {
+                  "description": "Start date for filtering",
+                  "type": "string"
+                },
+                "endDate": {
+                  "description": "End date for filtering",
+                  "type": "string"
+                },
+                "includeClosed": {
+                  "description": "Whether to include closed cases",
+                  "type": "boolean"
+                },
+                "ownerSSOName": {
+                  "description": "Filter by case owner SSO name",
+                  "type": "string"
+                },
+                "groupNumber": {
+                  "description": "Filter by case group number",
+                  "type": "string"
+                },
+                "includePrivate": {
+                  "description": "Whether to include private cases",
+                  "type": "boolean"
+                },
+                "associateSSOName": {
+                  "description": "Filter by associate SSO name",
+                  "type": "string"
+                },
+                "recordType": {
+                  "description": "Filter by record type",
+                  "type": "string"
+                },
+                "includeAllCustomerCases": {
+                  "description": "Whether to include all customer cases",
+                  "type": "boolean"
+                },
+                "onlyUngrouped": {
+                  "description": "Whether to include only ungrouped cases",
+                  "type": "boolean"
+                },
+                "accountNumbers": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by multiple account numbers",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "internalStatuses": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by internal statuses",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "sbrs": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by SBR groups",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "severities": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by multiple severities",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "statuses": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by multiple statuses",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by multiple products",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "languages": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by case languages",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "onlyEscalated": {
+                  "description": "Whether to include only escalated cases",
+                  "type": "boolean"
+                },
+                "reducedInformation": {
+                  "description": "Whether to return reduced information",
+                  "type": "boolean"
+                },
+                "caseNumbers": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by specific case numbers",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "groupNumbers": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by specific case group numbers",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "versions": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by product versions",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by tags",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "maxDateOpened": {
+                  "description": "Maximum date opened for filtering",
+                  "type": "string"
+                },
+                "minDateOpened": {
+                  "description": "Minimum date opened for filtering",
+                  "type": "string"
+                },
+                "maxSBT": {
+                  "description": "Maximum SBT value",
+                  "type": "integer"
+                },
+                "minSBT": {
+                  "description": "Minimum SBT value",
+                  "type": "integer"
+                },
+                "only24X7": {
+                  "description": "Whether to include only 24x7 cases",
+                  "type": "boolean"
+                },
+                "only24X7HandoverReady": {
+                  "description": "Whether to include only 24x7 handover-ready cases",
+                  "type": "boolean"
+                },
+                "is24X7": {
+                  "description": "Whether this is a 24x7 case",
+                  "type": "boolean"
+                },
+                "is24X7HandoverReady": {
+                  "description": "Whether this is a 24x7 handover-ready case",
+                  "type": "boolean"
+                },
+                "includeSecureSupport": {
+                  "description": "Whether to include secure support cases",
+                  "type": "boolean"
+                },
+                "nullsFirst": {
+                  "description": "Whether to sort nulls first",
+                  "type": "boolean"
+                },
+                "type": {
+                  "description": "Filter by case type",
+                  "type": "string"
+                },
+                "commentIds": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "description": "Filter by comment IDs",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "owner": {
+                  "description": "Whether the caller is an owner",
+                  "type": "boolean"
+                },
+                "contributor": {
+                  "description": "Whether the caller is a contributor",
+                  "type": "boolean"
+                },
+                "ftsRole": {
+                  "description": "Whether to filter by FTS role",
+                  "type": "boolean"
+                },
+                "view": {
+                  "description": "View type filter",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "lightspeed": {
+    "status": "ok",
+    "retrieved_at": "2026-11-24T13:51:37.877223+00:00",
+    "elapsed_seconds": 2.194,
+    "tools": [
+      {
+        "name": "get_mcp_version",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_openapi",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "endpoints": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Comma-separated list of endpoint specs to reduce the spec, e.g. 'GET:/blueprints,POST:/blueprints'. Only needed for create_blueprint/update_blueprint."
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__create_blueprint",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "data": {
+              "additionalProperties": true,
+              "description": "Complete blueprint data formatted according to CreateBlueprintRequest from get_openapi",
+              "type": "object"
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__update_blueprint",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "blueprint_uuid": {
+              "description": "The UUID of the blueprint to update",
+              "type": "string"
+            },
+            "data": {
+              "additionalProperties": true,
+              "description": "Complete blueprint data formatted according to CreateBlueprintRequest from get_openapi",
+              "type": "object"
+            }
+          },
+          "required": [
+            "blueprint_uuid",
+            "data"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_blueprints",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "limit": {
+              "default": 7,
+              "description": "Maximum number of items to return (use 7 as default)",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Number of items to skip when paging (use 0 as default)",
+              "type": "integer"
+            },
+            "search_string": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Substring to search for in the name"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_blueprint_details",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "blueprint_identifier": {
+              "description": "The UUID, name or reply_id to query",
+              "type": "string"
+            }
+          },
+          "required": [
+            "blueprint_identifier"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_composes",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "limit": {
+              "default": 7,
+              "description": "Maximum number of items to return (use 7 as default)",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Number of items to skip when paging (use 0 as default)",
+              "type": "integer"
+            },
+            "search_string": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Substring to search for in the name"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_compose_details",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "compose_identifier": {
+              "description": "The exact UUID string from get_composes()",
+              "type": "string"
+            }
+          },
+          "required": [
+            "compose_identifier"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__blueprint_compose",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "blueprint_uuid": {
+              "description": "The UUID of the blueprint to compose",
+              "type": "string"
+            }
+          },
+          "required": [
+            "blueprint_uuid"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_distributions",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      {
+        "name": "image-builder__get_org_id",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      {
+        "name": "rhsm__get_activation_keys",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "limit": {
+              "default": 20,
+              "description": "Maximum number of activation keys to return (default: 20).",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Number of activation keys to skip for pagination (default: 0).",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "rhsm__get_activation_key",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "description": "The name of the activation key to retrieve.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__get_openapi",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__load_cve_dashboard",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "system_uuid": {
+              "default": "",
+              "description": "System UUID. If provided, fetches CVEs for this system. If empty, fetches account-level CVEs.",
+              "type": "string"
+            },
+            "filter_": {
+              "default": "",
+              "description": "Full text filter for CVE name or description.",
+              "type": "string"
+            },
+            "limit": {
+              "default": 10,
+              "description": "Maximum number of CVEs to fetch.",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Offset for pagination.",
+              "type": "integer"
+            },
+            "sort": {
+              "default": "-cvss_score",
+              "description": "Sort field. Use '-' prefix for descending.",
+              "type": "string"
+            },
+            "impact": {
+              "default": "7,6,5,4",
+              "description": "Comma-separated impact IDs (7=Critical, 6=High, 5=Important, 4=Moderate).",
+              "type": "string"
+            },
+            "cvss_from": {
+              "default": 0.0,
+              "description": "Minimum CVSS score filter.",
+              "type": "number"
+            },
+            "cvss_to": {
+              "default": 10.0,
+              "description": "Maximum CVSS score filter.",
+              "type": "number"
+            },
+            "advisory_available": {
+              "default": "true,false",
+              "description": "Filter by advisory availability (true, false, or true,false).",
+              "type": "string"
+            },
+            "known_exploit": {
+              "default": "true,false",
+              "description": "Filter by known exploit (true, false, or true,false).",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__get_cves",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "filter_": {
+              "default": "",
+              "type": "string"
+            },
+            "limit": {
+              "default": 10,
+              "type": "integer",
+              "description": "Pagination - Maximum number of records per page."
+            },
+            "offset": {
+              "default": 0,
+              "type": "integer",
+              "description": "Pagination - Offset of first record of paginated response."
+            },
+            "sort": {
+              "default": "-public_date",
+              "type": "string",
+              "description": "Attribute sorting. Use `-` prefix to sort in descending order."
+            },
+            "cvss_from": {
+              "default": 0.0,
+              "type": "number",
+              "description": "Filter based on cvss score, starting from the value."
+            },
+            "cvss_to": {
+              "default": 10.0,
+              "type": "number",
+              "description": "Filter based on cvss score, up to the value."
+            },
+            "impact": {
+              "default": "1,2,4,5,7",
+              "type": "string",
+              "description": "Comma separated list of CVE Impact IDs. Example : 5,7.\n    impact mapping: (0, 'NotSet'), (1, 'None'), (2, 'Low'), (3, 'Medium'), (4, 'Moderate'),\n                    (5, 'Important'), (6, 'High'), (7, 'Critical')"
+            },
+            "rule_presence": {
+              "default": "true,false",
+              "type": "string",
+              "description": "Comma seprated string with bools. If true shows only CVEs with security rule associated,\n           if false shows CVEs without rules. true, false shows all."
+            },
+            "known_exploit": {
+              "default": "true,false",
+              "type": "string",
+              "description": "String of booleans (array of booleans), where true shows CVEs with known exploits,\n           false shows CVEs without known exploits."
+            },
+            "advisory_available": {
+              "default": "true",
+              "type": "string",
+              "description": "String of booleans (array of booleans), where true shows CVE-system pairs\n                with available advisory, false shows CVE-system pairs without available advisory."
+            },
+            "affecting_host_type": {
+              "default": "rpmdnf",
+              "type": "string",
+              "description": "Comma separated string of values. Controls, whenever CVE has 1 or more\n                 affecting systems. Value \"edge\" returns CVEs with one or more vulnerable\n                 immutable systems, value \"rpmdnf\" returns CVEs with one or more vulnerable\n                 conventional systems. Value \"none\" returns CVEs not affecting systems of any kind.\n                 Allowed values: \"edge\", \"rpmdnf\", \"none\"."
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__get_cve",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "cve": {
+              "type": "string",
+              "description": "CVE identifier. Example : CVE-2016-0800"
+            },
+            "advisory_available": {
+              "default": "true",
+              "type": "string",
+              "description": "String of booleans (array of booleans), where true shows CVE-system pairs\n                with available advisory, false shows CVE-system pairs without available advisory."
+            }
+          },
+          "required": [
+            "cve"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__get_cve_systems",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "cve": {
+              "type": "string",
+              "description": "CVE identifier. Example : CVE-2016-0800 (Required)"
+            },
+            "filter_": {
+              "default": "",
+              "type": "string",
+              "description": "Full text filter for the display name of system."
+            },
+            "limit": {
+              "default": 10,
+              "type": "integer",
+              "description": "Pagination - Maximum number of records per page."
+            },
+            "offset": {
+              "default": 0,
+              "type": "integer",
+              "description": "Pagination - Offset of first record of paginated response."
+            },
+            "sort": {
+              "default": "-updated",
+              "type": "string",
+              "description": "Attribute sorting. Use `-` prefix to sort in descending order."
+            },
+            "system_uuid": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter based on Systems Inventory UUID."
+            }
+          },
+          "required": [
+            "cve"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__get_system_cves",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "system_uuid": {
+              "format": "uuid",
+              "type": "string",
+              "description": "Systems Inventory UUID. Example : 123e4567-e89b-12d3-a456-426614174000 (Required)"
+            },
+            "filter_": {
+              "default": "",
+              "type": "string",
+              "description": "Full text filter for the CVE name."
+            },
+            "limit": {
+              "default": 10,
+              "type": "integer",
+              "description": "Pagination - Maximum number of records per page."
+            },
+            "offset": {
+              "default": 0,
+              "type": "integer",
+              "description": "Pagination - Offset of first record of paginated response."
+            },
+            "sort": {
+              "default": "-public_date",
+              "type": "string",
+              "description": "Attribute sorting. Use `-` prefix to sort in descending order."
+            }
+          },
+          "required": [
+            "system_uuid"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__get_systems",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "filter_": {
+              "default": "",
+              "type": "string",
+              "description": "Full text filter for the display name of system."
+            },
+            "limit": {
+              "default": 10,
+              "type": "integer",
+              "description": "Pagination - Maximum number of records per page."
+            },
+            "offset": {
+              "default": 0,
+              "type": "integer",
+              "description": "Pagination - Offset of first record of paginated response."
+            },
+            "sort": {
+              "default": "-updated",
+              "type": "string",
+              "description": "Attribute sorting. Use `-` prefix to sort in descending order."
+            },
+            "group_names": {
+              "default": "",
+              "type": "string",
+              "description": "Filter based on workspace names. Comma separated list of workspace names."
+            },
+            "rhel_versions": {
+              "default": "",
+              "type": "string",
+              "description": "Filter based on RHEL versions. Comma separated list of RHEL versions."
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "vulnerability__explain_cves",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "cves": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "CVE identifiers. Example: CVE-2016-0800,CVE-2016-0801"
+            },
+            "system_uuid": {
+              "format": "uuid",
+              "type": "string",
+              "description": "System UUID. Example: 123e4567-e89b-12d3-a456-426614174000"
+            }
+          },
+          "required": [
+            "cves",
+            "system_uuid"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "remediations__create_vuln_playbook",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "playbook_name": {
+              "type": "string",
+              "description": "Name of the playbook. Example: \"Remediation Playbook\""
+            },
+            "cves": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "CVE identifiers. Example: [\"CVE-2016-0800\", \"CVE-2016-0801\"]"
+            },
+            "uuids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Systems Inventory UUIDs. Example: [123e4567-e89b-12d3-a456-426614174000]"
+            }
+          },
+          "required": [
+            "playbook_name",
+            "cves",
+            "uuids"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_active_rules",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "impacting": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": true,
+              "description": "Only show recommendations currently impacting systems."
+            },
+            "incident": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Only show recommendations that cause incidents."
+            },
+            "has_automatic_remediation": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Only show recommendations that have a playbook for automatic remediation."
+            },
+            "impact": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Impact level filter as comma-separated string, Example: '1,2,3'. Accepted values: 1 (Low), 2 (Medium), 3 (High), 4 (Critical). Use only these exact values: 1, 2, 3, or 4."
+            },
+            "likelihood": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Likelihood level filter as comma-separated string, Example: '1,2,3'. Accepted values: 1 (Low), 2 (Medium), 3 (High), 4 (Very High). Use only these exact values: 1, 2, 3, or 4."
+            },
+            "category": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Recommendation category filter as comma-separated string, Example: '1,2,3'. Accepted values: 1 (Availability), 2 (Security), 3 (Stability), 4 (Performance). "
+            },
+            "reboot": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter recommendations that require a reboot to fix."
+            },
+            "sort": {
+              "default": "-total_risk",
+              "description": "Sort field as comma-separated string. Example: '-total_risk,rule_id'. Available fields: category, description, impact, impacted_count, likelihood, playbook_count, publish_date, resolution_risk, rule_id, total_risk. Use '-' prefix for descending order.",
+              "type": "string"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Pagination offset to skip specified number of results. Used with limit.",
+              "type": "integer"
+            },
+            "limit": {
+              "default": 10,
+              "description": "Pagination: Maximum number of results per page.",
+              "type": "integer"
+            },
+            "groups": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter based on workspace names. Comma separated list of workspace names.Used only when impacting=True. Example: 'workspace1,workspace2'"
+            },
+            "tags": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter based on system tags. Accepts a single tag or a comma-separated list.Used only when impacting=True. Tag format: 'namespace/key=value'. Example: 'satellite/group=database-servers,insights-client/security=strict'"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_rule_from_node_id",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "node_id": {
+              "description": "Node ID of the knowledge base article or solution. Example: 123456",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "node_id"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_rule_details",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rule_id": {
+              "description": "Recommendation identifier in format: rule_name|ERROR_KEY.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "rule_id"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_hosts_hitting_a_rule",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rule_id": {
+              "description": "Recommendation identifier in format: rule_name|ERROR_KEY.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "rule_id"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_hosts_details_for_rule",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rule_id": {
+              "description": "Recommendation identifier in format: rule_name|ERROR_KEY.",
+              "type": "string"
+            },
+            "limit": {
+              "default": 10,
+              "description": "Pagination: Maximum number of results per page.",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Pagination offset to skip specified number of results. Used with limit.",
+              "type": "integer"
+            },
+            "rhel_version": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter systems by RHEL version. Accepts a comma-separated string or a list. Allowed values: 6.0-6.10, 7.0-7.10, 8.0-8.10, 9.0-9.8, 10.0-10.2. Example: '9.3,9.4,9.5'"
+            }
+          },
+          "required": [
+            "rule_id"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_rule_by_text_search",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "description": "The text substring to search for. Example: 'xfs'",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "advisor__get_recommendations_stats",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "groups": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter based on workspace names. Comma separated list of workspace names.Used only when impacting=True. Example: 'workspace1,workspace2'"
+            },
+            "tags": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter based on system tags. Accepts a single tag or a comma-separated list.Used only when impacting=True. Tag format: 'namespace/key=value'. Example: 'satellite/group=database-servers,insights-client/security=strict'"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "inventory__load_inventory_dashboard",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "hostname_or_id": {
+              "default": "",
+              "description": "Filter by display_name, fqdn, or id.",
+              "type": "string"
+            },
+            "display_name": {
+              "default": "",
+              "description": "Filter by display name.",
+              "type": "string"
+            },
+            "fqdn": {
+              "default": "",
+              "description": "Filter by FQDN.",
+              "type": "string"
+            },
+            "tags": {
+              "default": "",
+              "description": "Filter by tags.",
+              "type": "string"
+            },
+            "staleness": {
+              "default": "",
+              "description": "Filter by staleness status.",
+              "type": "string"
+            },
+            "registered_with": {
+              "default": "",
+              "description": "Filter by reporter.",
+              "type": "string"
+            },
+            "provider_type": {
+              "default": "",
+              "description": "Filter by provider type (aws, azure, gcp).",
+              "type": "string"
+            },
+            "per_page": {
+              "default": 10,
+              "description": "Number of hosts per page.",
+              "type": "integer"
+            },
+            "page": {
+              "default": 1,
+              "description": "Page number.",
+              "type": "integer"
+            },
+            "order_by": {
+              "default": "",
+              "description": "Sort field (display_name, updated, created).",
+              "type": "string"
+            },
+            "order_how": {
+              "default": "ASC",
+              "description": "Sort direction (ASC or DESC).",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "inventory__list_hosts",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "hostname_or_id": {
+              "default": "",
+              "description": "Filter by display_name, fqdn, or id (case-insensitive).",
+              "type": "string"
+            },
+            "display_name": {
+              "default": "",
+              "description": "Filter by display name (case-insensitive).",
+              "type": "string"
+            },
+            "fqdn": {
+              "default": "",
+              "description": "Filter by FQDN (case-insensitive).",
+              "type": "string"
+            },
+            "tags": {
+              "default": "",
+              "description": "Filter by tags (e.g., 'ns1/key1=val1,ns2/key2=val2').",
+              "type": "string"
+            },
+            "staleness": {
+              "default": "",
+              "description": "Filter by staleness status (one of 'fresh', 'stale', 'stale_warning', 'unknown').",
+              "type": "string"
+            },
+            "registered_with": {
+              "default": "",
+              "description": "Filter by reporter that registered the host.",
+              "type": "string"
+            },
+            "provider_type": {
+              "default": "",
+              "description": "Filter by provider type (e.g., 'aws', 'azure', 'gcp').",
+              "type": "string"
+            },
+            "updated_start": {
+              "default": "",
+              "description": "Filter hosts updated after this timestamp (RFC3339).",
+              "type": "string"
+            },
+            "updated_end": {
+              "default": "",
+              "description": "Filter hosts updated before this timestamp (RFC3339).",
+              "type": "string"
+            },
+            "per_page": {
+              "default": 10,
+              "description": "Number of hosts to return per page **ALWAYS use the default value of 10 for the first call.** This default is carefully chosen for performance and context management. Only increase this value if the user explicitly asks to see more systems at once ",
+              "type": "integer"
+            },
+            "page": {
+              "default": 1,
+              "description": "Page number to return.",
+              "type": "integer"
+            },
+            "order_by": {
+              "default": "",
+              "description": "Field to sort by ('display_name', 'updated', 'created').",
+              "type": "string"
+            },
+            "order_how": {
+              "default": "ASC",
+              "description": "Sort direction ('ASC' or 'DESC').",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "inventory__get_host_details",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "host_ids": {
+              "type": "string",
+              "description": "Comma-separated list of host IDs (UUIDs) to retrieve."
+            }
+          },
+          "required": [
+            "host_ids"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "inventory__get_host_system_profile",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "host_ids": {
+              "default": "",
+              "description": "Comma-separated list of host IDs (UUIDs) to get system profiles for. ALWAYS supply one or two UUIDs at a time! Expect really large responses which will overload your context.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "inventory__get_host_tags",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "host_ids": {
+              "type": "string",
+              "description": "Comma-separated list of host IDs (UUIDs) to get tags for."
+            }
+          },
+          "required": [
+            "host_ids"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "inventory__find_host_by_name",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "hostname": {
+              "type": "string",
+              "description": "The hostname or display name to search for."
+            }
+          },
+          "required": [
+            "hostname"
+          ],
+          "type": "object"
+        }
+      },
+      {
+        "name": "content-sources__list_repositories",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Filter by enabled status (True/False)."
+            },
+            "limit": {
+              "default": 10,
+              "description": "Maximum number of repositories to return (default: 10).",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Number of repositories to skip for pagination (default: 0).",
+              "type": "integer"
+            },
+            "name": {
+              "default": "",
+              "description": "Filter by repository name (case-insensitive).",
+              "type": "string"
+            },
+            "url": {
+              "default": "",
+              "description": "Filter by repository URL (case-insensitive).",
+              "type": "string"
+            },
+            "content_type": {
+              "default": "",
+              "description": "Filter by content type (e.g., 'rpm', 'ostree').",
+              "type": "string"
+            },
+            "origin": {
+              "default": "",
+              "description": "Filter by origin (e.g., 'red_hat', 'external').",
+              "type": "string"
+            },
+            "arch": {
+              "default": "",
+              "description": "Filter by architecture (e.g., 'x86_64', 'aarch64').",
+              "type": "string"
+            },
+            "version": {
+              "default": "",
+              "description": "Filter by version (e.g., '8', '9').",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "rbac__get_all_access",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "username": {
+              "default": "",
+              "description": "Optional username to filter access for specific user.",
+              "type": "string"
+            },
+            "limit": {
+              "default": 20,
+              "description": "Maximum number of access records to return (default: 20).",
+              "type": "integer"
+            },
+            "offset": {
+              "default": 0,
+              "description": "Number of access records to skip for pagination (default: 0).",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "planning__get_upcoming_changes",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      {
+        "name": "planning__get_appstreams_lifecycle",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "default": "raw",
+              "description": "Mode for Application Streams lifecycle: 'raw' (per-major) or 'streams' (cross-major overview).",
+              "type": "string"
+            },
+            "major": {
+              "default": "",
+              "description": "RHEL major version (e.g. '8', '9', '10'). Required when mode='raw'.",
+              "type": "string"
+            },
+            "name": {
+              "default": "",
+              "description": "Module or package technical name filter (e.g. 'aspnetcore-runtime-7.0', 'postgresql').",
+              "type": "string"
+            },
+            "application_stream_name": {
+              "default": "",
+              "description": "Human-friendly stream name (e.g. '.NET 7', 'PostgreSQL 16', '1.24').",
+              "type": "string"
+            },
+            "application_stream_type": {
+              "default": "",
+              "description": "Application stream type (e.g. \"module\" or \"package\").",
+              "type": "string"
+            },
+            "kind": {
+              "default": "",
+              "description": "Backend kind filter, e.g. \"dnf_module\" or \"package\".",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "planning__get_rhel_lifecycle",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      {
+        "name": "planning__get_relevant_upcoming",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "major": {
+              "default": "",
+              "description": "Restricts relevance evaluation to systems running this RHEL major version.",
+              "type": "string"
+            },
+            "minor": {
+              "default": "",
+              "description": "Used together with major to further restrict relevance evaluation to a specific minor version. Requires major to be specified.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "planning__get_relevant_appstreams",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "major": {
+              "default": "",
+              "description": "Restricts relevance evaluation to systems running this RHEL major version.",
+              "type": "string"
+            },
+            "minor": {
+              "default": "",
+              "description": "Used together with major to further restrict relevance evaluation to a specific minor version. Requires major to be specified.",
+              "type": "string"
+            },
+            "include_related": {
+              "default": true,
+              "description": "If true, returns streams currently used plus related/successor streams. If false, returns only streams currently used in inventory.",
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      },
+      {
+        "name": "planning__get_relevant_rhel_lifecycle",
+        "input_schema": {
+          "additionalProperties": false,
+          "properties": {
+            "major": {
+              "default": "",
+              "description": "Restricts relevance evaluation to systems running this RHEL major version.",
+              "type": "string"
+            },
+            "minor": {
+              "default": "",
+              "description": "Used together with major to further restrict relevance evaluation to a specific minor version. Requires major to be specified.",
+              "type": "string"
+            },
+            "include_related": {
+              "default": false,
+              "description": "When true, returns both RHEL versions observed in inventory and additional higher-minor or future versions of the same major that are still supported but not yet deployed (marked as related=true). When false, returns only RHEL versions actually observed in the requester's inventory.",
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      }
+    ]
+  },
+  "available_capabilities": {
+    "support_cve_search": {
+      "tool": "GetCasesByFilter",
+      "query_field": "input.keyword",
+      "limit_field": "input.maxResults",
+      "privacy_flags": {
+        "input.reducedInformation": true,
+        "input.includePrivate": false,
+        "input.includeSecureSupport": false,
+        "input.includeAllCustomerCases": false
+      },
+      "runtime": "verified_one_CVE_zero_matches"
+    },
+    "cve_affected_hosts": {
+      "tool": "vulnerability__get_cve_systems",
+      "runtime": "verified_one_CVE_zero_hosts"
+    },
+    "host_details": {
+      "tool": "inventory__get_host_details",
+      "runtime": "catalog_only_no_positive_hosts"
+    },
+    "system_profiles_and_installed_packages": {
+      "tool": "inventory__get_host_system_profile",
+      "runtime": "catalog_only_no_positive_hosts"
+    },
+    "customer_identity": "configured_connection_only_unverified_independently",
+    "active_host_uptime": "not_established_by_inventory_freshness"
+  }
+}

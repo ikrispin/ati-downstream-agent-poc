@@ -1,7 +1,7 @@
 import pytest
 
-from ati_downstream.models import InvestigationRequest
-from ati_downstream.sources import SourceTools
+from ati_lscore.models import InvestigationRequest
+from ati_lscore.sources import SourceTools
 
 
 @pytest.mark.parametrize(

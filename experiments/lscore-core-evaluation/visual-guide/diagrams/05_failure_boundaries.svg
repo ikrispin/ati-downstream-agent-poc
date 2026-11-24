@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="720" viewBox="0 0 1080 720">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4D5A68"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="310" y="15" width="460" height="85" rx="12" fill="#EAF2FC" stroke="#3E6A9C" stroke-width="2.5"/>
+<text x="540.0" y="53.95" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="600" fill="#17212B">Native LSCore execution</text>
+<text x="540.0" y="83.30000000000001" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">Model calls scheduling and retries</text>
+<polyline points="540,100 540,140 245,140 245,190" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrow)" />
+<polyline points="540,140 835,140 835,190" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrow)" />
+<rect x="30" y="190" width="430" height="90" rx="12" fill="#E8F5F1" stroke="#247565" stroke-width="2.5"/>
+<text x="245.0" y="231.45" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="600" fill="#17212B">ATI domain MCP call</text>
+<text x="245.0" y="260.8" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">One source read or finalization</text>
+<rect x="620" y="190" width="430" height="90" rx="12" fill="#EAF2FC" stroke="#3E6A9C" stroke-width="2.5"/>
+<text x="835.0" y="231.45" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="25" font-weight="600" fill="#17212B">OGX model inference</text>
+<text x="835.0" y="260.8" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">Provider SDK may retry</text>
+<rect x="660" y="330" width="350" height="75" rx="12" fill="#F3F5F7" stroke="#ACB7C3" stroke-width="2.5"/>
+<text x="835.0" y="377.7" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="600" fill="#17212B">Remote model provider</text>
+<polyline points="835,280 835,330" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrow)" />
+<rect x="30" y="350" width="430" height="95" rx="12" fill="#E8F5F1" stroke="#247565" stroke-width="2.5"/>
+<text x="245.0" y="379.34999999999997" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="600" fill="#17212B">Save source observation</text>
+<text x="245.0" y="408.45" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">Success or safe source failure</text>
+<text x="245.0" y="436.8" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">Earlier evidence remains available</text>
+<polyline points="245,280 245,350" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrow)" />
+<polyline points="1010,367 1070,367 1070,160 935,160 935,190" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" stroke-dasharray="9 7" marker-end="url(#arrow)" />
+<rect x="620" y="480" width="430" height="90" rx="12" fill="#EAF2FC" stroke="#3E6A9C" stroke-width="2.5"/>
+<text x="835.0" y="521.025" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="600" fill="#17212B">Native answer or HTTP error</text>
+<text x="835.0" y="550.125" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">Transport status is separate</text>
+<polyline points="620,235 550,235 550,525 620,525" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrow)" />
+<rect x="30" y="525" width="430" height="95" rx="12" fill="#E8F5F1" stroke="#247565" stroke-width="2.5"/>
+<text x="245.0" y="568.525" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="600" fill="#17212B">Private domain record</text>
+<text x="245.0" y="597.625" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" font-weight="400" fill="#4D5A68">Finalized outcome or not_finalized</text>
+<polyline points="245,445 245,525" fill="none" stroke="#4D5A68" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrow)" />
+<text x="540" y="685.0" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="600" fill="#9A6A19">Client timeout does not guarantee native or remote cancellation</text>
+</svg>

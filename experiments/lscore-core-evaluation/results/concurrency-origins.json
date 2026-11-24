@@ -1,0 +1,222 @@
+{
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "tested_workload": "Two independent calls to the SAME read_sample MCP tool with different arguments A and B; no different-tool-name timing experiment was run.",
+  "observed": {
+    "query": {
+      "marker": "probe-5518389264-e4-parallel-query",
+      "http_status": 200,
+      "elapsed_seconds": 1.7201,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-parallel-query. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33329.804735328,
+          "end": 33330.505304027,
+          "duration_seconds": 0.7006,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33330.513415364,
+          "end": 33331.214102201,
+          "duration_seconds": 0.7007,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33331.23099754,
+          "end": 33331.231102459,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e4-parallel-query\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e4-parallel-query\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e4-parallel-query\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "streaming_query": {
+      "marker": "probe-5518389264-e4-parallel-stream",
+      "http_status": 200,
+      "elapsed_seconds": 1.7182,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-parallel-stream. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33331.535747615,
+          "end": 33332.237449119,
+          "duration_seconds": 0.7017,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33332.248058661,
+          "end": 33332.948765531,
+          "duration_seconds": 0.7007,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33332.974751685,
+          "end": 33332.974852651,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": []
+    },
+    "concurrent_request_a": {
+      "marker": "probe-5518389264-e4-concurrent-a",
+      "http_status": 200,
+      "elapsed_seconds": 1.684,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-concurrent-a. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33333.220037221,
+          "end": 33333.921075456,
+          "duration_seconds": 0.701,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33333.931602952,
+          "end": 33334.632756934,
+          "duration_seconds": 0.7012,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33334.654898224,
+          "end": 33334.654947591,
+          "duration_seconds": 0.0,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-a\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-a\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e4-concurrent-a\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "concurrent_request_b": {
+      "marker": "probe-5518389264-e4-concurrent-b",
+      "http_status": 200,
+      "elapsed_seconds": 1.7841,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-concurrent-b. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33333.282527868,
+          "end": 33333.982819235,
+          "duration_seconds": 0.7003,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33333.993821447,
+          "end": 33334.694578341,
+          "duration_seconds": 0.7008,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33334.713066537,
+          "end": 33334.713120041,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-b\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-b\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e4-concurrent-b\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "cross_request_tools_overlap": true
+  },
+  "cause": {
+    "within_request": {
+      "source": "experiments/lscore-core-evaluation/.local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/streaming.py",
+      "line": 1488,
+      "execution_line": 1546,
+      "verified_code_behavior": "for each MCP/built-in call, fully await execute_tool_call before moving to the next call. No concurrent task group is created in this scheduler."
+    },
+    "both_modes": {
+      "source": "experiments/lscore-core-evaluation/.local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/openai_responses.py",
+      "line": 978,
+      "verified_code_behavior": "Streaming mode returns _create_streaming_response generator; non-streaming mode consumes same generator. Thus both use same scheduler."
+    },
+    "across_requests": "Async tool I/O yields control so the service may advance another independent request while the first awaits a tool. Observed overlapping wall-clock intervals, not a CPU-parallelism measurement."
+  },
+  "classification": "Automatic concurrent scheduling of multiple independent MCP calls from one model turn is absent in this pinned path. This is not a claim that all tools, all LSCore backends, or an MCP tool internal implementation cannot use concurrency.",
+  "options": [
+    "A backend scheduler change could run independent calls concurrently with bounded concurrency and preserve call-to-result mapping/cancellation. This requires upstream work or a supported alternate backend; no documented switch was found here.",
+    "A batch MCP tool could perform its own independent lookups concurrently; that is tool implementation concurrency, not demonstrated LSCore scheduling."
+  ]
+}
