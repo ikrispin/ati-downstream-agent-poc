@@ -1,0 +1,102 @@
+{
+  "baseline": "config/lscore-fixture.yaml",
+  "notation": "JSON Pointer paths. Replace <evaluation-directory> with this experiment directory. Set each pointer in a copy of the baseline. State paths isolate instances.",
+  "variants": {
+    "extensions.yaml": {
+      "original_sha256": "7890aa0a99be7c48c09e12b323b6c4cb53fac2984377d6976ad9794fec71aee6",
+      "overrides": {
+        "/service/port": 8144,
+        "/service/base_url": "http://127.0.0.1:8144",
+        "/database/sqlite/db_path": "<evaluation-directory>/.local/state-extensions/service.sqlite",
+        "/conversation_cache/sqlite/db_path": "<evaluation-directory>/.local/state-extensions/conversations.sqlite",
+        "/a2a_state/sqlite/db_path": "<evaluation-directory>/.local/state-extensions/a2a.sqlite",
+        "/agent_step_persistence/sqlite/db_path": "<evaluation-directory>/.local/state-extensions/agent-steps.sqlite",
+        "/customization/profile_path": "<evaluation-directory>/variants/profile.py",
+        "/ogx/config/native_override/providers/files": [
+          {
+            "provider_id": "local-files",
+            "provider_type": "inline::localfs",
+            "config": {
+              "metadata_store": {
+                "table_name": "files_metadata",
+                "backend": "sql_default"
+              },
+              "storage_dir": "<evaluation-directory>/.local/state-extensions/files"
+            }
+          }
+        ],
+        "/ogx/config/native_override/storage/backends/kv_default/db_path": "<evaluation-directory>/.local/state-extensions/ogx-kv.sqlite",
+        "/ogx/config/native_override/storage/backends/sql_default/db_path": "<evaluation-directory>/.local/state-extensions/ogx.sqlite",
+        "/skills": {
+          "paths": [
+            "<evaluation-directory>/variants/skills"
+          ]
+        }
+      }
+    },
+    "limits.yaml": {
+      "original_sha256": "cef2764d4df31e4c914481a7f7f143186300782594670b8453bf4a59e8de42f6",
+      "overrides": {
+        "/service/port": 8143,
+        "/service/base_url": "http://127.0.0.1:8143",
+        "/database/sqlite/db_path": "<evaluation-directory>/.local/state-limits/service.sqlite",
+        "/conversation_cache/sqlite/db_path": "<evaluation-directory>/.local/state-limits/conversations.sqlite",
+        "/a2a_state/sqlite/db_path": "<evaluation-directory>/.local/state-limits/a2a.sqlite",
+        "/agent_step_persistence/sqlite/db_path": "<evaluation-directory>/.local/state-limits/agent-steps.sqlite",
+        "/inference/max_infer_iters": 10,
+        "/inference/max_tool_calls": 2,
+        "/ogx/config/native_override/providers/files": [
+          {
+            "provider_id": "local-files",
+            "provider_type": "inline::localfs",
+            "config": {
+              "metadata_store": {
+                "table_name": "files_metadata",
+                "backend": "sql_default"
+              },
+              "storage_dir": "<evaluation-directory>/.local/state-limits/files"
+            }
+          }
+        ],
+        "/ogx/config/native_override/storage/backends/kv_default/db_path": "<evaluation-directory>/.local/state-limits/ogx-kv.sqlite",
+        "/ogx/config/native_override/storage/backends/sql_default/db_path": "<evaluation-directory>/.local/state-limits/ogx.sqlite"
+      }
+    },
+    "mcp-unavailable.yaml": {
+      "original_sha256": "ad641ff147cf64534a1adb82eb206ea76df66ee5a57bd1f9e145f6a9e1aaa7aa",
+      "overrides": {
+        "/service/port": 8143,
+        "/service/base_url": "http://127.0.0.1:8143",
+        "/database/sqlite/db_path": "<evaluation-directory>/.local/state-limits/service.sqlite",
+        "/conversation_cache/sqlite/db_path": "<evaluation-directory>/.local/state-limits/conversations.sqlite",
+        "/a2a_state/sqlite/db_path": "<evaluation-directory>/.local/state-limits/a2a.sqlite",
+        "/agent_step_persistence/sqlite/db_path": "<evaluation-directory>/.local/state-limits/agent-steps.sqlite",
+        "/inference/max_infer_iters": 10,
+        "/inference/max_tool_calls": 2,
+        "/mcp_servers": [
+          {
+            "name": "neutral-tools",
+            "url": "http://127.0.0.1:18149/mcp",
+            "require_approval": "never",
+            "timeout": 1
+          }
+        ],
+        "/ogx/config/native_override/providers/files": [
+          {
+            "provider_id": "local-files",
+            "provider_type": "inline::localfs",
+            "config": {
+              "metadata_store": {
+                "table_name": "files_metadata",
+                "backend": "sql_default"
+              },
+              "storage_dir": "<evaluation-directory>/.local/state-limits/files"
+            }
+          }
+        ],
+        "/ogx/config/native_override/storage/backends/kv_default/db_path": "<evaluation-directory>/.local/state-limits/ogx-kv.sqlite",
+        "/ogx/config/native_override/storage/backends/sql_default/db_path": "<evaluation-directory>/.local/state-limits/ogx.sqlite"
+      }
+    }
+  }
+}

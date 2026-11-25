@@ -1,0 +1,82 @@
+{
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "model": "deterministic synthetic model fixture; final partial wording comes from fixture, not enforced LSCore schema",
+  "tool_limit": {
+    "classification": "Direct configuration; runtime verified for MCP calls within this OGX request",
+    "private_config": ".local/limits.yaml",
+    "baseline_config": "config/lscore-fixture.yaml",
+    "config_changes": {
+      "service.port": 8143,
+      "service.base_url": "http://127.0.0.1:8143",
+      "state_directory": ".local/state-limits",
+      "inference.max_infer_iters": 10,
+      "inference.max_tool_calls": 2
+    },
+    "config_sha256": "cef2764d4df31e4c914481a7f7f143186300782594670b8453bf4a59e8de42f6",
+    "request": {
+      "query": "Read samples A and B then calculate their total. [fixture:normal] [request:e5-tool-limit-two]",
+      "generate_topic_summary": false
+    },
+    "http_status": 200,
+    "elapsed_seconds": 0.531045013005496,
+    "actual_mcp_executions": [
+      {
+        "tool": "read_sample",
+        "sample_id": "A"
+      },
+      {
+        "tool": "read_sample",
+        "sample_id": "B"
+      }
+    ],
+    "actual_mcp_execution_count": 2,
+    "model_request_count": 4,
+    "third_tool_prevented": true,
+    "third_tool": "calculate_total",
+    "observed_skip_message": "Tool call skipped: maximum tool calls limit (2) reached.",
+    "final_response": "PARTIAL: successful samples={\"A\": 4, \"B\": 7}; a tool failed; missing sample unavailable; total unverified. request=e5-tool-limit-two. OUTPUT_MARKER=BASELINE",
+    "limitation": "Skipped calculate_total attempt and limit message are absent from returned tool_calls/tool_results; available in model wire transcript. This does not establish an aggregate budget across outer Pydantic AI/skill rounds.",
+    "evidence": [
+      ".local/evidence/e5-tool-limit-http.json",
+      ".local/evidence/e5-tool-limit-model-calls.json",
+      ".local/evidence/e5-tool-limit-tool-calls.json",
+      ".local/evidence/e5-tool-limit-startup.log"
+    ]
+  },
+  "unavailable_mcp": {
+    "private_config": ".local/mcp-unavailable.yaml",
+    "additional_config_change": {
+      "mcp_servers[0].url": "http://127.0.0.1:18149/mcp"
+    },
+    "config_sha256": "ad641ff147cf64534a1adb82eb206ea76df66ee5a57bd1f9e145f6a9e1aaa7aa",
+    "service_started": true,
+    "readiness_status": 200,
+    "http_status": 500,
+    "elapsed_seconds": 1.0688110280025285,
+    "request": {
+      "query": "Read A and B then calculate total. [fixture:normal] [request:e7-mcp-unavailable]",
+      "generate_topic_summary": false
+    },
+    "response": {
+      "detail": {
+        "response": "Internal server error",
+        "cause": "An unexpected error occurred while processing the request."
+      }
+    },
+    "model_request_count": 0,
+    "server_exception": "ConnectionError: Failed to connect to MCP server at http://127.0.0.1:18149/mcp: Connection refused",
+    "classification": "Request-time error; startup and readiness do not validate MCP reachability",
+    "evidence": [
+      ".local/evidence/e7-mcp-unavailable-http.json",
+      ".local/evidence/e7-mcp-unavailable-model-calls.json",
+      ".local/evidence/e7-mcp-unavailable-startup.log"
+    ]
+  },
+  "all_assertions_passed": true,
+  "upstream_patched": false,
+  "reproduction_startup": "From experiment directory: .local/upstream/.venv/bin/lightspeed-stack -c .local/limits.yaml --synthesized-config-output .local/evidence/synthesized-limits-ogx.yaml",
+  "source_evidence": [
+    "src/utils/responses.py:464-465 forwards limits",
+    "ogx/providers/inline/responses/builtin/responses/streaming.py:1489-1502 enforces accumulated MCP/built-in tool limit"
+  ]
+}

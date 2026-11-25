@@ -1,0 +1,47 @@
+{
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "runtime_environment": "../.local/upstream/.venv",
+  "runtime_command": "cd experiments/lscore-core-evaluation/.local/upstream && PYTHONPATH=src .venv/bin/python ../../variants/probe_extensions.py",
+  "config_probe_evidence": "config-probe-results.json",
+  "http_extension_evidence": "http-extension-results.json",
+  "findings": [
+    {
+      "capability": "Inline and file-backed system prompts",
+      "classification": "Supported extension",
+      "observed": "Customization accepts inline system_prompt; provided inline variant is loaded verbatim. Full LSCore HTTP request returned total 11 and the inline output marker with the deterministic model fixture.",
+      "sources": ["src/models/config.py:2052", "src/utils/prompts.py:10"]
+    },
+    {
+      "capability": "Python PROFILE_CONFIG prompt profile",
+      "classification": "Supported extension",
+      "observed": "The configured Python module imports and loads system_prompts.default and topic_summary. Full LSCore HTTP request returned total 11 and the profile output marker with the deterministic model fixture. CustomProfile exposes only path and prompts. This is prompt loading, not per-step Python execution.",
+      "sources": ["src/models/config.py:2001", "src/models/config.py:2021", "src/utils/prompts.py:66", "src/utils/prompts.py:95"]
+    },
+    {
+      "capability": "Skill discovery, instruction loading, reference loading",
+      "classification": "Supported extension",
+      "observed": "Configured neutral-assessment discovered at runtime. Full LSCore HTTP request successfully invoked list_skills, load_skill, and read_skill_resource; final output contained the expected marker and resource-only token. This proves skill loading and transmission, not real-model compliance with the instructions.",
+      "sources": ["src/utils/pydantic_ai_helpers.py:46", "docs/user_doc/skills_guide.md:244"],
+      "limitation": "Pinned docs call two tools activate_skill and load_skill_resource; installed locked pydantic-ai-skills 1.4.0 exposes load_skill and read_skill_resource instead."
+    },
+    {
+      "capability": "Arbitrary deterministic Python branching between model/tool steps via documented LSCore extension",
+      "classification": "Unsupported through the inspected documented configuration",
+      "observed": "No registration mechanism found. Customization rejects after_tool_result, capabilities, and agent_factory as unknown fields. Profile loader copies system_prompts only; extra PROFILE_CONFIG callback is not exposed. Agent construction selects a fixed capability set. This does not prove no possible library embedding; embedding a different Agent or monkeypatching LSCore is outside this experiment.",
+      "sources": ["src/models/config.py:2021", "src/models/config.py:2039", "src/models/config.py:3831", "src/utils/pydantic_ai_helpers.py:202", "src/utils/pydantic_ai_helpers.py:299"],
+      "follow_up": "Ask LSCore maintainers whether a supported custom capability or per-step callback registration exists outside the inspected guide/configuration."
+    },
+    {
+      "capability": "Skill Python script execution",
+      "classification": "Unsupported",
+      "observed": "run_skill_script explicitly excluded in LSCore helper and absent from runtime skill tools. Skill scripts cannot provide the required loop callback.",
+      "sources": ["src/utils/pydantic_ai_helpers.py:60", "docs/user_doc/skills_guide.md:275"]
+    }
+  ],
+  "scope_limits": [
+    "No upstream source patched or monkeypatched.",
+    "Direct capability invocation proves loading only, not real-model instruction compliance.",
+    "Built-in shields support specific safety checks but do not expose an arbitrary Python branching entry point.",
+    "Underlying Pydantic AI supports capabilities; that alone does not establish LSCore supports registering application-defined ones."
+  ]
+}

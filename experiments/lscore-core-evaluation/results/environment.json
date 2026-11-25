@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-11-24T10:26:25.821824+00:00",
+  "captured_at_local": "2026-11-24T12:26:25.821824+02:00",
+  "scope": "Read-only environment and SQLite row-count receipt; no credentials or row contents included.",
+  "source": {
+    "repository": "https://github.com/lightspeed-core/lightspeed-stack",
+    "revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+    "git_status_porcelain": [],
+    "working_tree_clean": true,
+    "providers_revision": "28a4c5106905e67b5c0971f030e70cc3e04a88eb",
+    "providers_git_status_porcelain": [],
+    "providers_working_tree_clean": true,
+    "submodule_status": [
+      "28a4c5106905e67b5c0971f030e70cc3e04a88eb providers (0.4.1-311-g28a4c51)"
+    ],
+    "source_file_sha256": [
+      {
+        "path": "pyproject.toml",
+        "sha256": "cd4227af2b3ae2e7553dff1bafd623e3e557497ccc83b4f6cd9e399392bbef54",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "uv.lock",
+        "sha256": "dfbf413cee295b698ac0c3bc479b704c882361175c6fb6c11dc1221cc03b2f47",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/version.py",
+        "sha256": "2ce0e8a7cbdd86118d9447fa45973d52c5c9fe454bb62567de7e63fe6d31dd0d",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/models/config.py",
+        "sha256": "898b6ef4ebd1ad5042a6352f53106736ca1666dfd9da94e54a844153f42d79a5",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/utils/pydantic_ai_helpers.py",
+        "sha256": "57d4d390249136163cc052a25c74c83d2570d5f7909892e113deeb059901b162",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/utils/agents/query.py",
+        "sha256": "de568faee1bbc2ae51f7bbb4dec97578ecdd41a6d6ca7feb5483a57fc347f885",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/utils/agents/error_handler.py",
+        "sha256": "a94580cbd0948d20baa6537bae2edf0d3fbc4695e0664f9523c579347fe68f41",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/utils/prompts.py",
+        "sha256": "fc9f1046ae519b80dcc478a5d158e2da5de140549c67d6002ad1fcf6ed16a8c7",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/app/endpoints/a2a.py",
+        "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/a2a_storage/storage_factory.py",
+        "sha256": "3e2390f56994ab79dfab8a2817c0f292b80c9656365ea4b72f34efc305dbd2ae",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/conversations/agent_history/service.py",
+        "sha256": "b23fa1211d1904afe80ed9a3b96d8e9cef0cd1c7332a50157f56ad6d3b570e21",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/conversations/agent_history/history.py",
+        "sha256": "9325ffb75544b6e65136fe013dad2d07ac5fa49674faa4ae961d3238f83e23fe",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/conversations/run_context.py",
+        "sha256": "fdb8158d46e7e7b8862eed2b1f3ebb3cedb5a1b5df66296aead799627c56f516",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "src/utils/stream_interrupts.py",
+        "sha256": "e4374cff2a9f721dd1185aad45eb14d4155c16f7184c0b0a89a00513da234ab6",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "docs/user_doc/deployment_guide.md",
+        "sha256": "69f70b76db4a64d5c7668136120f21b0fa6b92713bc7af15a8bb969823d53f9a",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "docs/user_doc/skills_guide.md",
+        "sha256": "fe305564a0d447d4530e50ad7d6fd26b0278ff3bda4eb77163a529c59f70ff9b",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "docs/user_doc/a2a_protocol.md",
+        "sha256": "7149d7eef4fcd4a827ebf5ccda566281555001da8ee75f37d88437cc2b42c0bc",
+        "matches_research_baseline": true
+      },
+      {
+        "path": "docs/design/inference-backend-migration/pai-tools-mcp-filesearch-summary.md",
+        "sha256": "330bfb0b5215683145ec59e6a3d1762dbc09db2607ace3994df40c657c90ba83",
+        "matches_research_baseline": true
+      }
+    ]
+  },
+  "runtime": {
+    "python": "3.12.16",
+    "python_implementation": "CPython",
+    "python_executable": ".local/upstream/.venv/bin/python",
+    "operating_system": "Linux",
+    "kernel_release": "7.2.11-200.fc44.x86_64",
+    "machine": "x86_64",
+    "uv": "uv 0.12.24 (x86_64-unknown-linux-gnu)",
+    "installed_distribution_count": 320,
+    "distribution_count_method": "len(list(importlib.metadata.distributions())) in the isolated LSCore virtual environment; includes lightspeed-stack.",
+    "installed_distribution_inventory_sha256": "3b38ca1a3a399f12404be9d45d31fbf19eabb3969fb8eeb80d9b2ed75aff0f88",
+    "selected_installed_versions": {
+      "lightspeed-stack": "0.8.0rc1",
+      "a2a-sdk": "0.3.26",
+      "aiosqlite": "0.22.1",
+      "asyncpg": "0.32.0",
+      "fastapi": "0.165.0",
+      "httpx": "0.28.1",
+      "mcp": "1.30.0",
+      "ogx": "1.2.5",
+      "ogx-api": "1.2.5",
+      "ogx-client": "1.2.5",
+      "openai": "3.57.0",
+      "pydantic-ai": "2.38.0",
+      "pydantic-ai-harness": "0.30.0",
+      "pydantic-ai-skills": "1.4.0",
+      "pydantic-ai-slim": "2.38.0",
+      "sqlalchemy": "2.1.9",
+      "torch": "2.11.0+cpu",
+      "transformers": "5.24.0",
+      "uvicorn": "0.54.0"
+    },
+    "venv_allocated_kib": 2516616,
+    "venv_allocated_bytes": 2577014784,
+    "venv_size_method": "du -sk .local/upstream/.venv; allocated storage, including dependencies."
+  },
+  "configuration_sha256": [
+    {
+      "path": "config/lscore-fixture.yaml",
+      "sha256": "ff4d4ed2ebdd3980f45ea947dbe5b7d709770b28004140f3be46e7a62a7bc5d3"
+    },
+    {
+      "path": ".local/config-real.yaml",
+      "sha256": "57a086254d9bd9be0e806063d3fda03941c550a2caf89fddde19065af67483ad"
+    },
+    {
+      "path": ".local/extensions.yaml",
+      "sha256": "7890aa0a99be7c48c09e12b323b6c4cb53fac2984377d6976ad9794fec71aee6"
+    },
+    {
+      "path": ".local/limits.yaml",
+      "sha256": "cef2764d4df31e4c914481a7f7f143186300782594670b8453bf4a59e8de42f6"
+    },
+    {
+      "path": ".local/mcp-unavailable.yaml",
+      "sha256": "ad641ff147cf64534a1adb82eb206ea76df66ee5a57bd1f9e145f6a9e1aaa7aa"
+    },
+    {
+      "path": ".local/synthesized-ogx-real.yaml",
+      "sha256": "e772e7dd8adb83fcaeca25ec2cdcb81c47267eb9cc6d5075a18dfac2ea88a625"
+    },
+    {
+      "path": ".local/evidence/e0-initial-config.yaml",
+      "sha256": "d0ea150b19e5a072cc211ff5d416fcd2435ccd0b23ebd99d7df3f2d47e826ca6"
+    }
+  ],
+  "sqlite": {
+    "inspection_method": "SQLite mode=ro connections; SELECT COUNT(*) for each table within a per-database read transaction. Snapshots taken while lab services may be running.",
+    "databases": [
+      {
+        "path": ".local/state/a2a.sqlite",
+        "table_row_counts": {
+          "a2a_contexts": 4,
+          "a2a_tasks": 4
+        }
+      },
+      {
+        "path": ".local/state/agent-steps.sqlite",
+        "table_row_counts": {
+          "events": 146,
+          "runs": 35,
+          "snapshot_idempotency_keys": 37,
+          "snapshots": 37,
+          "sqlite_sequence": 2,
+          "tool_effects": 0
+        }
+      },
+      {
+        "path": ".local/state/conversations.sqlite",
+        "table_row_counts": {
+          "cache": 27,
+          "conversation_summaries": 0,
+          "conversations": 25
+        }
+      },
+      {
+        "path": ".local/state/ogx-kv.sqlite",
+        "table_row_counts": {
+          "kvstore": 1
+        }
+      },
+      {
+        "path": ".local/state/ogx.sqlite",
+        "table_row_counts": {
+          "agent_responses": 39,
+          "connectors": 0,
+          "conversation_items": 216,
+          "conversation_messages": 31,
+          "default_memory_vector_stores": 0,
+          "inference_store": 129,
+          "memory_records": 0,
+          "openai_conversations": 33,
+          "openai_files": 0,
+          "prompts": 0
+        }
+      },
+      {
+        "path": ".local/state/service.sqlite",
+        "table_row_counts": {
+          "prompt": 0,
+          "prompt_version": 0,
+          "saved_prompt": 0,
+          "user_agentic_turn": 27,
+          "user_conversation": 25,
+          "user_turn": 27
+        }
+      },
+      {
+        "path": ".local/state-extensions/agent-steps.sqlite",
+        "table_row_counts": {
+          "events": 20,
+          "runs": 2,
+          "snapshot_idempotency_keys": 5,
+          "snapshots": 5,
+          "sqlite_sequence": 2,
+          "tool_effects": 3
+        }
+      },
+      {
+        "path": ".local/state-extensions/conversations.sqlite",
+        "table_row_counts": {
+          "cache": 2,
+          "conversation_summaries": 0,
+          "conversations": 2
+        }
+      },
+      {
+        "path": ".local/state-extensions/ogx-kv.sqlite",
+        "table_row_counts": {
+          "kvstore": 1
+        }
+      },
+      {
+        "path": ".local/state-extensions/ogx.sqlite",
+        "table_row_counts": {
+          "agent_responses": 5,
+          "connectors": 0,
+          "conversation_items": 18,
+          "conversation_messages": 2,
+          "default_memory_vector_stores": 0,
+          "inference_store": 8,
+          "memory_records": 0,
+          "openai_conversations": 2,
+          "openai_files": 0,
+          "prompts": 0
+        }
+      },
+      {
+        "path": ".local/state-extensions/service.sqlite",
+        "table_row_counts": {
+          "prompt": 0,
+          "prompt_version": 0,
+          "saved_prompt": 0,
+          "user_agentic_turn": 2,
+          "user_conversation": 2,
+          "user_turn": 2
+        }
+      },
+      {
+        "path": ".local/state-limits/agent-steps.sqlite",
+        "table_row_counts": {
+          "events": 8,
+          "runs": 2,
+          "snapshot_idempotency_keys": 1,
+          "snapshots": 1,
+          "sqlite_sequence": 2,
+          "tool_effects": 0
+        }
+      },
+      {
+        "path": ".local/state-limits/conversations.sqlite",
+        "table_row_counts": {
+          "cache": 1,
+          "conversation_summaries": 0,
+          "conversations": 1
+        }
+      },
+      {
+        "path": ".local/state-limits/ogx-kv.sqlite",
+        "table_row_counts": {
+          "kvstore": 1
+        }
+      },
+      {
+        "path": ".local/state-limits/ogx.sqlite",
+        "table_row_counts": {
+          "agent_responses": 2,
+          "connectors": 0,
+          "conversation_items": 5,
+          "conversation_messages": 1,
+          "default_memory_vector_stores": 0,
+          "inference_store": 4,
+          "memory_records": 0,
+          "openai_conversations": 2,
+          "openai_files": 0,
+          "prompts": 0
+        }
+      },
+      {
+        "path": ".local/state-limits/service.sqlite",
+        "table_row_counts": {
+          "prompt": 0,
+          "prompt_version": 0,
+          "saved_prompt": 0,
+          "user_agentic_turn": 1,
+          "user_conversation": 1,
+          "user_turn": 1
+        }
+      },
+      {
+        "path": ".local/state-real/agent-steps.sqlite",
+        "table_row_counts": {
+          "events": 8,
+          "runs": 2,
+          "snapshot_idempotency_keys": 2,
+          "snapshots": 2,
+          "sqlite_sequence": 2,
+          "tool_effects": 0
+        }
+      },
+      {
+        "path": ".local/state-real/conversations.sqlite",
+        "table_row_counts": {
+          "cache": 2,
+          "conversation_summaries": 0,
+          "conversations": 2
+        }
+      },
+      {
+        "path": ".local/state-real/ogx-kv.sqlite",
+        "table_row_counts": {
+          "kvstore": 1
+        }
+      },
+      {
+        "path": ".local/state-real/ogx.sqlite",
+        "table_row_counts": {
+          "agent_responses": 2,
+          "connectors": 0,
+          "conversation_items": 11,
+          "conversation_messages": 2,
+          "default_memory_vector_stores": 0,
+          "inference_store": 5,
+          "memory_records": 0,
+          "openai_conversations": 2,
+          "openai_files": 0,
+          "prompts": 0
+        }
+      },
+      {
+        "path": ".local/state-real/service.sqlite",
+        "table_row_counts": {
+          "prompt": 0,
+          "prompt_version": 0,
+          "saved_prompt": 0,
+          "user_agentic_turn": 2,
+          "user_conversation": 2,
+          "user_turn": 2
+        }
+      }
+    ],
+    "interpretation": "Rows show records exist at inspection time. This does not demonstrate restart recovery, interrupted-run resumption, or durable execution."
+  }
+}

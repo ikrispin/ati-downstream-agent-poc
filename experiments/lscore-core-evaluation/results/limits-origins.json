@@ -1,0 +1,537 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-11-24T12:28:49.678238+00:00",
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "scope": "Pinned-source trace plus existing E5 runtime logs; no additional model/network calls, service changes, patches, or long timeout waits.",
+  "observed": {
+    "iteration_exhaustion": {
+      "configuration": {
+        "max_infer_iters": 4,
+        "max_tool_calls": 6
+      },
+      "runs": [
+        {
+          "evidence_file": ".local/evidence/e5-loop.json",
+          "request_marker": "probe-5518389264-e5-loop",
+          "http_status": 500,
+          "elapsed_seconds": 0.4098,
+          "model_request_count": 8,
+          "tool_start_count": 8,
+          "model_log_lines": [
+            225,
+            227,
+            229,
+            231,
+            233,
+            235,
+            237,
+            239
+          ],
+          "tool_start_log_lines": [
+            182,
+            184,
+            186,
+            188,
+            190,
+            192,
+            194,
+            196
+          ],
+          "validation_feedback_first_model_request": 5,
+          "final_sse_error": null
+        },
+        {
+          "evidence_file": ".local/evidence/e5-loop-stream.json",
+          "request_marker": "probe-5518389264-e5-loop-stream",
+          "http_status": 200,
+          "elapsed_seconds": 0.4796,
+          "model_request_count": 8,
+          "tool_start_count": 8,
+          "model_log_lines": [
+            241,
+            243,
+            245,
+            247,
+            249,
+            251,
+            253,
+            255
+          ],
+          "tool_start_log_lines": [
+            198,
+            200,
+            202,
+            204,
+            206,
+            208,
+            210,
+            212
+          ],
+          "validation_feedback_first_model_request": 5,
+          "final_sse_error": {
+            "status_code": 500,
+            "response": "Internal server error",
+            "cause": "An unexpected error occurred while processing the request."
+          }
+        }
+      ],
+      "interpretation": "One endpoint call ran two OGX Responses backend invocations, each with four downstream model/tool rounds. PAI validation feedback appears at downstream request 5; final failure is output-retry exhaustion. Configured 4/6 did not act as aggregate model/tool caps."
+    },
+    "per_backend_tool_limit": {
+      "configuration": {
+        "max_infer_iters": 8,
+        "max_tool_calls": 2
+      },
+      "evidence_file": ".local/evidence/e5-tool-limit-http.json",
+      "http_status": 200,
+      "elapsed_seconds": 0.531045013005496,
+      "model_request_count": 4,
+      "tool_start_count": 2,
+      "executed_tools": [
+        "read_sample",
+        "read_sample"
+      ],
+      "last_tool_message": "Tool call skipped: maximum tool calls limit (2) reached.",
+      "interpretation": "A and B executed; calculate_total was skipped. The model fixture returned a partial summary, allowing this single backend response to terminate. This verifies per-response enforcement only."
+    },
+    "ignored_configured_mcp_timeout": {
+      "configuration_timeout_seconds": 1,
+      "evidence_file": ".local/evidence/e5-tool-timeout.json",
+      "http_status": 200,
+      "elapsed_seconds": 2.7181,
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "duration_seconds": 1.200392,
+          "status": "success",
+          "start_log_line": 176,
+          "end_log_line": 177
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "duration_seconds": 1.200408,
+          "status": "success",
+          "start_log_line": 178,
+          "end_log_line": 179
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "duration_seconds": 6.8e-05,
+          "status": "success",
+          "start_log_line": 180,
+          "end_log_line": 181
+        }
+      ],
+      "interpretation": "Both requested 1.2-second reads finished successfully despite timeout=1. No 30/300-second transport boundary was measured."
+    }
+  },
+  "source_findings": [
+    {
+      "id": "budget_scope",
+      "status": "source_verified_and_runtime_observed",
+      "finding": "LSCore forwards configured limits to each OGX response. A new response resets OGX inference/tool counters, and PAI can request another response for skills, function calls, or invalid/missing output.",
+      "references": [
+        "lscore_limits_forwarded",
+        "lscore_ogx_extra_body",
+        "lscore_query_run",
+        "lscore_stream_run",
+        "lscore_a2a_run",
+        "ogx_new_orchestrator",
+        "ogx_reset_tool_counter",
+        "ogx_reset_iteration",
+        "ogx_iteration_limit",
+        "pai_no_text_retry",
+        "pai_output_retry_stop"
+      ]
+    },
+    {
+      "id": "outer_budget_not_inner_budget",
+      "status": "source_verified",
+      "finding": "Adding only PAI UsageLimits would count calls to the OGX Responses model abstraction and PAI function tools. Native MCP operations and downstream model rounds execute inside OGX; a top-level cap alone cannot provide the requested true aggregate counts. Current tested paths do not pass UsageLimits at all; default PAI request_limit=50 counts backend requests and tool_calls_limit=None.",
+      "references": [
+        "pai_usage_fields",
+        "pai_default_usage",
+        "lscore_usage_helper",
+        "lscore_query_run",
+        "lscore_stream_run",
+        "lscore_a2a_run",
+        "ogx_new_orchestrator"
+      ]
+    },
+    {
+      "id": "tool_limit_scope",
+      "status": "source_verified_and_runtime_observed",
+      "finding": "OGX max_tool_calls limits built-in/MCP operations in one response, not tool discovery or each outer run. When reached it supplies a skipped-call message and lets inference continue; a final text answer avoids an outer output retry, explaining the successful cap=2 experiment.",
+      "references": [
+        "ogx_tool_limit",
+        "ogx_tool_counter_increment",
+        "ogx_reset_tool_counter"
+      ]
+    },
+    {
+      "id": "mcp_timeout_scope",
+      "status": "source_verified_and_partly_runtime_observed",
+      "finding": "mcp_servers.timeout=1 is reserved and dropped when LSCore constructs InputToolMCP. OGX supplies neither MCP session nor call timeout. Pinned SDK streamable transport defaults are 30-second connect/write/pool and 300-second read inactivity; no separate MCP RPC total deadline is configured. These defaults are source-derived and constructor-confirmed, not long-duration runtime results. An active stream can exceed an inactivity timeout.",
+      "references": [
+        "mcp_timeout_reserved",
+        "mcp_timeout_dropped",
+        "ogx_mcp_session_defaults",
+        "ogx_mcp_call_defaults",
+        "sdk_streamable_timeouts",
+        "sdk_session_timeout",
+        "sdk_call_timeout",
+        "sdk_rpc_deadline"
+      ]
+    },
+    {
+      "id": "ogx_timeout_modes",
+      "status": "source_verified_and_constructor_confirmed",
+      "finding": "ogx.timeout defaults to 180 seconds for remote OGX service HTTP operations. Library mode does not apply it: the PAI in-process transport uses timeout=None and directly awaits OGX handlers. Neither mode establishes a whole-agent wall-clock deadline.",
+      "references": [
+        "ogx_timeout_config",
+        "ogx_remote_timeout",
+        "ogx_library_loader",
+        "ogx_provider_library_timeout",
+        "ogx_library_dispatch",
+        "ogx_remote_provider",
+        "ogx_sdk_http_timeout"
+      ]
+    },
+    {
+      "id": "overall_deadline",
+      "status": "not_found_in_inspected_configured_paths",
+      "finding": "No aggregate wall-clock timeout is applied around query/stream/A2A agent runs in the inspected paths. HTTP read inactivity limits and the A2A 300-second chunk-idle guard should not be presented as an overall run deadline. Long-running boundary behavior remains unverified.",
+      "references": [
+        "lscore_query_run",
+        "lscore_stream_run",
+        "lscore_a2a_run",
+        "ogx_provider_library_timeout",
+        "a2a_stream_idle"
+      ]
+    },
+    {
+      "id": "cancellation_scope",
+      "status": "source_verified_runtime_interrupt_not_exercised",
+      "finding": "Streaming-query interruption cancels the owned local asyncio task and persists partial text; A2A task cancellation is explicitly unsupported. This source trace does not demonstrate that remote tool work is stopped or its side effects rolled back. The inspected SDK pending-request cleanup contains no outgoing cancelled notification.",
+      "references": [
+        "stream_interrupt",
+        "stream_interrupt_cancel",
+        "stream_interrupted_persistence",
+        "a2a_cancel_unsupported",
+        "sdk_rpc_cleanup"
+      ]
+    }
+  ],
+  "constructor_probe": {
+    "network_requests": 0,
+    "remote_ogx_sdk_http_timeout": "Timeout(timeout=180)",
+    "remote_pai_openai_timeout": "Timeout(timeout=180)",
+    "library_pai_openai_timeout": "Timeout(timeout=None)",
+    "library_pai_http_timeout": "Timeout(timeout=None)",
+    "pai_output_retries": 1,
+    "pai_default_request_limit": 50,
+    "pai_default_tool_calls_limit": null,
+    "mcp_session_read_timeout_seconds": null,
+    "mcp_call_read_timeout_seconds": null,
+    "mcp_legacy_transport_timeout_seconds": 30,
+    "mcp_legacy_transport_read_timeout_seconds": 300
+  },
+  "integration_implications": [
+    "Use counters shared across the entire agent request and pass remaining model/tool allowances into every backend continuation; account for actual downstream calls rather than only backend requests.",
+    "Stop/reclassify limit exhaustion explicitly instead of treating it as malformed output and retrying with fresh allowances.",
+    "Expose and enforce per-tool deadlines and an aggregate request deadline through supported configuration/extensions, then verify cancellation/cleanup without assuming remote side effects were undone.",
+    "Record this as a documented-extension gap for the pinned revision; no LSCore patch was made."
+  ],
+  "source_references": {
+    "lscore_config_limits": {
+      "path": ".local/upstream/src/models/config.py",
+      "start_line": 2182,
+      "end_line": 2199,
+      "sha256": "898b6ef4ebd1ad5042a6352f53106736ca1666dfd9da94e54a844153f42d79a5",
+      "fact": "Configuration exposes per-request inference iterations and per-response tool-call defaults; the experiment sets 4 and 6."
+    },
+    "lscore_limits_forwarded": {
+      "path": ".local/upstream/src/utils/responses.py",
+      "start_line": 454,
+      "end_line": 466,
+      "sha256": "d95051a8481fc4eba3fdc9b2c744477050d92ad42b7f1678791c2879ea16fa72",
+      "fact": "prepare_responses_params forwards configured max_infer_iters/max_tool_calls into ResponsesApiParams."
+    },
+    "lscore_ogx_extra_body": {
+      "path": ".local/upstream/src/pydantic_ai_lightspeed/ogx/_model.py",
+      "start_line": 65,
+      "end_line": 102,
+      "sha256": "f7c1ee0b0c2a84e3615e05a806997f37bcd219611ae61a0e0497aebdce64064f",
+      "fact": "Both limits are passed in model_settings.extra_body to OGX, rather than being converted into shared aggregate model/tool counters."
+    },
+    "lscore_build_agent_defaults": {
+      "path": ".local/upstream/src/utils/pydantic_ai_helpers.py",
+      "start_line": 301,
+      "end_line": 323,
+      "sha256": "57d4d390249136163cc052a25c74c83d2570d5f7909892e113deeb059901b162",
+      "fact": "Agent is constructed without an explicit retries setting or application loop budget."
+    },
+    "lscore_query_run": {
+      "path": ".local/upstream/src/utils/agents/query.py",
+      "start_line": 294,
+      "end_line": 311,
+      "sha256": "de568faee1bbc2ae51f7bbb4dec97578ecdd41a6d6ca7feb5483a57fc347f885",
+      "fact": "The non-streaming endpoint invokes agent.run with conversation_id/deps only: no usage_limits or deadline argument."
+    },
+    "lscore_stream_run": {
+      "path": ".local/upstream/src/utils/agents/streaming.py",
+      "start_line": 458,
+      "end_line": 466,
+      "sha256": "39f59dc9a84e806377effc4dbaa47db3cea7966789630b4e8eb978cae90acf8b",
+      "fact": "Streaming invokes agent.run_stream_events without usage_limits or a deadline argument."
+    },
+    "lscore_a2a_run": {
+      "path": ".local/upstream/src/app/endpoints/a2a.py",
+      "start_line": 664,
+      "end_line": 673,
+      "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880",
+      "fact": "A2A invokes agent.run_stream_events without usage_limits or deadline argument."
+    },
+    "lscore_usage_helper": {
+      "path": ".local/upstream/src/providers/inference/llm_settings.py",
+      "start_line": 109,
+      "end_line": 123,
+      "sha256": "43c56c613ff55e5afb6c9e7b7ab9a2e66d730e4c8ad6f6f83837ca1283a16557",
+      "fact": "A helper can create PAI UsageLimits but source search found no caller; the inspected query/stream/A2A paths do not invoke it."
+    },
+    "pai_default_usage": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/pydantic_ai/agent/__init__.py",
+      "start_line": 1624,
+      "end_line": 1624,
+      "sha256": "6ba6f3c0f7b5b89b923b0778b8587068a4f46085f83462ec267559a0f2098fea",
+      "fact": "Without explicit usage_limits PAI constructs its default UsageLimits."
+    },
+    "pai_usage_fields": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/pydantic_ai/usage.py",
+      "start_line": 445,
+      "end_line": 460,
+      "sha256": "18fed843cd1853a7130f3253990b2e41a74541b4217f58d903ba1771159a5b0e",
+      "fact": "Default request_limit is 50 and tool_calls_limit is None. PAI tracks calls to its model abstraction, here the OGX Responses backend, rather than each hidden downstream inference round."
+    },
+    "pai_default_retries": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/pydantic_ai/agent/__init__.py",
+      "start_line": 377,
+      "end_line": 383,
+      "sha256": "6ba6f3c0f7b5b89b923b0778b8587068a4f46085f83462ec267559a0f2098fea",
+      "fact": "Retry normalization supplies default=1 to missing output/tool retry budgets; LSCore does not override it."
+    },
+    "ogx_new_orchestrator": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/openai_responses.py",
+      "start_line": 1361,
+      "end_line": 1391,
+      "sha256": "e7011195e67aa68bedb5b35a35f67c0ec2029b44df317376ed6676d6321c640d",
+      "fact": "Each OGX create-response request constructs a per-request MCP session manager and new StreamingResponseOrchestrator using the same forwarded limits."
+    },
+    "ogx_reset_tool_counter": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/streaming.py",
+      "start_line": 312,
+      "end_line": 321,
+      "sha256": "1a5e20eb2a0b69eeb4691588c5b8001bc8471bd97ccd1ece5a92e5bf184fe0ba",
+      "fact": "A new orchestrator initializes accumulated_builtin_tool_calls=0."
+    },
+    "ogx_reset_iteration": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/streaming.py",
+      "start_line": 488,
+      "end_line": 497,
+      "sha256": "1a5e20eb2a0b69eeb4691588c5b8001bc8471bd97ccd1ece5a92e5bf184fe0ba",
+      "fact": "Each orchestrator run initializes n_iter=0."
+    },
+    "ogx_iteration_limit": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/streaming.py",
+      "start_line": 724,
+      "end_line": 742,
+      "sha256": "1a5e20eb2a0b69eeb4691588c5b8001bc8471bd97ccd1ece5a92e5bf184fe0ba",
+      "fact": "After executing tool calls, n_iter increments; reaching max_infer_iters ends this OGX response as incomplete/max_iterations_exceeded."
+    },
+    "ogx_tool_limit": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/streaming.py",
+      "start_line": 1488,
+      "end_line": 1501,
+      "sha256": "1a5e20eb2a0b69eeb4691588c5b8001bc8471bd97ccd1ece5a92e5bf184fe0ba",
+      "fact": "If accumulated_builtin_tool_calls reaches max_tool_calls, OGX skips the operation and adds a model-visible tool message. It continues inference so the model can summarize."
+    },
+    "ogx_tool_counter_increment": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/inline/responses/builtin/responses/streaming.py",
+      "start_line": 1579,
+      "end_line": 1583,
+      "sha256": "1a5e20eb2a0b69eeb4691588c5b8001bc8471bd97ccd1ece5a92e5bf184fe0ba",
+      "fact": "The backend increments its own built-in/MCP operation count after each attempted server-side tool execution."
+    },
+    "pai_no_text_retry": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/pydantic_ai/_agent_graph.py",
+      "start_line": 2109,
+      "end_line": 2126,
+      "sha256": "92c172c616eab4314ccecf77a3ee78ed5a892db3f87bed7ac5f75748feebbd92",
+      "fact": "With no text/function output, PAI adds Please return text as validation feedback, consumes an output retry, and requests the backend again."
+    },
+    "pai_output_retry_stop": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/pydantic_ai/_agent_graph.py",
+      "start_line": 364,
+      "end_line": 381,
+      "sha256": "92c172c616eab4314ccecf77a3ee78ed5a892db3f87bed7ac5f75748feebbd92",
+      "fact": "Exceeding the output retry budget raises UnexpectedModelBehavior; one output retry means up to two backend responses in this observed no-text case."
+    },
+    "lscore_error_mapping": {
+      "path": ".local/upstream/src/utils/agents/error_handler.py",
+      "start_line": 100,
+      "end_line": 106,
+      "sha256": "a94580cbd0948d20baa6537bae2edf0d3fbc4695e0664f9523c579347fe68f41",
+      "fact": "UnexpectedModelBehavior maps to the generic internal-server-error response."
+    },
+    "mcp_timeout_reserved": {
+      "path": ".local/upstream/src/models/config.py",
+      "start_line": 671,
+      "end_line": 678,
+      "sha256": "898b6ef4ebd1ad5042a6352f53106736ca1666dfd9da94e54a844153f42d79a5",
+      "fact": "mcp_servers.timeout explicitly says it is reserved for future OGX timeout support."
+    },
+    "mcp_timeout_dropped": {
+      "path": ".local/upstream/src/utils/responses.py",
+      "start_line": 827,
+      "end_line": 841,
+      "sha256": "d95051a8481fc4eba3fdc9b2c744477050d92ad42b7f1678791c2879ea16fa72",
+      "fact": "LSCore constructs InputToolMCP with URL/label/approval/headers/auth; the configured timeout is not forwarded."
+    },
+    "ogx_mcp_session_defaults": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/utils/tools/mcp.py",
+      "start_line": 166,
+      "end_line": 190,
+      "sha256": "22d749fd40ef50b81ee830f3b6465347a1e27889932a6852bd8df584297de041",
+      "fact": "OGX opens streamablehttp_client(endpoint,headers=headers) and ClientSession without any timeout parameters."
+    },
+    "ogx_mcp_call_defaults": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx/providers/utils/tools/mcp.py",
+      "start_line": 497,
+      "end_line": 509,
+      "sha256": "22d749fd40ef50b81ee830f3b6465347a1e27889932a6852bd8df584297de041",
+      "fact": "OGX invokes session.call_tool(tool_name,kwargs) without read_timeout_seconds."
+    },
+    "sdk_streamable_timeouts": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/mcp/client/streamable_http.py",
+      "start_line": 709,
+      "end_line": 740,
+      "sha256": "b4bc6dfdf3b21bace5bb3d19403446ec31c351f786a3217a7686f55dc1bcd6e7",
+      "fact": "The deprecated streamablehttp_client used by OGX defaults to timeout=30 and sse_read_timeout=300, creating httpx.Timeout(30,read=300). These are HTTP operation/inactivity settings, not a whole-run deadline."
+    },
+    "sdk_session_timeout": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/mcp/client/session.py",
+      "start_line": 122,
+      "end_line": 144,
+      "sha256": "7606a75a9b65cfa21df57901df600a80fdf4bab10ef0bb92abe6aa1cc0db35c9",
+      "fact": "ClientSession defaults read_timeout_seconds=None."
+    },
+    "sdk_call_timeout": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/mcp/client/session.py",
+      "start_line": 386,
+      "end_line": 408,
+      "sha256": "7606a75a9b65cfa21df57901df600a80fdf4bab10ef0bb92abe6aa1cc0db35c9",
+      "fact": "ClientSession.call_tool defaults its per-call read_timeout_seconds to None and passes it to send_request."
+    },
+    "sdk_rpc_deadline": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/mcp/shared/session.py",
+      "start_line": 283,
+      "end_line": 303,
+      "sha256": "473c151ed51ec617466e63b525c42a0f31db997c2812be78477deff40e3e9ba0",
+      "fact": "If neither request nor session timeout is supplied, send_request uses anyio.fail_after(None): no separate RPC total timeout."
+    },
+    "sdk_rpc_cleanup": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/mcp/shared/session.py",
+      "start_line": 305,
+      "end_line": 314,
+      "sha256": "473c151ed51ec617466e63b525c42a0f31db997c2812be78477deff40e3e9ba0",
+      "fact": "send_request cleanup removes response/progress streams; this path contains no outgoing cancellation notification or side-effect rollback."
+    },
+    "ogx_timeout_config": {
+      "path": ".local/upstream/src/models/config.py",
+      "start_line": 1199,
+      "end_line": 1205,
+      "sha256": "898b6ef4ebd1ad5042a6352f53106736ca1666dfd9da94e54a844153f42d79a5",
+      "fact": "ogx.timeout defaults to 180 seconds and is described as timeout for requests to the OGX service."
+    },
+    "ogx_remote_timeout": {
+      "path": ".local/upstream/src/client/ogx.py",
+      "start_line": 151,
+      "end_line": 159,
+      "sha256": "e6bb54d406ecc11f668c55276d71a8c61e8808272f8713bfed69484ed6150060",
+      "fact": "Only service-mode loader passes config.timeout into AsyncOgxClient."
+    },
+    "ogx_library_loader": {
+      "path": ".local/upstream/src/client/ogx.py",
+      "start_line": 115,
+      "end_line": 117,
+      "sha256": "e6bb54d406ecc11f668c55276d71a8c61e8808272f8713bfed69484ed6150060",
+      "fact": "Library loader creates AsyncOGXAsLibraryClient without passing config.timeout."
+    },
+    "ogx_provider_library_timeout": {
+      "path": ".local/upstream/src/pydantic_ai_lightspeed/ogx/_provider.py",
+      "start_line": 120,
+      "end_line": 134,
+      "sha256": "f7f4e51714843e6b2d5e9c24fe0417dcbbefa2e102b5d3bdc7cf59bb002b3fe8",
+      "fact": "Library-mode PAI transport explicitly creates HTTPX client timeout=None and invokes in-process OGX routes."
+    },
+    "ogx_library_dispatch": {
+      "path": ".local/upstream/src/pydantic_ai_lightspeed/ogx/_transport.py",
+      "start_line": 271,
+      "end_line": 275,
+      "sha256": "956bd7715a99d863a12851b5340dcacd9ccf02bfa1b000e0579e87988f605b6a",
+      "fact": "The library transport directly awaits the selected handler; no total deadline is applied here."
+    },
+    "ogx_remote_provider": {
+      "path": ".local/upstream/src/pydantic_ai_lightspeed/ogx/_provider.py",
+      "start_line": 66,
+      "end_line": 83,
+      "sha256": "f7f4e51714843e6b2d5e9c24fe0417dcbbefa2e102b5d3bdc7cf59bb002b3fe8",
+      "fact": "Service-mode provider reuses the OGX SDK HTTP client, preserving its transport timeout."
+    },
+    "ogx_sdk_http_timeout": {
+      "path": ".local/upstream/.venv/lib/python3.12/site-packages/ogx_client/async_api_client.py",
+      "start_line": 92,
+      "end_line": 117,
+      "sha256": "e7d1b4d41ceaaba20278604d75cfaeb86aece3a6b3b14b6256503c50b3672add",
+      "fact": "The OGX SDK applies configured timeout to HTTPX; this is an HTTP operation timeout, not an aggregate agent-run budget."
+    },
+    "stream_interrupt": {
+      "path": ".local/upstream/src/app/endpoints/stream_interrupt.py",
+      "start_line": 42,
+      "end_line": 60,
+      "sha256": "cbcdc1d44e2210e45f450c00f03b95505c64b8141e53ce054b00244a610546fb",
+      "fact": "LSCore exposes a separate streaming-query interrupt endpoint."
+    },
+    "stream_interrupt_cancel": {
+      "path": ".local/upstream/src/utils/stream_interrupts.py",
+      "start_line": 119,
+      "end_line": 139,
+      "sha256": "e4374cff2a9f721dd1185aad45eb14d4155c16f7184c0b0a89a00513da234ab6",
+      "fact": "The interrupt registry checks ownership, cancels the local asyncio task, and schedules partial-result persistence."
+    },
+    "stream_interrupted_persistence": {
+      "path": ".local/upstream/src/utils/agents/streaming.py",
+      "start_line": 280,
+      "end_line": 305,
+      "sha256": "39f59dc9a84e806377effc4dbaa47db3cea7966789630b4e8eb978cae90acf8b",
+      "fact": "The streaming generator catches CancelledError, persists partial text, and emits an interrupted event."
+    },
+    "a2a_cancel_unsupported": {
+      "path": ".local/upstream/src/app/endpoints/a2a.py",
+      "start_line": 804,
+      "end_line": 820,
+      "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880",
+      "fact": "A2A cancel raises NotImplementedError."
+    },
+    "a2a_stream_idle": {
+      "path": ".local/upstream/src/app/endpoints/a2a.py",
+      "start_line": 1162,
+      "end_line": 1189,
+      "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880",
+      "fact": "The A2A stream adapter waits at most 300 seconds for the next queue chunk and cancels the app task on teardown. This is a chunk-idle guard, not a whole-run deadline or implemented A2A task cancellation."
+    }
+  }
+}

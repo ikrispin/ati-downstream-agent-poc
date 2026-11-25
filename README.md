@@ -1,160 +1,202 @@
-# ATI downstream agent PoC
+# ATI with the native Lightspeed Core agent
 
-An independent Actionable Threat Intelligence (ATI) agent that investigates a
-supplied CVE, a public vulnerability identifier. It runs its own model and tool
-loop and exposes an A2A (agent-to-agent) interface. MAS, a multi-agent
-orchestration system, can delegate work to it without hosting the agent code.
+**Current PoC, 25 November 2026.** LSCore owns the model/tool loop, tool scheduling,
+model retries, conversations, and native A2A endpoint. ATI supplies read-only MCP
+tools for CVE evidence and provisional prioritization. MAS delegates to LSCore
+through its native A2A endpoint.
 
-The repository includes direct invocation, MAS registration and delegation,
-capability-based selection between ATI and an arithmetic reference agent, and
-automated tests. This is experimental code, not a production deployment.
+The LSCore source is **upstream `main` pinned to
+`7693565545044173814b1c5ad5aa66dd329e8b34`**, identifying itself as `0.8.0rc1`.
+Its frozen dependency set includes OGX `1.2.5`. It is a reproducible snapshot,
+not a moving checkout of today's `main` or a stable release selection. The
+[baseline receipt](experiments/lscore-core-evaluation/baseline.json) records exact versions.
 
 ```mermaid
 flowchart LR
-    Client[Direct client] -->|A2A| ATI[Independent ATI agent]
-    MAS[MAS orchestrator] -->|A2A| ATI
-    ATI --> Model[Configured model endpoint]
-    ATI --> Sources[Security Data / OSIDB / Lightspeed / Support]
-    ATI --> State[Local investigation records]
+    CLI[Headless CVE client] -->|one native query per CVE| LS[LSCore native agent]
+    MAS[MAS A2A node] -->|native /a2a| LS
+    subgraph LSCORE[Unmodified pinned LSCore process]
+        LS --> PAI[Pydantic AI agent wrapper]
+        PAI --> OGX[Embedded OGX model and tool execution]
+    end
+    OGX --> LLM[Configured model service]
+    OGX -->|MCP| ATI[ATI domain tool service]
+    ATI --> SRC[Read-only source adapters]
+    ATI --> DB[Private evidence records]
+    SRC --> FLEET[Lightspeed MCP fleet data]
+    SRC --> SUPPORT[Existing Support MCP]
+    SRC --> PUBLIC[Vendor OSIDB and threat evidence]
 ```
 
-The ATI package does not import or install MAS. Its model and source services
-remain dependencies even when MAS is not running.
+LSCore and Lightspeed MCP are different services. The former executes the agent;
+the latter supplies connected customer fleet data. MAS is the multi-agent system
+delegating work over A2A, the agent-to-agent protocol. MCP exposes callable tools.
 
-## Run the agent
+## Native execution and ATI domain tools
 
-Prerequisites: Git, [uv](https://docs.astral.sh/uv/), access to a compatible model
-endpoint, and access to the source services you configure. Python is pinned in
-`.python-version`; package versions are recorded in `uv.lock`.
+| Tool | Responsibility |
+|---|---|
+| `begin_cve_assessment` | Register one CVE and the configured environment. Returns an assessment ID; makes no source or model calls. |
+| `collect_cve_source` | Collect one named source for that registered CVE. The six choices are `redhat`, `osidb`, `lightspeed`, `fleet`, `support`, and `threat_intel`. |
+| `finalize_cve_assessment` | Compute priority from saved observations, record missing evidence and save the structured assessment. Takes no model-supplied risk values. |
+
+### Six collectors and their sources
+
+A collector is one named fetching operation. The four core source families are
+Red Hat Security Data, OSIDB, Lightspeed MCP and Support MCP. Lightspeed has two
+collectors using the same configured connection. Public threat feeds supply the
+additional EPSS and exploitation evidence needed for prioritization.
+
+| Collector | Connection or feed | Evidence collected |
+|---|---|---|
+| `redhat` | Red Hat Security Data HTTP API | Vendor CVE details |
+| `osidb` | OSIDB public flaw records | Public flaw and product-affect details |
+| `lightspeed` | Configured Lightspeed MCP | CVE details from the connected environment |
+| `fleet` | The same Lightspeed MCP | Affected systems, inventory details and system profiles |
+| `support` | Configured Support MCP | Support cases matching the specified CVE |
+| `threat_intel` | Public HTTP feeds: FIRST EPSS, CVE.org and CISA KEV | Exploitation probability and published exploitation assessments |
+
+The fleet collector introduces no additional MCP connection. Threat intelligence
+uses direct HTTP reads: FIRST's Exploit Prediction Scoring System (EPSS), CISA
+assessments in CVE.org records, and CISA's Known Exploited Vulnerabilities (KEV)
+catalog. It does not fetch or run exploit code. No MCP server is added for these feeds.
+
+LSCore decides when to call these tools. Repeated
+collection of the same source in one assessment reuses its observation, including
+failure. Finalizing early produces a partial/failed domain outcome, never complete
+evidence. Begin a new assessment to refresh data or retry a failed collector.
+
+Domain records stay private in SQLite. Tools return selected facts rather than
+case bodies, case numbers or host identifiers to the model. A local tool timeout
+protects a collector; it does not cancel remote processing or enforce a native
+LSCore whole-run budget.
+
+## Setup
+
+Use Python `3.12.16`, `uv`, Git, and network access to the source/model services.
+OSIDB additionally uses `curl` with Kerberos support and an existing user ticket.
+LSCore's broad development dependency environment remains separate from the small
+ATI domain package. The frozen installation is documented in the evaluation.
+
+From the repository root:
 
 ```bash
-git clone https://github.com/ikrispin/ati-downstream-agent-poc.git
-cd ati-downstream-agent-poc
-# Install the pinned interpreter; this uv release includes its download metadata.
-uvx --from uv==0.13.9 uv python install 3.12.16 --no-bin
-uv sync --locked --extra test --extra ui
+bash scripts/bootstrap.sh
 cp -n .env.example .env
 chmod 600 .env
 ```
 
-Set these values in `.env`:
+Fill the model connection and existing MCP URLs in `.env`. Keep `ATI_SOURCE_MODE=live`
+for real sources. The environment alias identifies one configured Lightspeed
+connection, not arbitrary customer routing or independently verified identity.
+Do not copy credentials into a tracked configuration file.
 
-| Setting | Purpose |
+Authorize Support if no valid local authorization already exists:
+
+```bash
+uv run --locked ati-lscore support-login
+```
+
+Start these in separate terminals from this directory:
+
+```bash
+uv run --locked ati-lscore tools
+```
+
+```bash
+uv run --locked python scripts/run_native.py
+```
+
+The launcher verifies the pinned checkout, loads `.env`, writes a private native
+configuration and starts the upstream `lightspeed-stack` executable. It does not
+modify LSCore or OGX. The generated model configuration duplicates connection
+settings in the documented `native_override`, the verified forwarding workaround.
+
+| Development surface | Address |
 |---|---|
-| `ATI_A2A_TOKEN` | A random local bearer token required for agent invocation. |
-| `ATI_LLM_BASE_URL`, `ATI_LLM_MODEL`, `ATI_LLM_API_KEY` | Model endpoint configuration. |
-| `ATI_LIGHTSPEED_MCP_URL` | Lightspeed Model Context Protocol (MCP) service. |
-| `ATI_SUPPORT_MCP_URL` | Support MCP service used for an explicitly supplied case. |
+| Native LSCore readiness | `http://127.0.0.1:8140/readiness` |
+| Native Agent Card | `http://127.0.0.1:8140/.well-known/agent-card.json` |
+| Native A2A endpoint | `http://127.0.0.1:8140/a2a` |
+| Native query endpoint | `http://127.0.0.1:8140/v1/query` |
+| ATI domain MCP | `http://127.0.0.1:18143/mcp` |
+| Support OAuth callback during sign-in | `http://localhost:8121/callback` |
 
-For example, generate a token with `openssl rand -hex 32` and save it privately
-in `.env`. The example configuration contains no working credentials.
+This configuration is for loopback development with no native service
+authentication. Production identity, network exposure and deployment are not
+demonstrated. Credentials, synthesized configuration, logs and source records
+remain under ignored `.env`/`.local` paths.
 
-```bash
-uv run --locked ati-downstream serve
-```
-
-| Endpoint | Address |
-|---|---|
-| Health | `http://127.0.0.1:8120/health` |
-| Public capability description (Agent Card) | `http://127.0.0.1:8120/.well-known/agent-card.json` |
-| Authenticated A2A JSON-RPC | `http://127.0.0.1:8120/a2a/jsonrpc` |
-
-In another terminal, from the repository directory:
+## Headless Journey 01
 
 ```bash
-uv run --locked ati-downstream invoke \
-  'Investigate CVE-2023-38545 using available security sources. Investigation ID: direct-demo-001'
+uv run --locked ati-lscore assess \
+  --cve CVE-2023-38545 \
+  --environment connected-organization \
+  --output .local/reports/assessment.json
 ```
 
-Support is queried only when the current request explicitly supplies a case
-number. Authenticate before requesting a case:
+Repeat `--cve` for up to 100 distinct CVEs. The default is two independent native
+requests at once; `--concurrency` accepts 1–10. Each invocation creates fresh
+assessment IDs. The client pre-registers scope, submits one native query per CVE
+and reads the domain record after LSCore returns. It never calls a model provider
+or executes a model-suggested tool itself.
+
+The report distinguishes **native request status** from **domain outcome**.
+HTTP success does not establish complete evidence. If LSCore stops before
+finalization, the record is `not_finalized`, even if its answer claims success.
+`ATI_CLIENT_TIMEOUT=240` limits waiting; native server work may continue afterward.
+
+Export a saved domain record without another model request:
 
 ```bash
-uv run --locked ati-downstream support-login
-uv run --locked ati-downstream invoke \
-  'Investigate CVE-2023-38545 and retrieve only Support Case <CASE_ID>. Investigation ID: direct-case-demo-001'
+uv run --locked ati-lscore show-assessment \
+  --assessment-id '<ASSESSMENT_ID>' \
+  --output .local/reports/evidence.json
 ```
 
-Replace `<CASE_ID>` with the case you intend to query. The login command opens a
-loopback OAuth callback on `http://localhost:8121/callback`; complete sign-in using
-the printed authorization URL. OAuth state is saved privately under `.local/`.
+The private report contains source observations and should not be committed.
+This is explicit local evidence export, not a structured A2A or MAS artifact.
 
-## Evidence sources
+## Verification and limits
 
-- **Red Hat Security Data:** public REST vulnerability information.
-- **OSIDB:** queries explicitly public records; its deployment requires network
-  access and Kerberos authentication (`kinit`, with `klist -s` to check a ticket).
-- **Lightspeed:** MCP tools against the configured organization and service.
-- **Support:** MCP access restricted to the case explicitly supplied in the
-  current request. Missing case input leaves this source unrequested.
+The [current verification receipt](verification.json) distinguishes real and
+synthetic sources. The existing real model drove native LSCore in both runs:
 
-Unavailable sources produce explicit incomplete results. A completed A2A task
-can contain a partial investigation; completion does not establish that every
-source was retrieved.
+- **Synthetic positive run:** six collectors succeeded; domain finalization
+  completed with provisional `urgent_review`.
+- **Real-source run:** five collectors succeeded; the existing Support MCP failed.
+  Native query completed; the domain result correctly remained `partial`.
+- Both runs used six explicit collection calls and one finalization call through
+  native LSCore, plus MCP discovery.
 
-## Use with MAS
+The existing Support MCP and older data source are accepted for this PoC. Failed
+or relevance-unverified searches remain missing evidence. Newer Support backend
+migration, Errata enrichment and remediation are outside scope.
 
-[MAS integration](MAS_INTEGRATION_DESIGN.md) covers ownership, the optional local
-platform setup, and compatibility patches. MAS source and UI repositories must
-be obtained separately with the appropriate access; they are not bundled here.
+Native LSCore limitations still apply: tools ran sequentially within one native
+response; outer retries can reset per-response allowances; a caller timeout does
+not guarantee server cancellation. The pinned A2A endpoint produces text, not
+ATI's typed result/outcome contract. See [framework gaps](experiments/lscore-core-evaluation/FRAMEWORK_GAPS.md),
+[Journey 01](JOURNEY01.md), and [MAS integration](MAS_INTEGRATION.md).
 
-With a compatible local MAS API and worker running:
+## Checks
 
 ```bash
-uv run --locked python scripts/mas_workflow.py
-uv run --locked python scripts/mas_workflow.py --prompt \
-  'Investigate CVE-2023-38545 using available security sources. Investigation ID: mas-demo-001'
+uv run --locked --extra test pytest --cov=ati_lscore --cov-fail-under=80
+uv run --locked --extra test ruff check src tests scripts
+uv run --locked --extra test ruff format --check src tests scripts
 ```
 
-The helper creates an inventory entry and a fixed input → ATI → answer workflow.
-For a planner that chooses between different agents, follow
-[the agent selection guide](SELECTION.md).
+The tests use local fixtures and mocked network calls; no live credentials are required.
+Publication checks are available with `uv run --locked python scripts/check_repository.py`.
 
-## Verify
+## Documentation and diagrams
 
-```bash
-uv run --locked --extra test --extra ui ruff check src tests scripts
-uv run --locked --extra test --extra ui pytest --cov=ati_downstream --cov-fail-under=80
-```
+- [Google Docs visual guide](https://docs.google.com/document/d/1Ns0PGjMHCFx8Sqwkyp581kU5ecOgG_2nnOz6vndQ2GQ/edit).
+- [Word visual guide](experiments/lscore-core-evaluation/LSCore-integration-visual-guide.docx) and [editable diagram sources](experiments/lscore-core-evaluation/visual-guide/README.md).
+- [Native LSCore findings](experiments/lscore-core-evaluation/REPORT.md) and [framework gap table](experiments/lscore-core-evaluation/FRAMEWORK_GAPS.md).
+- [Repository readiness](docs/github-readiness.md).
 
-The tests use local fixtures and mocked source/model clients; live credentials
-are not needed. See [verification notes](VERIFICATION.md) for the distinction
-between automated checks and earlier live lab evidence.
-
-## Execution limits and state
-
-Defaults are seven model rounds, twelve tool calls, 35 seconds per source call,
-and a 240-second investigation deadline. Configure them through `.env`.
-
-An explicit `Investigation ID: <identifier>` deduplicates submissions. The same
-ID and request return the stored completed result. If execution is interrupted,
-the current PoC rejects the unfinished claim; use a new investigation ID for a
-deliberate retry. Checkpointing and automatic restart recovery are not implemented.
-
-Investigation records persist in SQLite. The A2A task store is in memory, so task
-polling does not survive an agent restart. MAS-to-agent cancellation propagation
-also remains unverified. The local MAS setup uses development authentication.
-
-`.env`, `.local/`, OAuth tokens, database files, generated certificates, and live
-investigation records are excluded from Git. Source responses and case data
-belong in private storage rather than committed examples.
-
-## Layout
-
-| Path | Contents |
-|---|---|
-| `src/ati_downstream/` | Agent execution, A2A, sources, OAuth, and MAS selection client. |
-| `tests/` | Automated tests and a deterministic A2A compatibility fixture. |
-| `scripts/` | MAS workflow setup and optional development platform tooling. |
-| `patches/` | Compatibility changes for the pinned MAS baseline. |
-| `compose.yaml` | Optional MAS development dependencies; not needed by ATI alone. |
-| `VERSION_AUDIT.md` | Reproduction baseline and dependency caveats. |
-
-## License and provenance
-
-Apache-2.0; see [LICENSE](LICENSE). This standalone export originated in the ATI
-downstream experiment. The Security Data and OSIDB connectors and their original
-tests were adapted from an earlier ATI integration experiment; the agent loop,
-A2A transport, OAuth storage, and downstream integration were developed for this
-PoC. Third-party packages and separately obtained platform code retain their
-respective licenses.
+Apache-2.0; see [LICENSE](LICENSE). The source adapters and domain rules originated
+in the [ATI integration project](https://github.com/zvigrinberg/actionable-threat-intelligence).
+LSCore, MAS and their dependencies remain separate projects with their own licenses.

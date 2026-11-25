@@ -1,0 +1,205 @@
+{
+  "captured_at_utc": "2026-11-24T13:48:29.448962+00:00",
+  "scope": "Explanation of original repository design only; no remediation/Errata implementation, external writes, live customer queries, or playbook execution.",
+  "original_repository": "https://github.com/zvigrinberg/actionable-threat-intelligence",
+  "pinned_upstream_revision": "76cd662075f185ad60636c15901de179bd2dc883",
+  "working_HEAD": "6cc6bfed23a3252545a6d54c90fde0dcc1c772eb",
+  "source_basis": "Read pinned origin/main git objects locally, not modified working-tree prose. Original upstream tree at this revision contains design/research documents, not a runnable remediation service.",
+  "explanation": "After assessing a CVE against a customer fleet, ATI would recommend the matching RHSA/patch/configuration/workaround and prepare a plan. A human reviews the plan in an approval UI; the application workflow pauses and saves state. Approval resumes durable orchestration, which dispatches patch execution to AAP or configuration changes to an Ansible tool. A separate re-inspection verifies that vulnerability exposure is gone. The design labels this L3/future; it is not implemented in the current downstream proof of concept.",
+  "ownership": [
+    {
+      "stage": "Intelligence and environment assessment",
+      "planned_owner": "ATI CVE/impact agents plus intelligence aggregator/environment inspector; Lightspeed supplies customer inventory/vulnerability evidence.",
+      "references": [
+        "future",
+        "customer_flow",
+        "lightspeed_creation"
+      ]
+    },
+    {
+      "stage": "Recommendation and playbook generation",
+      "planned_owner": "Remediation agent finds patches/KB guidance and invokes a generic generate_playbook tool. Generator product and concrete API are unspecified.",
+      "references": [
+        "generation",
+        "recommendation",
+        "plan_execution"
+      ]
+    },
+    {
+      "stage": "Approval",
+      "planned_owner": "User decides in UI; application workflow persists approval state and approver. Agent Team owns workflow, UI Team owns approval UI.",
+      "references": [
+        "approval",
+        "approval_audit",
+        "owners"
+      ]
+    },
+    {
+      "stage": "Scheduling and execution",
+      "planned_owner": "Temporal/application orchestration schedules durable activities. AAP executes patch playbooks; Ansible MCP applies configuration in illustrative pseudocode. Automation Team owns AAP integration.",
+      "references": [
+        "plan_execution",
+        "durable_flow",
+        "owners"
+      ]
+    },
+    {
+      "stage": "Verification",
+      "planned_owner": "Verification engine/environment inspector re-inspects state before reporting the vulnerability closed.",
+      "references": [
+        "customer_flow"
+      ]
+    }
+  ],
+  "unresolved_or_conflicting_details": [
+    {
+      "detail": "Approval policy is inconsistent across illustrative examples.",
+      "evidence": "Plan-and-execute example gates on downtime; Temporal example gates on critical severity; Phase4 exit criteria say human approval before execution.",
+      "references": [
+        "plan_execution",
+        "durable_flow",
+        "owners"
+      ],
+      "implication": "A concrete policy must be agreed before implementation; do not infer silent authorization for lower-severity/no-downtime changes."
+    },
+    {
+      "detail": "Lightspeed playbook creation and AAP execution are distinct stages.",
+      "evidence": "The integration guide names create_vuln_playbook as a write tool; execution pseudocode separately invokes aap_mcp.run_playbook. No documented handoff maps a created playbook to an AAP job/inventory.",
+      "references": [
+        "lightspeed_creation",
+        "plan_execution"
+      ],
+      "implication": "Creating/generating a playbook does not prove it was executed. This is an unspecified handoff, not evidence that the two APIs are interchangeable."
+    },
+    {
+      "detail": "Ansible Lightspeed is not selected as the generator.",
+      "evidence": "Case-insensitive search of all tracked original docs found no Ansible Lightspeed phrase; only generic generate_playbook and ansible_mcp.apply_config are named.",
+      "references": [
+        "generation",
+        "plan_execution"
+      ],
+      "implication": "Using Ansible Lightspeed may be a future design choice; it is not a verified fact from the original plan."
+    },
+    {
+      "detail": "Rollback is unspecified.",
+      "evidence": "No operational remediation rollback flow/tool was found in the original tracked documents. The graph-query document rollback occurrence clears a database transaction.",
+      "references": [],
+      "implication": "Do not claim automated rollback exists or was planned in concrete detail."
+    },
+    {
+      "detail": "Five-minute downtime is illustrative.",
+      "evidence": "Five minutes appears in sample remediation/approval payloads without measured inputs or estimation logic.",
+      "references": [
+        "recommendation",
+        "downtime_sample"
+      ],
+      "implication": "Describe it as a design example, not an observed result, commitment, or implemented estimate."
+    }
+  ],
+  "source_references": {
+    "future": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 253,
+      "end_line": 265,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L253-L265",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Fleet awareness is L2 planned; remediation with AAP/Lightspeed and human approval is L3 future."
+    },
+    "recommendation": {
+      "path": "docs/security-intelligence-flow-detailed-breakdown.md",
+      "start_line": 182,
+      "end_line": 203,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/security-intelligence-flow-detailed-breakdown.md#L182-L203",
+      "sha256": "07cb07f202753daff7a4fd62312da9538993104f6522ab226ad514181ff6507d",
+      "claim": "Remediation entity carries patch/config/workaround steps, prerequisites, and estimated time; the example includes package update, service restart, and RPM verification."
+    },
+    "customer_flow": {
+      "path": "docs/actionable-threat-intelligence-architecture.md",
+      "start_line": 225,
+      "end_line": 252,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/actionable-threat-intelligence-architecture.md#L225-L252",
+      "sha256": "d2e973b9780db0d6d934a8a34be2a0b2c47ca0e4052d09de271c05193b1f13db",
+      "claim": "Customer requests a remediation plan, then separately requests execution; an Action Executor applies updates, and a Verification Engine re-inspects the environment."
+    },
+    "generation": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 704,
+      "end_line": 719,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L704-L719",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Remediation specialist tools are search_kb, find_patches, and generic generate_playbook; no selected generator implementation is supplied."
+    },
+    "plan_execution": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 655,
+      "end_line": 690,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L655-L690",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Plan includes steps/time/downtime/approval-needed; patch execution calls aap_mcp.run_playbook, configuration execution calls ansible_mcp.apply_config; this example gates on requires_downtime."
+    },
+    "approval": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 772,
+      "end_line": 834,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L772-L834",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Application workflow posts a plan to Slack/ServiceNow/custom UI, persists/interrupts execution, records approved/rejected state and approver, then resumes from checkpoint."
+    },
+    "approval_audit": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 839,
+      "end_line": 866,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L839-L866",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Illustrative authenticated approval API records who decided what and when, then resumes workflow."
+    },
+    "durable_flow": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 1652,
+      "end_line": 1702,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L1652-L1702",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Temporal example runs analysis and fleet scan as activities, waits for approval only for critical severity with seven-day timeout, then schedules execute_remediation."
+    },
+    "idempotency": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 1580,
+      "end_line": 1591,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L1580-L1591",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Illustrative remediation operation key includes CVE, customer ID, and remediation-plan hash to suppress repeats."
+    },
+    "owners": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 3875,
+      "end_line": 3895,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L3875-L3895",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Phase4 is planned: Agent Team owns durable workflows and approved patching; UI Team approval UI; Automation Team AAP integration; SRE hardening. Exit criteria require human approval before AAP runs and a full audit trail."
+    },
+    "lightspeed_creation": {
+      "path": "docs/security-capability-sources.md",
+      "start_line": 100,
+      "end_line": 131,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/security-capability-sources.md#L100-L131",
+      "sha256": "ea37b2629fb446f716d8a62733003f26899f3842a69d9e8e21b5c12721fca252",
+      "claim": "Source integration guide lists read-only vulnerability/inventory tools and says create_vuln_playbook is a write tool enabled by --all-tools which the then-read-only ATI agent should not call."
+    },
+    "write_boundary": {
+      "path": "docs/lightspeed-mcp-io-examples.md",
+      "start_line": 632,
+      "end_line": 644,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/lightspeed-mcp-io-examples.md#L632-L644",
+      "sha256": "4a41b605980518064528cbbfc94bae2138d7bfcfb41f01e119b8e1d6500b1d07",
+      "claim": "Examples distinguish host inventory/advisory evidence and the write-only create-vulnerability-playbook capability; no execution API contract is documented here."
+    },
+    "downtime_sample": {
+      "path": "docs/rh-security-agent-design-document.md",
+      "start_line": 3191,
+      "end_line": 3205,
+      "url": "https://github.com/zvigrinberg/actionable-threat-intelligence/blob/76cd662075f185ad60636c15901de179bd2dc883/docs/rh-security-agent-design-document.md#L3191-L3205",
+      "sha256": "8e8bf5d26405d4c367565ebebd20223a419ced28bd497abc4aaa67897ee84676",
+      "claim": "Five minutes appears only inside an example approval-context payload, not a validated estimator or observed outage measurement."
+    }
+  }
+}

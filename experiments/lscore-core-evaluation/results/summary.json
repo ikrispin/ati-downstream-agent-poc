@@ -1,0 +1,992 @@
+{
+  "schema_version": 1,
+  "experiment_date": "2026-11-24",
+  "source_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "model_kind": "deterministic_fixture_except_real_model_section",
+  "fixture_cases": {
+    "e1-normal": {
+      "marker": "probe-5518389264-e1-normal",
+      "http_status": 200,
+      "elapsed_seconds": 0.3433,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e1-normal. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33329.489334844,
+          "end": 33329.489411843,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33329.508023884,
+          "end": 33329.508144897,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33329.527081781,
+          "end": 33329.527163581,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 4,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e1-normal\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e1-normal\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e1-normal\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e4-parallel-query": {
+      "marker": "probe-5518389264-e4-parallel-query",
+      "http_status": 200,
+      "elapsed_seconds": 1.7201,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-parallel-query. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33329.804735328,
+          "end": 33330.505304027,
+          "duration_seconds": 0.7006,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33330.513415364,
+          "end": 33331.214102201,
+          "duration_seconds": 0.7007,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33331.23099754,
+          "end": 33331.231102459,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e4-parallel-query\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e4-parallel-query\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e4-parallel-query\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e4-parallel-stream": {
+      "marker": "probe-5518389264-e4-parallel-stream",
+      "http_status": 200,
+      "elapsed_seconds": 1.7182,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-parallel-stream. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33331.535747615,
+          "end": 33332.237449119,
+          "duration_seconds": 0.7017,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33332.248058661,
+          "end": 33332.948765531,
+          "duration_seconds": 0.7007,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33332.974751685,
+          "end": 33332.974852651,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": []
+    },
+    "e4-concurrent-a": {
+      "marker": "probe-5518389264-e4-concurrent-a",
+      "http_status": 200,
+      "elapsed_seconds": 1.684,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-concurrent-a. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33333.220037221,
+          "end": 33333.921075456,
+          "duration_seconds": 0.701,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33333.931602952,
+          "end": 33334.632756934,
+          "duration_seconds": 0.7012,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33334.654898224,
+          "end": 33334.654947591,
+          "duration_seconds": 0.0,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-a\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-a\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e4-concurrent-a\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e4-concurrent-b": {
+      "marker": "probe-5518389264-e4-concurrent-b",
+      "http_status": 200,
+      "elapsed_seconds": 1.7841,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e4-concurrent-b. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33333.282527868,
+          "end": 33333.982819235,
+          "duration_seconds": 0.7003,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33333.993821447,
+          "end": 33334.694578341,
+          "duration_seconds": 0.7008,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33334.713066537,
+          "end": 33334.713120041,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-b\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e4-concurrent-b\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e4-concurrent-b\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e5-tool-timeout": {
+      "marker": "probe-5518389264-e5-tool-timeout",
+      "http_status": 200,
+      "elapsed_seconds": 2.7181,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e5-tool-timeout. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33335.045891542,
+          "end": 33336.246283189,
+          "duration_seconds": 1.2004,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33336.259654788,
+          "end": 33337.460063211,
+          "duration_seconds": 1.2004,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33337.483162819,
+          "end": 33337.483231119,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e5-tool-timeout\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e5-tool-timeout\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e5-tool-timeout\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e5-loop": {
+      "marker": "probe-5518389264-e5-loop",
+      "http_status": 500,
+      "elapsed_seconds": 0.4098,
+      "answer": "",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.760909517,
+          "end": 33337.760987209,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.774454875,
+          "end": 33337.774534621,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.792183427,
+          "end": 33337.792259377,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.808504619,
+          "end": 33337.808583661,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.926402728,
+          "end": 33337.926488015,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.943026432,
+          "end": 33337.943102241,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.959050371,
+          "end": 33337.959128311,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33337.975896074,
+          "end": 33337.975973108,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 8,
+      "terminal_error_events": [],
+      "http_error": {
+        "response": "Internal server error",
+        "cause": "An unexpected error occurred while processing the request."
+      },
+      "mcp_results": []
+    },
+    "e5-loop-stream": {
+      "marker": "probe-5518389264-e5-loop-stream",
+      "http_status": 200,
+      "elapsed_seconds": 0.4796,
+      "answer": "",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.169743335,
+          "end": 33338.169847553,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.190152334,
+          "end": 33338.190298285,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.212718084,
+          "end": 33338.212795322,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.229107871,
+          "end": 33338.229185785,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.381543998,
+          "end": 33338.381624256,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.400925157,
+          "end": 33338.401019218,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.421733698,
+          "end": 33338.421804785,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.443792128,
+          "end": 33338.443865851,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 8,
+      "terminal_error_events": [
+        {
+          "event": "error",
+          "data": {
+            "status_code": 500,
+            "response": "Internal server error",
+            "cause": "An unexpected error occurred while processing the request."
+          }
+        }
+      ],
+      "http_error": null,
+      "mcp_results": []
+    },
+    "e7-failure": {
+      "marker": "probe-5518389264-e7-failure",
+      "http_status": 200,
+      "elapsed_seconds": 0.2869,
+      "answer": "PARTIAL: successful samples={\"A\": 4}; a tool failed; missing sample unavailable; total unverified. request=probe-5518389264-e7-failure. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33338.647989782,
+          "end": 33338.648072721,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B_FAIL",
+          "start": 33338.665590861,
+          "end": 33338.665698466,
+          "duration_seconds": 0.0001,
+          "status": "error"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e7-failure\"\n}",
+          "round": 2
+        },
+        {
+          "status": "failure",
+          "content": "Error (code 1): None",
+          "round": 3
+        }
+      ]
+    },
+    "e7-invalid": {
+      "marker": "probe-5518389264-e7-invalid",
+      "http_status": 200,
+      "elapsed_seconds": 0.2567,
+      "answer": "PARTIAL: successful samples={}; a tool failed; missing sample unavailable; total unverified. request=probe-5518389264-e7-invalid. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 2,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "failure",
+          "content": "Error (code 1): None",
+          "round": 2
+        }
+      ]
+    },
+    "e7-model-error": {
+      "marker": "probe-5518389264-e7-model-error",
+      "http_status": 500,
+      "elapsed_seconds": 1.5224,
+      "answer": "",
+      "tool_intervals": [],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 3,
+      "terminal_error_events": [],
+      "http_error": {
+        "response": "Internal server error",
+        "cause": "An unexpected error occurred while processing the request."
+      },
+      "mcp_results": []
+    },
+    "e6-isolation-a": {
+      "marker": "probe-5518389264-e6-isolation-a",
+      "http_status": 200,
+      "elapsed_seconds": 0.7483,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e6-isolation-a. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33341.149776736,
+          "end": 33341.14984927,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33341.165774737,
+          "end": 33341.165862052,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33341.183533667,
+          "end": 33341.18357638,
+          "duration_seconds": 0.0,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 4,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e6-isolation-a\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e6-isolation-a\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e6-isolation-a\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e6-isolation-b": {
+      "marker": "probe-5518389264-e6-isolation-b",
+      "http_status": 200,
+      "elapsed_seconds": 0.3039,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e6-isolation-b. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33341.459408023,
+          "end": 33341.459474552,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33341.471606511,
+          "end": 33341.471664012,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33341.488653879,
+          "end": 33341.488694924,
+          "duration_seconds": 0.0,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 4,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e6-isolation-b\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e6-isolation-b\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e6-isolation-b\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "e6-followup-a": {
+      "marker": "probe-5518389264-e6-followup-a",
+      "http_status": 200,
+      "elapsed_seconds": 0.3127,
+      "answer": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=probe-5518389264-e6-followup-a. OUTPUT_MARKER=BASELINE",
+      "tool_intervals": [
+        {
+          "tool": "read_sample",
+          "sample_id": "A",
+          "start": 33341.763102805,
+          "end": 33341.763170221,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "read_sample",
+          "sample_id": "B",
+          "start": 33341.782830252,
+          "end": 33341.782889981,
+          "duration_seconds": 0.0001,
+          "status": "success"
+        },
+        {
+          "tool": "calculate_total",
+          "sample_id": null,
+          "start": 33341.800543281,
+          "end": 33341.800581748,
+          "duration_seconds": 0.0,
+          "status": "success"
+        }
+      ],
+      "sample_reads_overlap": false,
+      "fixture_model_requests": 4,
+      "terminal_error_events": [],
+      "http_error": null,
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"probe-5518389264-e6-followup-a\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"probe-5518389264-e6-followup-a\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"probe-5518389264-e6-followup-a\"\n}",
+          "round": 4
+        }
+      ]
+    }
+  },
+  "cross_request_tools_overlap": true,
+  "state_checks": {
+    "a_marker_absent_from_b_model_input": true,
+    "b_marker_absent_from_a_model_input": true,
+    "followup_retains_own_prior_marker": true,
+    "followup_excludes_other_conversation": true,
+    "a_model_requests_observed": 4,
+    "b_model_requests_observed": 4,
+    "followup_model_requests_observed": 4
+  },
+  "raw_evidence": {
+    "fixture-results.json": "5f74ea6db43b42b33e1feb4d8bb3d96dab25f52d54ee8ce5e28be447f1a370ff",
+    "e1-real.json": "86a0a408890a79f31fb2da0542a2b6904f9cdb79af7c2c631b295a2672354696",
+    "e7-real-failure.json": "d8af13832c402d0db69028cf81f0b925043a9f5d8f0669868764e01a5dab1813",
+    "e8-direct.json": "5f4366a1aba051f27c783faa803c34d1b0bc3cd6b88af362c3b83df01fe4c1e4",
+    "e8-mas-node.json": "607e19133202e698c947a65ec9b2ed2960f07629c592bcaa57e16455ac6d767a",
+    "e8-registration-helper.json": "d9c53b990815894861ec803c09d99ae5b02e0735ca09c91cdda7ffe814b18633"
+  },
+  "fixture_correction": "Results use a corrected deterministic model fixture that retains scenario controls across framework-generated validation feedback.",
+  "real_model": {
+    "normal": {
+      "observed_at_utc": "2026-11-24T10:24:31.309404+00:00",
+      "model": "rits/zai-org/glm-5-3",
+      "http_status": 200,
+      "elapsed_seconds": 14.6088,
+      "tool_call_count": 3,
+      "observed_tool_values": {
+        "A": 4,
+        "B": 7,
+        "total": 11.0
+      },
+      "verified_expected_tool_results": true,
+      "own_service_stopped": true,
+      "answer": "**Assessment Complete**\n\n**Total: 11**\n\nEvidence from successful lookups:\n- **Sample A**: observed value = **4**\n- **Sample B**: observed value = **7**\n- **Calculation**: 4 + 7 = **11** (confirmed via calculate_total)\n\nBoth samples were retrieved successfully with request_marker `e1-real-b3c216a8ebf4`, so this is a full assessment with no missing evidence.",
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"e1-real-b3c216a8ebf4\"\n}",
+          "round": 2
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"B\",\n  \"value\": 7,\n  \"request_marker\": \"e1-real-b3c216a8ebf4\"\n}",
+          "round": 3
+        },
+        {
+          "status": "success",
+          "content": "{\n  \"total\": 11.0,\n  \"values\": [\n    4.0,\n    7.0\n  ],\n  \"request_marker\": \"e1-real-b3c216a8ebf4\"\n}",
+          "round": 4
+        }
+      ]
+    },
+    "failure": {
+      "observed_at_utc": "2026-11-24T10:25:27.580822+00:00",
+      "model": "rits/zai-org/glm-5-3",
+      "http_status": 200,
+      "elapsed_seconds": 18.5321,
+      "tool_call_count": 2,
+      "observed_tool_values": {
+        "A": 4
+      },
+      "verified_expected_tool_results": true,
+      "verified_partial_tool_path": true,
+      "own_service_stopped": true,
+      "answer": "## Partial-Evidence Test Report\n\n**Request marker:** `e1-real-bc60c5731e71` (included in all tool invocations)\n\n### Observed Results\n\n| Sample | Status | Value |\n|--------|--------|-------|\n| A | \u2705 Read successful | 4 |\n| B (`B_FAIL`) | \u274c Read failed | \u2014 unavailable |\n\n**B read error:** `Injected fixture failure: sample B unavailable`\n\n### Assessment\n\n- **Observed value for A:** 4\n- **Total calculation:** **Not performed** \u2014 per the test protocol, since sample B is unavailable, no total was computed. I did not substitute an alternative sample ID for B, nor did I invent or infer a value for B.\n\n### Missing Evidence\n\n- The value for sample B. Without it, the sum cannot be computed, and any total derived from A alone would be incomplete and unrepresentative of the intended A + B calculation.\n\n### Conclusion\n\nThis is a **partial assessment only**. Sample A is confirmed at value 4, but the test objective of summing A and B cannot be completed due to the deliberate unavailability of sample B. The full assessment requires a successful read of sample B at a future time; at that point, `calculate_total` could be invoked with values `[4, B]` using the same request marker.",
+      "mcp_results": [
+        {
+          "status": "success",
+          "content": "{\n  \"sample_id\": \"A\",\n  \"value\": 4,\n  \"request_marker\": \"e1-real-bc60c5731e71\"\n}",
+          "round": 2
+        },
+        {
+          "status": "failure",
+          "content": "Error (code 1): None",
+          "round": 3
+        }
+      ]
+    }
+  },
+  "a2a": {
+    "direct_summary": {
+      "send": {
+        "id": "160a536e-b019-4d96-8200-83fd7f32e893",
+        "state": "completed",
+        "artifact_part_kinds": [
+          "text"
+        ],
+        "artifact_text": [
+          "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=e8-cancel. OUTPUT_MARKER=BASELINE"
+        ]
+      },
+      "stream": {
+        "id": "3eda534c-586e-4146-be58-e2fa7bd53676",
+        "state": "completed",
+        "artifact_part_kinds": [
+          "text"
+        ],
+        "artifact_text": [
+          "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=e8-cancel. OUTPUT_MARKER=BASELINE"
+        ]
+      },
+      "stream_frame_kinds": [
+        "task",
+        "status-update",
+        "status-update",
+        "status-update",
+        "status-update",
+        "status-update",
+        "status-update",
+        "status-update",
+        "artifact-update",
+        "status-update"
+      ],
+      "cancellation": {
+        "method": "POST",
+        "path": "/a2a",
+        "request": {
+          "jsonrpc": "2.0",
+          "id": "93dde757-6c40-4b9c-be40-239ad893106f",
+          "method": "tasks/cancel",
+          "params": {
+            "id": "3eda534c-586e-4146-be58-e2fa7bd53676"
+          }
+        },
+        "http_status": 200,
+        "response": {
+          "error": {
+            "code": -32603,
+            "message": "Task cancellation not currently supported"
+          },
+          "id": "93dde757-6c40-4b9c-be40-239ad893106f",
+          "jsonrpc": "2.0"
+        },
+        "elapsed_seconds": 0.2843
+      }
+    },
+    "mas_node_scope": "Native A2AAgentNode delegation and result conversion; no workflow runner",
+    "mas_a2a_sdk_version": "1.2.2",
+    "mas_discovery_succeeded": true,
+    "mas_invocations": {
+      "non_streaming": {
+        "content": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=e8-mas. OUTPUT_MARKER=BASELINE",
+        "agent_id": "lscore-neutral-e8-probe",
+        "agent_name": "",
+        "artifacts": [],
+        "metrics": {},
+        "success": true,
+        "error": null,
+        "reasoning": "",
+        "execution_metadata": {
+          "remote_agent": true,
+          "a2a_task_id": "14b81190-477f-45f2-b7ba-03f1da233ef5",
+          "a2a_context_id": "79061f3c-60ba-4de6-a406-8b953e2df8c7",
+          "a2a_status": "completed",
+          "a2a_status_message": null,
+          "streaming": false
+        }
+      },
+      "streaming": {
+        "content": "COMPLETE: samples={\"A\": 4, \"B\": 7}; total=11.0. request=e8-mas. OUTPUT_MARKER=BASELINE",
+        "agent_id": "lscore-neutral-e8-probe",
+        "agent_name": "",
+        "artifacts": [],
+        "metrics": {},
+        "success": true,
+        "error": null,
+        "reasoning": "",
+        "execution_metadata": {
+          "remote_agent": true,
+          "a2a_task_id": "950561a8-615f-4e03-9504-0dec4a611f5d",
+          "a2a_context_id": "a4975ced-ab2a-4690-bba9-d892ba2d5e50",
+          "a2a_status": "completed",
+          "a2a_status_message": null,
+          "streaming": false
+        }
+      }
+    },
+    "registration_helper": {
+      "scope": "Offline replay of observed LSCore Agent Card through registration helper parser and SDK parser",
+      "saved_card_source": "e8-direct.json / records.agent_card.response",
+      "existing_helper_parser": {
+        "accepted": false,
+        "error_type": "ParseError",
+        "error": "Message type \"lf.a2a.v1.AgentCard\" has no field named \"additionalInterfaces\" at \"AgentCard\".\n Available Fields(except extensions): \"['name', 'description', 'supportedInterfaces', 'provider', 'version', 'documentationUrl', 'capabilities', 'securitySchemes', 'securityRequirements', 'defaultInputModes', 'defaultOutputModes', 'skills', 'signatures', 'iconUrl']\""
+      },
+      "native_sdk_parser": {
+        "accepted": true,
+        "interfaces": [
+          {
+            "url": "http://127.0.0.1:8140/a2a",
+            "protocol_binding": "JSONRPC",
+            "protocol_version": "0.3.0"
+          }
+        ]
+      }
+    },
+    "cancel_attempt": {
+      "method": "POST",
+      "path": "/a2a",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": "93dde757-6c40-4b9c-be40-239ad893106f",
+        "method": "tasks/cancel",
+        "params": {
+          "id": "3eda534c-586e-4146-be58-e2fa7bd53676"
+        }
+      },
+      "http_status": 200,
+      "response": {
+        "error": {
+          "code": -32603,
+          "message": "Task cancellation not currently supported"
+        },
+        "id": "93dde757-6c40-4b9c-be40-239ad893106f",
+        "jsonrpc": "2.0"
+      },
+      "elapsed_seconds": 0.2843
+    },
+    "task_before_cancel": {
+      "method": "POST",
+      "path": "/a2a",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": "1c16c7a7-9914-402b-bfd4-6ffc282fc242",
+        "method": "tasks/get",
+        "params": {
+          "id": "3eda534c-586e-4146-be58-e2fa7bd53676"
+        }
+      },
+      "http_status": 200,
+      "response": {
+        "id": "1c16c7a7-9914-402b-bfd4-6ffc282fc242",
+        "jsonrpc": "2.0",
+        "result": {
+          "contextId": "72c6211d-65ae-4bf5-adad-df3abb624ef9",
+          "history": [
+            {
+              "contextId": "72c6211d-65ae-4bf5-adad-df3abb624ef9",
+              "kind": "message",
+              "messageId": "7b9b19e2-b21f-4345-ab67-a060ee2c0df2",
+              "parts": [
+                {
+                  "kind": "text",
+                  "text": "[fixture:parallel] [delay:2] [request:e8-cancel] Read synthetic samples A and B and calculate their total."
+                }
+              ],
+              "role": "user",
+              "taskId": "3eda534c-586e-4146-be58-e2fa7bd53676"
+            }
+          ],
+          "id": "3eda534c-586e-4146-be58-e2fa7bd53676",
+          "kind": "task",
+          "status": {
+            "state": "submitted"
+          }
+        }
+      },
+      "elapsed_seconds": 0.3413
+    }
+  },
+  "supporting_results": [
+    "environment.json",
+    "../variants/http-extension-results.json",
+    "../variants/findings.json",
+    "../variants/config-forwarding-probe.json",
+    "../variants/tool-limit-results.json"
+  ],
+  "limitations": [
+    "Single local process and small synthetic workload, not a load benchmark",
+    "Skills and retry/limit probes mostly use a deterministic fixture; real model semantic behavior verified only for normal and injected tool failure",
+    "No full MAS workflow/UI, restart recovery, overall deadline or disconnected deployment test; structured ATI wire contract tested in follow-up",
+    "No upstream source patch, no upstream test-suite run; raw logs/state retained privately under .local"
+  ],
+  "follow_up_results": [
+    "concurrency-origins.json",
+    "deadline-probe.json",
+    "error-adapter-probe.json",
+    "error-origins.json",
+    "limits-origins.json",
+    "structured-contract.json",
+    "upstream-status.json",
+    "../../../verification.json"
+  ],
+  "evidence_scope": "Pinned native LSCore evaluation. Current integration verification is at the repository root."
+}

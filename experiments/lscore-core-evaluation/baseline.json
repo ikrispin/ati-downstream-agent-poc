@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-11-24",
+  "timezone": "Asia/Jerusalem",
+  "ticket": "https://redhat.atlassian.net/browse/APPENG-7003",
+  "phase": "native_lscore_only_poc",
+  "source": {
+    "repository": "https://github.com/lightspeed-core/lightspeed-stack",
+    "revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+    "version": "0.8.0rc1",
+    "providers_revision": "28a4c5106905e67b5c0971f030e70cc3e04a88eb",
+    "python_requirement": ">=3.12, <3.15",
+    "packages": {
+      "a2a-sdk": [
+        "0.3.26"
+      ],
+      "aiosqlite": [
+        "0.22.1"
+      ],
+      "asyncpg": [
+        "0.32.0"
+      ],
+      "fastapi": [
+        "0.165.0"
+      ],
+      "httpx": [
+        "0.28.1"
+      ],
+      "mcp": [
+        "1.30.0"
+      ],
+      "ogx": [
+        "1.2.5"
+      ],
+      "ogx-api": [
+        "1.2.5"
+      ],
+      "ogx-client": [
+        "1.2.5"
+      ],
+      "openai": [
+        "3.57.0"
+      ],
+      "pydantic-ai": [
+        "2.38.0"
+      ],
+      "pydantic-ai-harness": [
+        "0.30.0"
+      ],
+      "pydantic-ai-skills": [
+        "1.4.0"
+      ],
+      "pydantic-ai-slim": [
+        "2.38.0"
+      ],
+      "sqlalchemy": [
+        "2.1.9"
+      ],
+      "torch": [
+        "2.11.0",
+        "2.11.0+cpu"
+      ],
+      "transformers": [
+        "5.24.0"
+      ],
+      "uvicorn": [
+        "0.54.0"
+      ]
+    },
+    "files": [
+      {
+        "path": "pyproject.toml",
+        "sha256": "cd4227af2b3ae2e7553dff1bafd623e3e557497ccc83b4f6cd9e399392bbef54",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/pyproject.toml"
+      },
+      {
+        "path": "uv.lock",
+        "sha256": "dfbf413cee295b698ac0c3bc479b704c882361175c6fb6c11dc1221cc03b2f47",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/uv.lock"
+      },
+      {
+        "path": "src/version.py",
+        "sha256": "2ce0e8a7cbdd86118d9447fa45973d52c5c9fe454bb62567de7e63fe6d31dd0d",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/version.py"
+      },
+      {
+        "path": "src/models/config.py",
+        "sha256": "898b6ef4ebd1ad5042a6352f53106736ca1666dfd9da94e54a844153f42d79a5",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/models/config.py",
+        "symbols": [
+          {
+            "name": "ModelContextProtocolServer",
+            "line": 580,
+            "end_line": 679
+          },
+          {
+            "name": "CustomProfile",
+            "line": 2001,
+            "end_line": 2036
+          },
+          {
+            "name": "InferenceConfiguration",
+            "line": 2147,
+            "end_line": 2239
+          },
+          {
+            "name": "AgentStepPersistenceSqliteConfiguration",
+            "line": 2450,
+            "end_line": 2461
+          },
+          {
+            "name": "A2AStateConfiguration",
+            "line": 2470,
+            "end_line": 2526
+          }
+        ]
+      },
+      {
+        "path": "src/utils/pydantic_ai_helpers.py",
+        "sha256": "57d4d390249136163cc052a25c74c83d2570d5f7909892e113deeb059901b162",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/utils/pydantic_ai_helpers.py",
+        "symbols": [
+          {
+            "name": "_skills_capability",
+            "line": 46,
+            "end_line": 64
+          },
+          {
+            "name": "_agent_capabilities",
+            "line": 202,
+            "end_line": 235
+          },
+          {
+            "name": "build_agent",
+            "line": 268,
+            "end_line": 312
+          }
+        ]
+      },
+      {
+        "path": "src/utils/agents/query.py",
+        "sha256": "de568faee1bbc2ae51f7bbb4dec97578ecdd41a6d6ca7feb5483a57fc347f885",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/utils/agents/query.py"
+      },
+      {
+        "path": "src/utils/agents/error_handler.py",
+        "sha256": "a94580cbd0948d20baa6537bae2edf0d3fbc4695e0664f9523c579347fe68f41",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/utils/agents/error_handler.py"
+      },
+      {
+        "path": "src/utils/prompts.py",
+        "sha256": "fc9f1046ae519b80dcc478a5d158e2da5de140549c67d6002ad1fcf6ed16a8c7",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/utils/prompts.py",
+        "symbols": [
+          {
+            "name": "get_system_prompt",
+            "line": 12,
+            "end_line": 81
+          }
+        ]
+      },
+      {
+        "path": "src/app/endpoints/a2a.py",
+        "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/app/endpoints/a2a.py",
+        "symbols": [
+          {
+            "name": "_build_a2a_parts_from_agent_result",
+            "line": 129,
+            "end_line": 153
+          },
+          {
+            "name": "A2AAgentExecutor",
+            "line": 348,
+            "end_line": 820
+          },
+          {
+            "name": "A2AAgentExecutor._convert_stream_to_events",
+            "line": 636,
+            "end_line": 699
+          },
+          {
+            "name": "A2AAgentExecutor.cancel",
+            "line": 804,
+            "end_line": 820
+          }
+        ]
+      },
+      {
+        "path": "src/a2a_storage/storage_factory.py",
+        "sha256": "3e2390f56994ab79dfab8a2817c0f292b80c9656365ea4b72f34efc305dbd2ae",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/a2a_storage/storage_factory.py",
+        "symbols": [
+          {
+            "name": "A2AStorageFactory",
+            "line": 20,
+            "end_line": 191
+          }
+        ]
+      },
+      {
+        "path": "src/conversations/agent_history/service.py",
+        "sha256": "b23fa1211d1904afe80ed9a3b96d8e9cef0cd1c7332a50157f56ad6d3b570e21",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/conversations/agent_history/service.py",
+        "symbols": [
+          {
+            "name": "AgentHistoryService",
+            "line": 25,
+            "end_line": 79
+          }
+        ]
+      },
+      {
+        "path": "src/conversations/agent_history/history.py",
+        "sha256": "9325ffb75544b6e65136fe013dad2d07ac5fa49674faa4ae961d3238f83e23fe",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/conversations/agent_history/history.py",
+        "symbols": [
+          {
+            "name": "load_run_history",
+            "line": 50,
+            "end_line": 72
+          },
+          {
+            "name": "load_conversation_history",
+            "line": 75,
+            "end_line": 96
+          }
+        ]
+      },
+      {
+        "path": "src/conversations/run_context.py",
+        "sha256": "fdb8158d46e7e7b8862eed2b1f3ebb3cedb5a1b5df66296aead799627c56f516",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/conversations/run_context.py",
+        "symbols": [
+          {
+            "name": "resolve_run_context",
+            "line": 78,
+            "end_line": 111
+          }
+        ]
+      },
+      {
+        "path": "src/utils/stream_interrupts.py",
+        "sha256": "e4374cff2a9f721dd1185aad45eb14d4155c16f7184c0b0a89a00513da234ab6",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/utils/stream_interrupts.py",
+        "symbols": [
+          {
+            "name": "StreamInterruptRegistry",
+            "line": 60,
+            "end_line": 165
+          }
+        ]
+      },
+      {
+        "path": "docs/user_doc/deployment_guide.md",
+        "sha256": "69f70b76db4a64d5c7668136120f21b0fa6b92713bc7af15a8bb969823d53f9a",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/docs/user_doc/deployment_guide.md"
+      },
+      {
+        "path": "docs/user_doc/skills_guide.md",
+        "sha256": "fe305564a0d447d4530e50ad7d6fd26b0278ff3bda4eb77163a529c59f70ff9b",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/docs/user_doc/skills_guide.md"
+      },
+      {
+        "path": "docs/user_doc/a2a_protocol.md",
+        "sha256": "7149d7eef4fcd4a827ebf5ccda566281555001da8ee75f37d88437cc2b42c0bc",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/docs/user_doc/a2a_protocol.md"
+      },
+      {
+        "path": "docs/design/inference-backend-migration/pai-tools-mcp-filesearch-summary.md",
+        "sha256": "330bfb0b5215683145ec59e6a3d1762dbc09db2607ace3994df40c657c90ba83",
+        "url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/docs/design/inference-backend-migration/pai-tools-mcp-filesearch-summary.md"
+      }
+    ]
+  },
+  "inspected_dependency_artifacts": [
+    {
+      "name": "ogx",
+      "version": "1.2.5",
+      "wheel_url": "https://files.pythonhosted.org/packages/22/84/627d72f914f9d81d2f7503fe30ffc51017bb521e399dd68a7168b4409646/ogx-1.2.5-py3-none-any.whl",
+      "wheel_hash": "sha256:3435881ebc343ae8857224d631e56d8df72c5c80230a239672712fd56127b5be",
+      "wheel_hash_verified": true,
+      "installed": true,
+      "inspected_sources": [
+        {
+          "path": "ogx/providers/inline/responses/builtin/responses/streaming.py",
+          "sha256": "1a5e20eb2a0b69eeb4691588c5b8001bc8471bd97ccd1ece5a92e5bf184fe0ba",
+          "symbols": [
+            {
+              "name": "_coordinate_tool_execution",
+              "line": 1478,
+              "end_line": 1614
+            }
+          ]
+        },
+        {
+          "path": "ogx/providers/inline/responses/builtin/responses/tool_executor.py",
+          "sha256": "cc2459f1def09105aabaa3d260597207d45682f203963c318e138feaa34b1c7c",
+          "symbols": [
+            {
+              "name": "execute_tool_call",
+              "line": 72,
+              "end_line": 129
+            },
+            {
+              "name": "_execute_tool",
+              "line": 316,
+              "end_line": 409
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pydantic-ai-harness",
+      "version": "0.30.0",
+      "wheel_url": "https://files.pythonhosted.org/packages/24/07/8ff61abd60e794f739ee7588fbedb50d0d61af1e47e78b5a0c7372bd806c/pydantic_ai_harness-0.30.0-py3-none-any.whl",
+      "wheel_hash": "sha256:f9eaa6c19abf47e7af9a84c86124e96c59b432afe8b9f7deae3d9e98fa4677ef",
+      "wheel_hash_verified": true,
+      "installed": true,
+      "inspected_sources": [
+        {
+          "path": "pydantic_ai_harness/step_persistence/_capability.py",
+          "sha256": "70a64291cd8a902d79c99cdb9634ea30802c759707dcd51bf2c72606e368ce2d",
+          "symbols": [
+            {
+              "name": "StepPersistence",
+              "line": 50,
+              "end_line": 685
+            }
+          ]
+        },
+        {
+          "path": "pydantic_ai_harness/step_persistence/_helpers.py",
+          "sha256": "d8efe8cf74598468191f5f02e8e59cd0798b52aac5e7d6b4e52a6104e355dbfe",
+          "symbols": [
+            {
+              "name": "continue_run",
+              "line": 59,
+              "end_line": 79
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "user_scope": {
+    "customization": "evaluate_prompt_tool_configuration_and_python_branching",
+    "async": "non_blocking_calls_and_concurrency",
+    "extensions": "documented_only_no_lscore_patches",
+    "background_jobs": "outside_initial_experiment"
+  },
+  "runtime": {
+    "lscore_installed": true,
+    "lscore_started": true,
+    "configuration_validated": true,
+    "model_tool_round_trip_run": true,
+    "upstream_tests_run": false,
+    "patches_applied": false,
+    "python": "3.12.16",
+    "evidence": "results/summary.json",
+    "environment": "results/environment.json",
+    "source_unchanged": true,
+    "patches_note": "No experiment-authored LSCore or dependency changes. Upstream ships its own compatibility patches.",
+    "validation": {
+      "ruff_check": "passed scripts and variants",
+      "python_compileall": "passed scripts and variants",
+      "json_artifacts": "all public JSON parses",
+      "temporary_service_ports": "8140/8143/8144/8145/18141/18142 closed",
+      "existing_services": "Historical neutral-run observation; see the current native verification for migrated service status."
+    },
+    "ati_follow_up": "../../verification.json"
+  },
+  "planning_inputs": {
+    "read_jira_issues": [
+      "APPENG-7003",
+      "APPENG-7002",
+      "APPENG-6956",
+      "APPENG-6961",
+      "APPENG-7004",
+      "APPENG-7005",
+      "APPENG-7006",
+      "APPENG-7007",
+      "APPENG-7008",
+      "APPENG-7009",
+      "APPENG-6957",
+      "APPENG-6987"
+    ],
+    "requirements_matrix_in_7002": "not_present_in_description_comments_or_attachments",
+    "adr": "https://docs.google.com/document/d/1pxTXE2kKV6dvZJ2edkM60bnrrA9p7JPf2Ov_VFkYqek/edit?tab=t.9u0q2yjs6ljp",
+    "adr_status": "status_field_not_finalized"
+  },
+  "inspection_tools": {
+    "python": "3.14.8",
+    "uv": "0.12.24",
+    "lscore_dependency_installation": "uv sync --frozen --python 3.12.16 --group dev --group ogxlibdev"
+  },
+  "current_poc": {
+    "directory": ".",
+    "execution_owner": "lscore_native",
+    "verification": "../../verification.json",
+    "source_baseline": "Upstream main pinned to the recorded immutable revision; no dependency upgrade."
+  }
+}

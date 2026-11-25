@@ -18,3 +18,5 @@ dist/
 *.sqlite*
 *.db
 .DS_Store
+.codex/
+.claude/settings.local.json

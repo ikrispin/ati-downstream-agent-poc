@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-24T17:11:35.971937+00:00",
+  "scope": "Native LSCore ATI integration with domain MCP tools and optional MAS A2A delegation.",
+  "source": {
+    "repository": "https://github.com/lightspeed-core/lightspeed-stack",
+    "branch_origin": "main",
+    "revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+    "lscore_version": "0.8.0rc1",
+    "ogx_version": "1.2.5",
+    "upstream_patches_applied": false,
+    "dependency_upgrade_applied": false
+  },
+  "domain_environment": {
+    "python": "3.12.16",
+    "dependencies": {
+      "mcp": "1.30.0",
+      "httpx": "0.28.1",
+      "pydantic": "2.14.3",
+      "jsonschema": "4.26.0"
+    },
+    "uv_lock_sha256": "77d7f2ef667884a4bae2ec149f64cbf020ec6440f381716d0699c0a56a041f93"
+  },
+  "native_runs": [
+    {
+      "scenario": "positive_synthetic_sources",
+      "execution_owner": "lscore_native",
+      "model_connection": "existing_real_model",
+      "data_mode": "synthetic_fixture",
+      "native_request_status": "request_completed",
+      "domain_outcome": "completed",
+      "collector_status": {
+        "redhat": "succeeded",
+        "osidb": "succeeded",
+        "lightspeed": "succeeded",
+        "fleet": "succeeded",
+        "support": "succeeded",
+        "threat_intel": "succeeded"
+      },
+      "collector_error_codes": {},
+      "priority": "urgent_review",
+      "affected_systems": 1,
+      "missing": [],
+      "native_tool_item_types": {
+        "mcp_list_tools": 1,
+        "mcp_call": 7
+      },
+      "native_executed_tools": [
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "finalize_cve_assessment"
+      ],
+      "client_model_calls": 0,
+      "client_executed_model_suggested_tools": 0,
+      "provider_http_attempts": "not instrumented; do not infer from tool count"
+    },
+    {
+      "scenario": "connected_real_sources",
+      "execution_owner": "lscore_native",
+      "model_connection": "existing_real_model",
+      "data_mode": "live_sources",
+      "native_request_status": "request_completed",
+      "domain_outcome": "partial",
+      "collector_status": {
+        "redhat": "succeeded",
+        "osidb": "succeeded",
+        "lightspeed": "succeeded",
+        "fleet": "succeeded",
+        "support": "failed",
+        "threat_intel": "succeeded"
+      },
+      "collector_error_codes": {
+        "support": "source_unavailable"
+      },
+      "priority": "no_affected_systems",
+      "affected_systems": 0,
+      "missing": [
+        "support_search_incomplete",
+        "support_unavailable"
+      ],
+      "native_tool_item_types": {
+        "mcp_list_tools": 1,
+        "mcp_call": 7
+      },
+      "native_executed_tools": [
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "collect_cve_source",
+        "finalize_cve_assessment"
+      ],
+      "client_model_calls": 0,
+      "client_executed_model_suggested_tools": 0,
+      "provider_http_attempts": "not instrumented; do not infer from tool count"
+    }
+  ],
+  "a2a": {
+    "endpoint": "/a2a",
+    "http_status": 200,
+    "task_state": "completed",
+    "artifact_part_kinds": [
+      "text"
+    ],
+    "ati_typed_data_preserved": false,
+    "domain_outcome_in_task_status": false
+  },
+  "mas": {
+    "workflow_status": "COMPLETED",
+    "execution_owner": "lscore_native",
+    "mode": "Report an existing finalized domain assessment through the full local MAS workflow.",
+    "typed_ati_artifact_preserved": false,
+    "final_domain_record_unchanged": true,
+    "live_collection_repeated": false,
+    "ui_render_retested": false
+  },
+  "accepted_scope": {
+    "support": "Retain the existing MCP and older data source; failed or unverified evidence stays explicit.",
+    "errata": "excluded",
+    "remediation": "excluded"
+  },
+  "remaining_limits": [
+    "Native per-response limits are not a demonstrated aggregate run budget.",
+    "Tools within a native response remain sequential on this backend.",
+    "Caller timeout does not prove native/remote cancellation.",
+    "Native A2A does not carry the typed ATI domain contract.",
+    "A record can remain not_finalized after native interruption; no automatic durable resume.",
+    "Positive live fleet coverage and production deployment remain unverified.",
+    "Upstream OGX error-text fix accepted but compatible packaged upgrade not retested."
+  ],
+  "raw_evidence": "Private .local/reports; not included in Git.",
+  "integration_experiment_checked_at": "2026-11-24T15:59:14.158336+00:00",
+  "live_evidence_origin": "Native-only integration experiment before standalone relocation. The 18 domain/client Python files are byte-identical; live collection and MAS execution were not repeated for the relocation.",
+  "integration_workspace_checks": {
+    "tests_passed": 260,
+    "package_coverage_percent": 88.87,
+    "ruff": "passed",
+    "format": "passed",
+    "frozen_lock": "passed",
+    "bootstrap_shell_syntax": "passed",
+    "publication_files_checked": 125,
+    "relative_markdown_links_checked": 111,
+    "known_local_credentials_scan": "passed; values not published",
+    "visual_guide": "6 pages rendered and visually reviewed",
+    "native_current_launcher_readiness": "HTTP 200",
+    "github_hosted_ci": "not run; no push performed"
+  },
+  "checks": {
+    "repository": "ikrispin/ati-downstream-agent-poc",
+    "tests_passed": 260,
+    "package_coverage_percent": 88.87,
+    "ruff": "passed",
+    "format": "passed",
+    "frozen_lock": "passed",
+    "bootstrap_shell_syntax": "passed",
+    "cli_help": "passed",
+    "publication_files_checked": 112,
+    "relative_markdown_links_checked": 62,
+    "known_integration_credentials_comparison": "passed; values not published",
+    "visual_guide": "6 pages rendered and visually reviewed",
+    "google_doc": "https://docs.google.com/document/d/1Ns0PGjMHCFx8Sqwkyp581kU5ecOgG_2nnOz6vndQ2GQ/edit",
+    "github_hosted_ci": "See the pull request Checks tab; not substituted for local verification."
+  },
+  "documentation_review": {
+    "date": "2026-11-25",
+    "scope": "Current native LSCore/MAS architecture, collector-to-source mapping and six visual-guide diagrams.",
+    "runtime_behavior_changed": false
+  }
+}

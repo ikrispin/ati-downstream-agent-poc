@@ -1,0 +1,143 @@
+name: LSCore neutral execution experiment
+service:
+  host: 127.0.0.1
+  port: 8140
+  base_url: http://127.0.0.1:8140
+  auth_enabled: false
+  workers: 1
+  color_log: false
+  access_log: false
+authentication:
+  module: noop
+user_data_collection:
+  feedback_enabled: false
+  transcripts_enabled: false
+database:
+  sqlite:
+    db_path: .local/state/service.sqlite
+conversation_cache:
+  type: sqlite
+  sqlite:
+    db_path: .local/state/conversations.sqlite
+a2a_state:
+  sqlite:
+    db_path: .local/state/a2a.sqlite
+agent_step_persistence:
+  type: sqlite
+  sqlite:
+    db_path: .local/state/agent-steps.sqlite
+customization:
+  system_prompt: >-
+    You are a neutral sample assessment assistant. Use read_sample for samples A
+    and B, then calculate_total with the retrieved values. Never invent missing
+    values. If either lookup fails, explain that the assessment is partial.
+    Preserve the request marker. OUTPUT_MARKER=BASELINE
+  agent_card_config:
+    name: LSCore neutral experiment
+    description: Synthetic sample lookup and arithmetic for framework evaluation.
+    protocolVersion: 0.3.0
+    version: 0.1.0
+    skills:
+      - id: sample_assessment
+        name: Neutral sample assessment
+        description: Retrieve synthetic values and calculate a total.
+        tags: [synthetic, arithmetic]
+    capabilities:
+      streaming: true
+      pushNotifications: false
+    defaultInputModes: [text/plain]
+    defaultOutputModes: [text/plain]
+inference:
+  default_provider: fixture
+  default_model: fixture-model
+  max_infer_iters: 4
+  max_tool_calls: 6
+  providers:
+    - id: fixture
+      type: openai
+      skip_model_discovery: true
+      config:
+        api_key: fixture-only-no-secret
+        base_url: http://127.0.0.1:18141/v1
+      allowed_models:
+        - name: fixture-model
+          provider_model_id: fixture-model
+          model_type: llm
+          metadata:
+            context_window: 32768
+mcp_servers:
+  - name: neutral-tools
+    url: http://127.0.0.1:18142/mcp
+    require_approval: never
+    timeout: 1
+ogx:
+  use_as_library_client: true
+  config:
+    baseline: empty
+    native_override:
+      version: 2
+      distro_name: starter
+      apis: [responses, conversations, inference, tool_runtime, vector_io, files, file_processors]
+      providers:
+        inference:
+          - provider_id: fixture
+            provider_type: remote::openai
+            config:
+              api_key: fixture-only-no-secret
+              base_url: http://127.0.0.1:18141/v1
+              allowed_models: [fixture-model]
+        responses:
+          - provider_id: meta-reference
+            provider_type: inline::builtin
+            config:
+              persistence:
+                responses:
+                  table_name: agent_responses
+                  backend: sql_default
+        tool_runtime:
+          - provider_id: model-context-protocol
+            provider_type: remote::model-context-protocol
+            config: {}
+        vector_io:
+          - provider_id: faiss
+            provider_type: inline::faiss
+            config:
+              persistence:
+                namespace: vector_io
+                backend: kv_default
+        files:
+          - provider_id: local-files
+            provider_type: inline::localfs
+            config:
+              metadata_store:
+                table_name: files_metadata
+                backend: sql_default
+              storage_dir: .local/state/files
+        file_processors:
+          - provider_id: pypdf
+            provider_type: inline::pypdf
+            config: {}
+      storage:
+        backends:
+          kv_default:
+            type: kv_sqlite
+            db_path: .local/state/ogx-kv.sqlite
+          sql_default:
+            type: sql_sqlite
+            db_path: .local/state/ogx.sqlite
+        stores:
+          metadata:
+            namespace: registry
+            backend: kv_default
+          inference:
+            table_name: inference_store
+            backend: sql_default
+          conversations:
+            table_name: openai_conversations
+            backend: sql_default
+          prompts:
+            table_name: prompts
+            backend: sql_default
+          connectors:
+            table_name: connectors
+            backend: sql_default

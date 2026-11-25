@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-11-24T12:27:04.245558+00:00",
+  "lscore_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "scope": "Native LSCore execution/A2A and MAS native delegation/conversion with a deterministic model and synthetic domain records.",
+  "limitations": [
+    "A deterministic model serializes known synthetic domain records. These tests prove transport/conversion behavior, not real-model semantic correctness or schema enforcement.",
+    "MAS native node delegation/conversion is exercised; the full workflow runner and UI are not."
+  ],
+  "fixture_domain_records": {
+    "completed": {
+      "run_id": "synthetic-contract-completed",
+      "cve_id": "CVE-2099-0001",
+      "status": "completed",
+      "answer": "Synthetic ATI completed assessment; successful evidence is retained where available.",
+      "sources": {
+        "redhat": {
+          "status": "succeeded",
+          "duration_seconds": 0.01,
+          "evidence": {
+            "synthetic": true,
+            "value": 4,
+            "source_url": "https://example.invalid/synthetic-evidence"
+          }
+        },
+        "osidb": {
+          "status": "succeeded",
+          "duration_seconds": 0.01,
+          "evidence": {
+            "synthetic": true,
+            "value": 4,
+            "source_url": "https://example.invalid/synthetic-evidence"
+          }
+        },
+        "lightspeed": {
+          "status": "succeeded",
+          "duration_seconds": 0.01,
+          "evidence": {
+            "synthetic": true,
+            "value": 4,
+            "source_url": "https://example.invalid/synthetic-evidence"
+          }
+        },
+        "support": {
+          "status": "not_requested"
+        }
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "error": null
+    },
+    "partial": {
+      "run_id": "synthetic-contract-partial",
+      "cve_id": "CVE-2099-0001",
+      "status": "partial",
+      "answer": "Synthetic ATI partial assessment; successful evidence is retained where available.",
+      "sources": {
+        "redhat": {
+          "status": "succeeded",
+          "duration_seconds": 0.01,
+          "evidence": {
+            "synthetic": true,
+            "value": 4,
+            "source_url": "https://example.invalid/synthetic-evidence"
+          }
+        },
+        "osidb": {
+          "status": "failed",
+          "duration_seconds": 0.01,
+          "error": "SyntheticSourceUnavailable"
+        },
+        "lightspeed": {
+          "status": "not_queried"
+        },
+        "support": {
+          "status": "not_requested"
+        }
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "error": null
+    },
+    "failed": {
+      "run_id": "synthetic-contract-failed",
+      "cve_id": "CVE-2099-0001",
+      "status": "failed",
+      "answer": "Synthetic ATI failed assessment; successful evidence is retained where available.",
+      "sources": {
+        "redhat": {
+          "status": "failed",
+          "duration_seconds": 0.01,
+          "error": "SyntheticSourceUnavailable"
+        },
+        "osidb": {
+          "status": "failed",
+          "duration_seconds": 0.01,
+          "error": "SyntheticSourceUnavailable"
+        },
+        "lightspeed": {
+          "status": "not_queried"
+        },
+        "support": {
+          "status": "not_requested"
+        }
+      },
+      "model_calls": 1,
+      "tool_calls": 0,
+      "error": "synthetic_execution_failure"
+    },
+    "tool-error": {
+      "run_id": "synthetic-contract-tool-error",
+      "cve_id": "CVE-2099-0001",
+      "status": "partial",
+      "answer": "Synthetic ATI partial assessment; successful evidence is retained where available.",
+      "sources": {
+        "redhat": {
+          "status": "succeeded",
+          "duration_seconds": 0.01,
+          "evidence": {
+            "synthetic": true,
+            "value": 4,
+            "source_url": "https://example.invalid/synthetic-evidence"
+          }
+        },
+        "osidb": {
+          "status": "failed",
+          "duration_seconds": 0.01,
+          "error": "SyntheticSourceUnavailable"
+        },
+        "lightspeed": {
+          "status": "not_queried"
+        },
+        "support": {
+          "status": "not_requested"
+        }
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "error": null
+    },
+    "runtime-error": {
+      "run_id": "synthetic-contract-runtime-error",
+      "cve_id": "CVE-2099-0001",
+      "status": "partial",
+      "answer": "Synthetic ATI partial assessment; successful evidence is retained where available.",
+      "sources": {
+        "redhat": {
+          "status": "succeeded",
+          "duration_seconds": 0.01,
+          "evidence": {
+            "synthetic": true,
+            "value": 4,
+            "source_url": "https://example.invalid/synthetic-evidence"
+          }
+        },
+        "osidb": {
+          "status": "failed",
+          "duration_seconds": 0.01,
+          "error": "SyntheticSourceUnavailable"
+        },
+        "lightspeed": {
+          "status": "not_queried"
+        },
+        "support": {
+          "status": "not_requested"
+        }
+      },
+      "model_calls": 3,
+      "tool_calls": 2,
+      "error": null
+    }
+  },
+  "comparisons": {
+    "completed": {
+      "domain_status_in_injected_record": "completed",
+      "lscore_direct_a2a": {
+        "task_state": "completed",
+        "artifact_part_kinds": [
+          "text"
+        ],
+        "json_text_parses_to_exact_record": true,
+        "task_metadata": {
+          "model": "fixture/fixture-model",
+          "conversation_id": "2452aec05ae1e3d2a7f96deb9509eb3f258caf9280fd3c11"
+        },
+        "status_metadata": null,
+        "successful_source_evidence_in_returned_artifact": true
+      },
+      "lscore_mas": {
+        "non_streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "d0720c55-1f16-4f27-b696-910de022d204",
+            "a2a_context_id": "ab93af8c-07e8-435e-992b-2f88968a15f2",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        },
+        "streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "6ead110e-dd14-4da5-9562-6bdeadc8086a",
+            "a2a_context_id": "9cc3a6c9-e375-4c46-af88-c6d9a26fc4cc",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        }
+      },
+      "actual_mcp_execution_evidence": {
+        "successful_A_reads": 0,
+        "failed_B_reads": 0,
+        "note": "Counts include direct A2A and both MAS delegation modes; retained in the raw MCP event log."
+      }
+    },
+    "partial": {
+      "domain_status_in_injected_record": "partial",
+      "lscore_direct_a2a": {
+        "task_state": "completed",
+        "artifact_part_kinds": [
+          "text"
+        ],
+        "json_text_parses_to_exact_record": true,
+        "task_metadata": {
+          "model": "fixture/fixture-model",
+          "conversation_id": "dde7a31152fc97fae98b325b941a002c25910aff25a48196"
+        },
+        "status_metadata": null,
+        "successful_source_evidence_in_returned_artifact": true
+      },
+      "lscore_mas": {
+        "non_streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "c253b441-e503-47aa-b65a-4bf5e6cadd33",
+            "a2a_context_id": "0f5ccc50-c0af-4627-b92f-4d3935e4b503",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        },
+        "streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "c1af9ea0-cc0f-4e5c-aa35-6ab3bab3e2fe",
+            "a2a_context_id": "4dda26be-a85d-4dd8-8d07-668a8a8bf5b7",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        }
+      },
+      "actual_mcp_execution_evidence": {
+        "successful_A_reads": 0,
+        "failed_B_reads": 0,
+        "note": "Counts include direct A2A and both MAS delegation modes; retained in the raw MCP event log."
+      }
+    },
+    "failed": {
+      "domain_status_in_injected_record": "failed",
+      "lscore_direct_a2a": {
+        "task_state": "completed",
+        "artifact_part_kinds": [
+          "text"
+        ],
+        "json_text_parses_to_exact_record": true,
+        "task_metadata": {
+          "model": "fixture/fixture-model",
+          "conversation_id": "24bef7c62578e46c294cc40d59481bfd38fa82c559912f7a"
+        },
+        "status_metadata": null,
+        "successful_source_evidence_in_returned_artifact": false
+      },
+      "lscore_mas": {
+        "non_streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "8c48dcb1-3a99-4e70-a78f-c79b85fa1e69",
+            "a2a_context_id": "a55c79d6-1633-49f5-bd43-70e15f8369ed",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        },
+        "streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "63425faf-7afd-4e7e-8beb-43180b343932",
+            "a2a_context_id": "1d3dac74-4661-4ad8-b45d-52f5b6f2f0d9",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        }
+      },
+      "actual_mcp_execution_evidence": {
+        "successful_A_reads": 0,
+        "failed_B_reads": 0,
+        "note": "Counts include direct A2A and both MAS delegation modes; retained in the raw MCP event log."
+      }
+    },
+    "tool-error": {
+      "domain_status_in_injected_record": "partial",
+      "lscore_direct_a2a": {
+        "task_state": "completed",
+        "artifact_part_kinds": [
+          "text"
+        ],
+        "json_text_parses_to_exact_record": true,
+        "task_metadata": {
+          "model": "fixture/fixture-model",
+          "conversation_id": "e47e37da7a50bcec86af156dcece5c3f5e072e0cf871b7fc"
+        },
+        "status_metadata": null,
+        "successful_source_evidence_in_returned_artifact": true
+      },
+      "lscore_mas": {
+        "non_streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "4ef91c42-af12-46f1-9c87-9e021a3d1d39",
+            "a2a_context_id": "4a440d27-adc2-49fe-88f8-14dc28df3d1d",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        },
+        "streaming": {
+          "task_state": "TASK_STATE_COMPLETED",
+          "a2a_artifact_part_kinds": [
+            "text"
+          ],
+          "json_text_parses_to_exact_record": true,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": true,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "51665fed-01c3-4f5a-971a-3de0699ddf7c",
+            "a2a_context_id": "551fabda-1a6b-4e9b-9257-f4ad6488d062",
+            "a2a_status": "completed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        }
+      },
+      "actual_mcp_execution_evidence": {
+        "successful_A_reads": 3,
+        "failed_B_reads": 3,
+        "note": "Counts include direct A2A and both MAS delegation modes; retained in the raw MCP event log."
+      }
+    },
+    "runtime-error": {
+      "domain_status_in_injected_record": "partial",
+      "lscore_direct_a2a": {
+        "task_state": "failed",
+        "artifact_part_kinds": [],
+        "json_text_parses_to_exact_record": false,
+        "task_metadata": {
+          "model": "fixture/fixture-model",
+          "conversation_id": "f5ac041deef5eee99a5aba4244c65d14c4e2a5b7c13edaf9"
+        },
+        "status_metadata": null,
+        "successful_source_evidence_in_returned_artifact": false
+      },
+      "lscore_mas": {
+        "non_streaming": {
+          "task_state": "TASK_STATE_FAILED",
+          "a2a_artifact_part_kinds": [],
+          "json_text_parses_to_exact_record": false,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": false,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "b5ad92c6-3ffd-4a29-8b12-6670ecd1cf66",
+            "a2a_context_id": "72ce0be6-6bee-43e1-82cc-20511a608c5c",
+            "a2a_status": "failed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        },
+        "streaming": {
+          "task_state": "TASK_STATE_FAILED",
+          "a2a_artifact_part_kinds": [],
+          "json_text_parses_to_exact_record": false,
+          "converter_data_records": 0,
+          "converter_data_contains_exact_record": false,
+          "provider_metadata_has_data": false,
+          "provider_metadata_data_count": 0,
+          "node_success": false,
+          "node_artifact_references": [],
+          "node_message_metadata": {},
+          "node_execution_metadata": {
+            "remote_agent": true,
+            "a2a_task_id": "373d1f56-8300-4004-8bf8-ee4316094574",
+            "a2a_context_id": "3917a732-b4ab-4adb-b4a4-458fc8060162",
+            "a2a_status": "failed",
+            "a2a_status_message": null,
+            "streaming": false
+          },
+          "node_has_typed_domain_record": false,
+          "probe_error": null
+        }
+      },
+      "actual_mcp_execution_evidence": {
+        "successful_A_reads": 3,
+        "failed_B_reads": 3,
+        "note": "Counts include direct A2A and both MAS delegation modes; retained in the raw MCP event log."
+      }
+    }
+  },
+  "causal_findings": [
+    "LSCore emits only a TextPart from agent response text. Valid ATI JSON survives as text; no schema validation or ATI DataPart/domain outcome mapping occurs.",
+    "Consequently, an ATI record with status=failed is still LSCore A2A completed and MAS success=true when the model execution itself finishes normally.",
+    "MAS source inspection shows typed-part extraction in the converter, but the provider/node result path returns text and metadata without preserving a typed domain result. Native LSCore requests here returned text only.",
+    "After an actual successful A tool read, failed B tool read, and model HTTP500, LSCore correctly reports failed but returns no final artifact containing the successful evidence. The evidence exists only in the raw tool log in this experiment."
+  ],
+  "proposed_fixes": [
+    "Construct and validate the ATI outcome deterministically from the execution/tool record at an application adapter boundary; emit a versioned DataPart plus human-readable text and map failed outcomes to A2A failed.",
+    "Preserve conversion.data and artifact references through the MAS provider and node; carry domain outcome separately from transport completion so partial remains explicit.",
+    "On fatal model/runtime errors, finalize a partial/failed record from already collected successful tool evidence before returning the terminal A2A event."
+  ],
+  "source_evidence": [
+    {
+      "component": "LSCore artifact conversion",
+      "path": "experiments/lscore-core-evaluation/.local/upstream/src/app/endpoints/a2a.py",
+      "symbol": "_build_a2a_parts_from_agent_result",
+      "line": 129,
+      "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880"
+    },
+    {
+      "component": "LSCore final task state",
+      "path": "experiments/lscore-core-evaluation/.local/upstream/src/app/endpoints/a2a.py",
+      "symbol": "A2AAgentExecutor._process_task_streaming",
+      "line": 622,
+      "sha256": "ce00eec6b79c24ee579bfd0a9b5627a36d478751215e7a9bf37ec310f7887880"
+    },
+    {
+      "component": "MAS provider flattening",
+      "path": "<private-MAS-runtime>/lib/mas/elements/providers/a2a_client/provider.py",
+      "symbol": "A2AProvider.send_message",
+      "line": 156,
+      "sha256": "fac05c12095288e3bf79858cc0adec971aeaef147a0b607085059b3264682886"
+    },
+    {
+      "component": "MAS typed data extraction",
+      "path": "<private-MAS-runtime>/lib/mas/elements/providers/a2a_client/converter.py",
+      "symbol": "A2AConverter._from_parts",
+      "line": 190,
+      "sha256": "04a18228f88cf0a6fd7e91ca3002eccccf246673a36eee09fe78914b7f718e09"
+    },
+    {
+      "component": "MAS node result construction",
+      "path": "<private-MAS-runtime>/lib/mas/elements/nodes/a2a_agent/a2a_agent_node.py",
+      "symbol": "A2AAgentNode._create_agent_result",
+      "line": 444,
+      "sha256": "8c0accf846402555219e8fab0d4b3f4973ca43e0f94b9753adb9bab047bd33be"
+    }
+  ],
+  "raw_evidence": {
+    "path": ".local/evidence/structured-contract-raw.json",
+    "sha256": "06a188cb2e6bd89d51f09b457550fa15d92a2858b7437c7a837d9e401fb26b01",
+    "bytes": 389418
+  },
+  "probe_error": null,
+  "all_owned_services_stopped": true,
+  "evidence_scope": "Pinned native LSCore execution, direct A2A and MAS delegation. Current integration verification is at the repository root."
+}

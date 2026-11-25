@@ -1,0 +1,177 @@
+{
+  "researched_date": "2026-11-24",
+  "pinned_lscore_revision": "7693565545044173814b1c5ad5aa66dd329e8b34",
+  "pinned_ogx_version": "1.2.5",
+  "answers": {
+    "timeout": "In the evaluated LSCore revision, mcp_servers[].timeout is explicitly documented as reserved for future OGX support. It is a known documented missing capability, not an enforced timeout. Whether maintainers want to classify the accepted-but-ineffective field as a bug or feature request is a separate triage decision.",
+    "error_bug_reported": "Yes. OGX issue #6744 reports the exact Error (code 1): None behavior. Fix #6745 was merged into main on 13 October 2026. Our locked 1.2.5 release predates it.",
+    "maintainer_acceptance": "The exact error-text correction has already been accepted upstream. That does not guarantee a release/backport or acceptance of broader ATI features. The evaluated LSCore dependency lock has not adopted the fix."
+  },
+  "timeout_details": {
+    "explicit_documentation": "The schema description says this field is reserved for future use when OGX adds timeout support.",
+    "source_url": "https://github.com/lightspeed-core/lightspeed-stack/blob/7693565545044173814b1c5ad5aa66dd329e8b34/src/models/config.py#L671-L678",
+    "existing_runtime_evidence": "The configured 1-second field did not stop the 1.2-second tool fixture; see results/summary.json e5-tool-timeout.",
+    "correct_remedy": "If ATI owns tool calls, enforce per-tool deadlines and concurrency at ATI's tool layer. If LSCore/OGX owns them, request/implement timeout propagation and define connect/read/per-call/overall semantics, including cancellation and uncertain side effects. Do not describe a whole HTTP request timeout as a demonstrated per-tool timeout.",
+    "tracker_search_limit": "No exact timeout implementation ticket was established. A closed, unmerged LSCore PR #2413 is titled 'timeouts' but has an empty template description; it does not establish a supported solution. Public search cannot rule out internal Jira work."
+  },
+  "reported_error_fix": {
+    "issue": {
+      "url": "https://github.com/ogx-ai/ogx/issues/6744",
+      "state": "closed",
+      "opened_at": "2026-10-07T15:20:45Z",
+      "match": "The body explicitly identifies _parse_mcp_result not filling error_message and reproduces Error (code 1): None."
+    },
+    "pull_request": {
+      "url": "https://github.com/ogx-ai/ogx/pull/6745",
+      "merged": true,
+      "merged_at": "2026-10-13T21:16:22Z",
+      "merge_commit_sha": "ceda4d4a619c36774f9f9dfe409668a13170c1fb",
+      "fix": "Builds error_message from tool result text; also preserves additional MCP block kinds and structured content; includes parser unit tests."
+    },
+    "current_main": {
+      "revision": "57371c742dd459fdae65dcdaf4b2e20dfd32b12e",
+      "source_url": "https://github.com/ogx-ai/ogx/blob/57371c742dd459fdae65dcdaf4b2e20dfd32b12e/src/ogx/providers/utils/tools/mcp.py",
+      "checked": "Parser fills error_message when result.is_error is true."
+    },
+    "locked_release": {
+      "url": "https://github.com/ogx-ai/ogx/releases/tag/v1.2.5",
+      "published_at": "2026-08-31T17:00:49Z",
+      "target": "release-1.2.x",
+      "experiment": "Actual installed 1.2.5 reproduces the defect."
+    },
+    "release_checks": [
+      {
+        "tag": "v1.4.2",
+        "source_url": "https://github.com/ogx-ai/ogx/blob/v1.4.2/src/ogx/providers/utils/tools/mcp.py",
+        "observed": "Parser source still does not fill error_message."
+      },
+      {
+        "tag": "v1.5.0",
+        "source_url": "https://github.com/ogx-ai/ogx/blob/v1.5.0/src/ogx/providers/utils/tools/mcp.py",
+        "observed": "Parser source still does not fill error_message."
+      }
+    ],
+    "recommended_follow_up": "Reference the existing issue/merged PR, then ask LSCore maintainers for a supported dependency upgrade or backport containing the fix. Do not open a duplicate or claim that an arbitrary newer released version is fixed. Validate the chosen dependency set with the retained regression probe; the merged implementation uses the newer MCP 2.x field names and is not a blind drop-in replacement for this SDK 1.30 environment.",
+    "remaining_uncertainty": "A released version containing the fix and compatible with the pinned LSCore dependency set has not been established. No upgrade/backport was installed or tested."
+  },
+  "contribution_routes": {
+    "ogx": {
+      "source_url": "https://github.com/ogx-ai/ogx/blob/main/CONTRIBUTING.md",
+      "verified_content_blob_sha": "44069b2db7d3b4824875de449ccee52742805678",
+      "normal_process": "Search existing issues; file a reproducible bug report or discussion when requirements are unclear. Keep a fix focused, target main, include regression coverage and documentation for public behavior, run tests/pre-commit, sign commits under the Developer Certificate of Origin, and use a conventional PR title. Current contribution checks use Python 3.13 or 3.14.",
+      "assessment": "This exact correction has already been merged. A backport request or compatibility issue should link it and supply our pinned versions and minimal evidence. Acceptance of further changes depends on review and release support."
+    },
+    "lscore": {
+      "source_url": "https://github.com/lightspeed-core/lightspeed-stack/blob/main/CONTRIBUTING.md",
+      "verified_content_blob_sha": "541832f142c744bcf2ae5b8132c777862cdc9d7d",
+      "normal_process": "New features need a request for enhancement in LCORE Jira for Red Hat contributors, or GitHub for external contributors, and roadmap vetting. Ordinary bug fixes do not need a separate RFE unless they change public behavior or expand into feature work. Use focused PRs, tests/docs, required format/verify/unit checks, a valid Jira title prefix, and disclosure of substantial AI assistance.",
+      "assessment": "Wiring a new per-tool timeout capability needs semantics and owner agreement; it is larger than claiming the current reserved field already works. Dependency upgrades/backports should be proposed separately from ATI business behavior."
+    }
+  },
+  "research_limits": [
+    "The connected GitHub tools returned HTTP 401 Bad credentials; public official GitHub REST API and official repository pages were used instead.",
+    "Broad searches returned more than 100 items in some cases; targeted exact error_message/isError searches and direct issue/PR reads established the exact match. Absence from search is not proof that an issue does not exist.",
+    "No issue, PR, external comment, or message was created. No framework source was patched.",
+    "Current main source inspection and historical locked runtime evidence are labeled separately. Current main was not installed or run."
+  ],
+  "search_receipts": [
+    {
+      "query": "repo:ogx-ai/ogx \"Error (code\"",
+      "url": "https://api.github.com/search/issues?q=repo%3Aogx-ai%2Fogx+%22Error+%28code%22&per_page=100",
+      "total_count": 421,
+      "returned_items": 100,
+      "incomplete_results": false,
+      "limit": "first 100 results only"
+    },
+    {
+      "query": "repo:ogx-ai/ogx \"error_message\" MCP",
+      "url": "https://api.github.com/search/issues?q=repo%3Aogx-ai%2Fogx+%22error_message%22+MCP&per_page=100",
+      "total_count": 5,
+      "returned_items": 5,
+      "incomplete_results": false,
+      "limit": "all returned results inspected for relevance"
+    },
+    {
+      "query": "repo:ogx-ai/ogx MCP timeout",
+      "url": "https://api.github.com/search/issues?q=repo%3Aogx-ai%2Fogx+MCP+timeout&per_page=100",
+      "total_count": 29,
+      "returned_items": 29,
+      "incomplete_results": false,
+      "limit": "all returned results inspected for relevance"
+    },
+    {
+      "query": "repo:lightspeed-core/lightspeed-stack MCP timeout",
+      "url": "https://api.github.com/search/issues?q=repo%3Alightspeed-core%2Flightspeed-stack+MCP+timeout&per_page=100",
+      "total_count": 680,
+      "returned_items": 100,
+      "incomplete_results": false,
+      "limit": "first 100 results only"
+    },
+    {
+      "query": "repo:ogx-ai/ogx \"isError\"",
+      "url": "https://api.github.com/search/issues?q=repo%3Aogx-ai%2Fogx+%22isError%22&per_page=100",
+      "total_count": 3,
+      "returned_items": 3,
+      "incomplete_results": false,
+      "limit": "all returned results inspected for relevance"
+    },
+    {
+      "query_url": "https://api.github.com/search/issues?q=repo%3Alightspeed-core%2Flightspeed-stack+timeout+in%3Atitle&per_page=100",
+      "total_count": 3,
+      "returned_items": 3,
+      "matches": [
+        {
+          "number": 3316,
+          "title": "LCORE-4855: adding inference server logs from provision-rhelai on vLLM timeout",
+          "url": "https://github.com/lightspeed-core/lightspeed-stack/pull/3316"
+        },
+        {
+          "number": 2413,
+          "title": "timeouts",
+          "url": "https://github.com/lightspeed-core/lightspeed-stack/pull/2413"
+        },
+        {
+          "number": 1087,
+          "title": "[feat] Add configurable timeout for Llama Stack requests",
+          "url": "https://github.com/lightspeed-core/lightspeed-stack/pull/1087"
+        }
+      ]
+    },
+    {
+      "query_url": "https://api.github.com/search/issues?q=repo%3Aogx-ai%2Fogx+MCP+timeout+in%3Atitle&per_page=100",
+      "total_count": 0,
+      "returned_items": 0,
+      "matches": []
+    },
+    {
+      "query_url": "https://api.github.com/search/issues?q=repo%3Alightspeed-core%2Flightspeed-stack+%22mcp_servers%22+%22timeout%22+is%3Aissue&per_page=100",
+      "total_count": 2,
+      "returned_items": 2,
+      "matches": [
+        {
+          "number": 2782,
+          "title": "Design stack-side configuration and secret resolution for unified agent workflows",
+          "url": "https://github.com/lightspeed-core/lightspeed-stack/issues/2782"
+        },
+        {
+          "number": 402,
+          "title": "[BUG] MCP responses issue",
+          "url": "https://github.com/lightspeed-core/lightspeed-stack/issues/402"
+        }
+      ]
+    },
+    {
+      "query_url": "https://api.github.com/search/issues?q=repo%3Aogx-ai%2Fogx+6745+is%3Apr&per_page=100",
+      "total_count": 1,
+      "returned_items": 1,
+      "matches": [
+        {
+          "number": 6745,
+          "title": "fix(mcp): keep every MCP tool result block and the tool error text",
+          "url": "https://github.com/ogx-ai/ogx/pull/6745"
+        }
+      ]
+    }
+  ],
+  "scope": "Native LSCore timeout and upstream OGX fix research."
+}

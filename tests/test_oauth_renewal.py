@@ -10,7 +10,7 @@ import pytest
 from mcp.client.auth import OAuthFlowError
 from mcp.shared.auth import OAuthClientInformationFull, OAuthToken
 
-from ati_downstream.oauth import AuthenticationRequired, OAuthStorage, support_auth
+from ati_lscore.oauth import AuthenticationRequired, OAuthStorage, support_auth
 
 SERVER = "https://support.test/mcp"
 ISSUER = "https://auth.test/realm"

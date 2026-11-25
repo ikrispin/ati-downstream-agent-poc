@@ -1,0 +1,27 @@
+name: Native LSCore PoC checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  domain-and-repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: "0.13.9"
+      - name: Install the frozen domain-tool environment
+        run: uv sync --frozen --extra test --python 3.12.16
+      - name: Test domain tools and native clients
+        run: uv run --locked --extra test pytest --cov=ati_lscore --cov-fail-under=80
+      - name: Lint native integration
+        run: |
+          uv run --locked --extra test ruff check src tests scripts
+          uv run --locked --extra test ruff format --check src tests scripts
+      - name: Validate publication files
+        run: uv run --locked python scripts/check_repository.py
